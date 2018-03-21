@@ -14,7 +14,7 @@ HRESULT mainGame::init(void)
 
 	SCENEMANAGER->addScene("민석씬", new MinseokTest);
 	SCENEMANAGER->addScene("시웅씬", new SiwoongTest);
-	SCENEMANAGER->changeScene("민석씬");
+	SCENEMANAGER->changeScene("시웅씬");
 
 	return S_OK; //S_OK : 때때로 Boolean TRUE 값(0X0)으로 S_FALSE와 함께 사용되며 함수가 성공하였음을 의미한다.
 }

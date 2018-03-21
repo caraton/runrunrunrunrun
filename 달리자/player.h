@@ -4,6 +4,11 @@
 class player : public gameNode
 {
 private:
+	ST_ImageAndRect _IR;
+
+	POINT _player;
+
+	image* _playerImage;
 
 public:
 	virtual HRESULT init(void);	
