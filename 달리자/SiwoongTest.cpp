@@ -16,6 +16,12 @@ void SiwoongTest::release(void)
 
 void SiwoongTest::update(void)
 {
+	//¹Î¼®¾À ÀÌµ¿
+	if (KEYMANAGER->isOnceKeyDown(VK_F2))
+	{
+		SCENEMANAGER->changeScene("¹Î¼®¾À");
+	}
+
 	_player->update();
 }
 
