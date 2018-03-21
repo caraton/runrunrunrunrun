@@ -148,17 +148,20 @@
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="mainGame.h" />
+    <ClInclude Include="MinseokTest.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="sceneManager.h" />
     <ClInclude Include="singletonBase.h" />
+    <ClInclude Include="SiwoongTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="txtData.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="YounghuiTest.h" />
     <ClInclude Include="달리자.h" />
   </ItemGroup>
   <ItemGroup>
@@ -167,8 +170,10 @@
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="mainGame.cpp" />
+    <ClCompile Include="MinSeokTest.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sceneManager.cpp" />
+    <ClCompile Include="SiwoongTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -179,6 +184,7 @@
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="txtData.cpp" />
     <ClCompile Include="utils.cpp" />
+    <ClCompile Include="YounghuiTest.cpp" />
     <ClCompile Include="달리자.cpp" />
   </ItemGroup>
   <ItemGroup>

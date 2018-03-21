@@ -108,6 +108,15 @@
     <ClInclude Include="player.h">
       <Filter>MainGame\player</Filter>
     </ClInclude>
+    <ClInclude Include="SiwoongTest.h">
+      <Filter>MainGame\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MinseokTest.h">
+      <Filter>MainGame\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="YounghuiTest.h">
+      <Filter>MainGame\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -148,6 +157,15 @@
     </ClCompile>
     <ClCompile Include="player.cpp">
       <Filter>MainGame\player</Filter>
+    </ClCompile>
+    <ClCompile Include="SiwoongTest.cpp">
+      <Filter>MainGame\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MinSeokTest.cpp">
+      <Filter>MainGame\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="YounghuiTest.cpp">
+      <Filter>MainGame\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
