@@ -40,6 +40,18 @@
     <Filter Include="MainGame\player">
       <UniqueIdentifier>{f3b63606-70bf-4418-ba80-24d21305245e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Items">
+      <UniqueIdentifier>{dd400072-65b5-4293-b548-152b32df9d36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Obstacles">
+      <UniqueIdentifier>{8fb81e87-a9ad-4eac-b282-b9d1c0608c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Scenes">
+      <UniqueIdentifier>{4c73e5d3-feea-46f1-ae45-882c059afd1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\CollisionManager">
+      <UniqueIdentifier>{cca6202d-0b4a-4987-ad0a-e710b3e044e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
