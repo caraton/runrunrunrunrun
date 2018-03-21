@@ -170,7 +170,7 @@
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="mainGame.cpp" />
-    <ClCompile Include="MinSeokTest.cpp" />
+    <ClCompile Include="MinseokTest.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="SiwoongTest.cpp" />

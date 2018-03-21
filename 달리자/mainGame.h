@@ -1,6 +1,10 @@
 #pragma once
 #include "gameNode.h"
 
+class MinseokTest;
+class YounghuiTest;
+class SiwoongTest;
+
 class mainGame : public gameNode
 {
 private:

@@ -111,10 +111,10 @@
     <ClInclude Include="SiwoongTest.h">
       <Filter>MainGame\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="MinseokTest.h">
+    <ClInclude Include="YounghuiTest.h">
       <Filter>MainGame\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="YounghuiTest.h">
+    <ClInclude Include="MinseokTest.h">
       <Filter>MainGame\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -161,10 +161,10 @@
     <ClCompile Include="SiwoongTest.cpp">
       <Filter>MainGame\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="MinSeokTest.cpp">
+    <ClCompile Include="YounghuiTest.cpp">
       <Filter>MainGame\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="YounghuiTest.cpp">
+    <ClCompile Include="MinseokTest.cpp">
       <Filter>MainGame\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
