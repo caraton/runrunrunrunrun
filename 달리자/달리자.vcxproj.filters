@@ -117,6 +117,9 @@
     <ClInclude Include="MinseokTest.h">
       <Filter>MainGame\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="rectItem.h">
+      <Filter>MainGame\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="MinseokTest.cpp">
       <Filter>MainGame\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="rectItem.cpp">
+      <Filter>MainGame\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
