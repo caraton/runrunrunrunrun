@@ -19,7 +19,7 @@ HRESULT SiwoongTest::init(void)
 	_testIR._image = IMAGEMANAGER->addImage("테스트장애물", "Image/Obstacles/enemy.bmp", 40, 40, true, RGB(255,0,255));
 	_testIR._rc = RectMakeCenter(40, WINSIZEY/2, 40,40);
 
-	_colManager->addIR(&_testIR);
+	_colManager->addIR(&_testIR); //충돌처리할 IR들을 colManager에 보내주기
 
 	_cameraY = 0;
 

@@ -4,7 +4,8 @@
 
 HRESULT CollisionManager::init(void)
 {
-	for (int i = 0; i < (WINSIZEY / 10); ++i) //(WINSIZEY/100)는 글로벌 총 Y길이로 수정하기
+	//해쉬테이블 각 엔트리에 리스트를 동적할당하여 주소를 저장
+	for (int i = 0; i < (WINSIZEY / 10); ++i) //(WINSIZEY/10)는 글로벌 총 Y길이로 수정하기
 	{
 		list<IR*>* templist = new list<IR*>();
 		_hashTable.push_back(templist);
@@ -21,6 +22,7 @@ void CollisionManager::release(void)
 
 void CollisionManager::update(void)
 {
+	//_player와 해쉬테이블 안의 오브젝트들 간의 충돌확인
 	vector<IR*>* temp = new vector<IR*>;
 	if (checkCollision(&(_player->GetIR()),temp))
 	{
