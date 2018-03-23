@@ -2,11 +2,18 @@
 #include "gameNode.h"
 
 class player;
+class CollisionManager;
 
 class SiwoongTest : public gameNode
 {
 private:
 	player* _player;
+	CollisionManager* _colManager;
+
+	IR _testIR;
+
+
+	float _cameraY;
 
 public:
 	HRESULT init(void);

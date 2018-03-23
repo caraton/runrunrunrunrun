@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="달리자.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />

@@ -120,6 +120,9 @@
     <ClInclude Include="rectItem.h">
       <Filter>MainGame\Items</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>MainGame\CollisionManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -172,6 +175,9 @@
     </ClCompile>
     <ClCompile Include="rectItem.cpp">
       <Filter>MainGame\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>MainGame\CollisionManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
