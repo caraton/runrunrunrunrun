@@ -21,4 +21,6 @@ namespace THETA_UTIL
 	float getAngle(float x1, float y1, float x2, float y2);
 
 	bool pixelCol(ST_ImageAndRect* ir1, ST_ImageAndRect* ir2);
+
+	void linearInterpol(const IN POINT* p1, OUT POINT* p2, float weight);
 }

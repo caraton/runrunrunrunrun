@@ -79,4 +79,9 @@ namespace THETA_UTIL
 
 		return false;
 	}
+	void linearInterpol(const IN POINT * p1, OUT POINT * p2, float weight)
+	{
+		p2->x = (p1->x * (1 - weight) + p2->x * weight);
+		p2->y = (p1->y * (1 - weight) + p2->y * weight);
+	}
 }

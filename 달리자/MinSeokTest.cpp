@@ -57,7 +57,7 @@ void MinseokTest::update(void)
 		m_pItem2->linkPlayer(m_pPlayer);
 		m_pItem2->linkItem(m_pItem);
 	}
-	// ¼öÁ¤¿ä¸Á
+	// ¡è¡è¡è¡è¡è¼öÁ¤¿ä¸Á¡è¡è¡è¡è¡è
 
 }
 
@@ -207,4 +207,5 @@ Minseokplayer::Minseokplayer()
 
 Minseokplayer::~Minseokplayer()
 {
+
 }

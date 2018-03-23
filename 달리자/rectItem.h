@@ -19,6 +19,8 @@ public:
 	void linkPlayer(Minseokplayer* player) { m_pPlayer = player; }
 	void linkItem(rectItem* item) { m_pItem = item; }
 
+	
+
 	rectItem();
 	~rectItem();
 };
