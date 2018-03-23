@@ -53,12 +53,16 @@ private:
 	RECT m_rPlayer;
 	rectItem* m_pItem;
 	rectItem* m_pItem2;
+	RECT m_rcObstacle;
 
 public:
 	HRESULT init(void);
 	void release(void);
 	void update(void);
 	void render();
+
+
+	bool isCollisionReaction(const RECT* rcHold, RECT* rcMove);
 
 	MinseokTest();
 	~MinseokTest();

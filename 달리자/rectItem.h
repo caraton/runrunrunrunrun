@@ -11,6 +11,7 @@ private:
 	SYNTHESIZE(POINT, m_pSpeed, Speed);
 	Minseokplayer* m_pPlayer;
 	rectItem* m_pItem;
+	RECT m_rcObstacle;
 public:
 	HRESULT init(void);
 	void release(void);
@@ -18,7 +19,7 @@ public:
 	void render();
 	void linkPlayer(Minseokplayer* player) { m_pPlayer = player; }
 	void linkItem(rectItem* item) { m_pItem = item; }
-
+	
 	
 
 	rectItem();

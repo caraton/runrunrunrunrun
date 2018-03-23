@@ -22,6 +22,8 @@ HRESULT MinseokTest::init(void)
 
 	m_pBack->linkPlayer(m_pPlayer);
 
+
+	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 100, 100);
 	return S_OK;
 }
 
@@ -57,6 +59,9 @@ void MinseokTest::update(void)
 		m_pItem2->linkPlayer(m_pPlayer);
 		m_pItem2->linkItem(m_pItem);
 	}
+	
+	//isCollisionReaction(&temp2, &(m_pItem->GetRect()));
+	//isCollisionReaction(&temp2, &(m_pItem2->GetRect()));
 	// ¡è¡è¡è¡è¡è¼öÁ¤¿ä¸Á¡è¡è¡è¡è¡è
 
 }
@@ -70,7 +75,7 @@ void MinseokTest::render()
 	m_pItem->render();
 	m_pItem2->render();
 	m_pPlayer->render();
-
+	Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top, m_rcObstacle.right, m_rcObstacle.bottom);
 
 
 
