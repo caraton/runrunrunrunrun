@@ -13,6 +13,7 @@ void rectItem::release(void)
 
 void rectItem::update(void)
 {
+
 }
 
 void rectItem::render()

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MinseokTest.h"
 #include "rectItem.h"
+#include "player.h"
 
 HRESULT MinseokTest::init(void)
 {
@@ -8,6 +9,9 @@ HRESULT MinseokTest::init(void)
 	
 	m_pItem = new rectItem;
 	m_pItem->init();
+
+	m_pPlayer = new player;
+	m_pPlayer->init();
 
 	return S_OK;
 }
@@ -24,29 +28,7 @@ void MinseokTest::update(void)
 		SCENEMANAGER->changeScene("½Ã¿õ¾À");
 	}
 
-
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		m_rPlayer.top -= 5;
-		m_rPlayer.bottom -= 5;
-	}
-	if (KEYMANAGER->isStayKeyDown('A'))
-	{
-		m_rPlayer.left -= 5;
-		m_rPlayer.right -= 5;
-	}
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		m_rPlayer.top += 5;
-		m_rPlayer.bottom += 5;
-	}
-	if (KEYMANAGER->isStayKeyDown('D'))
-	{
-		m_rPlayer.left += 5;
-		m_rPlayer.right += 5;
-	}
-
-
+	m_pPlayer->update();
 	m_pItem->update();
 
 
@@ -55,17 +37,21 @@ void MinseokTest::update(void)
 
 void MinseokTest::render()
 {
-	Rectangle(getMemDC(), m_rPlayer.left, m_rPlayer.top, m_rPlayer.right, m_rPlayer.bottom);
+	//½Ã¿õ¾À°ú ¾È ÇÞ°¥¸®°Ô ÇÏ±âÀ§ÇÑ ·ºÆ®
+	Rectangle(getMemDC(), 0, 0, 100, 100);
+	m_pPlayer->render();
 	m_pItem->render();
 }
 
 MinseokTest::MinseokTest()
 {
 	m_pItem = NULL;
+	m_pPlayer = NULL;
 }
 
 
 MinseokTest::~MinseokTest()
 {
 	SAFE_DELETE(m_pItem);
+	SAFE_DELETE(m_pPlayer);
 }

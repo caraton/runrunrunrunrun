@@ -3,11 +3,13 @@
 
 class SiwoongTest;
 class rectItem;
+class player;
 
 class MinseokTest : public gameNode
 {
 private:
 
+	player* m_pPlayer;
 	RECT m_rPlayer;
 	rectItem* m_pItem;
 

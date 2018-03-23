@@ -3,6 +3,7 @@
 class rectItem : public gameNode
 {
 private:
+	SYNTHESIZE(RECT, m_rc, Rect);
 
 public:
 	HRESULT init(void);
