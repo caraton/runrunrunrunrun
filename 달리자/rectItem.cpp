@@ -24,15 +24,20 @@ void rectItem::update(void)
 	
 	else if (m_pPlayer)
 	{
+		POINT tempPoint;
 		if (!m_pItem)
 		{
-			m_pPosition = m_pPlayer->GetPoint();
-			m_pPosition.y += 100;
+			tempPoint = { m_pPlayer->GetPoint().x + 32,m_pPlayer->GetPoint().y + 70 };
+			linearInterpol(&tempPoint, &m_pPosition, 0.9);
+			//m_pPosition = m_pPlayer->GetPoint();
+			//m_pPosition.y += 100;
 		}
 		else if (m_pItem)
 		{
-			m_pPosition = m_pItem->GetPos();
-			m_pPosition.y += 100;
+			tempPoint = { m_pItem->GetPos().x ,m_pItem->GetPos().y + 70 };
+			linearInterpol(&tempPoint, &m_pPosition, 0.9);
+			//m_pPosition = m_pItem->GetPos();
+			//m_pPosition.y += 100;
 		}
 	}
 
@@ -47,6 +52,7 @@ void rectItem::render()
 {
 	Rectangle(getMemDC(), m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
 }
+
 
 rectItem::rectItem()
 {
