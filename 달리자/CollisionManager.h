@@ -26,8 +26,8 @@ public:
 	virtual void update(void);
 	virtual void render();
 
-	IR* addIR(IR* ir);
-	void deleteIR(IR* ir);
+	IR* addIR(IR* ir); //IR들을 받아서 해쉬 테이블에 저장
+	void deleteIR(IR* ir); //IR을 찾아서 해쉬테이블에서 삭제
 
 	bool findIRNear(IR* ir, OUT vector<IR*>* IRList); //해쉬 테이블에서 ir의 주변 물체가 있는지 찾아서 IRList에 저장
 	bool checkCollision(IR* ir, OUT vector<IR*>* colList); //해쉬 테이블에서 ir의 주변 물체가 있는지 찾아서 픽셀충돌을 체크한 후 colList에 저장
