@@ -57,7 +57,7 @@ IR * CollisionManager::addIR(IR * ir)
 	int temp1 = ir->_rc.top / 10;
 	int temp2 = ir->_rc.bottom / 10;
 
-	//top과 bottom 사이에 해당하는 모든 해쉬테이블 엔트리안의 리스트에 ir 저장
+	//top과 bottom 사이에 해당하는 모든 해쉬테이블 엔트리안 리스트에 ir 저장
 	for (int i = temp1; i <= temp2; ++i)
 	{
 		_hashTable[i]->push_back(ir);
@@ -89,35 +89,23 @@ void CollisionManager::deleteIR(IR * ir)
 bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 {
 	//ir의 top, bottom 그리고 중점을 h()에 대입
-	int temp1 = ir->_rc.top / 10;
-	int temp2 = ir->_rc.bottom / 10;
-	int temp3 = ((ir->_rc.top + ir->_rc.bottom)/ 2) / 10; //y축으로 얇은 물체 있을 경우 플레이어 중간부분도 체크하기
+	int temp1 = (ir->_rc.top / 10) - 3;
+	int temp2 = (ir->_rc.bottom / 10) + 3;
 
-	//%%temp1~temp3으로 해쉬테이블에 접근하여 그 안의 리스트들을 순회
-	for (_iter = _hashTable[temp1]->begin(); _iter != _hashTable[temp1]->end(); ++_iter)
-	{
-		if (((*_iter)->_rc.left + (*_iter)->_rc.right)/2 >= (ir->_rc.left-30) && ((*_iter)->_rc.left + (*_iter)->_rc.right) / 2 <= (ir->_rc.right + 30)) //x좌표도 확인해서 x,y 좌표 모두 가까우면
-		{
-			IRList->push_back(*_iter);
-		}
-	}
 
-	if (temp2 != temp3)
+	RECT irRC30 = { ir->_rc.left - 30, ir->_rc.top - 30, ir->_rc.right + 30, ir->_rc.bottom + 30 };
+	RECT tempRECT;
+
+	//%%temp1~temp2으로 해쉬테이블에 접근하여 그 안의 리스트들을 순회
+	for (int i = temp1; i <= temp2; ++i)
 	{
-		for (_iter = _hashTable[temp2]->begin(); _iter != _hashTable[temp2]->end(); ++_iter)
+		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); ++_iter)
 		{
-			if (((*_iter)->_rc.left + (*_iter)->_rc.right) / 2 >= (ir->_rc.left - 30) && ((*_iter)->_rc.left + (*_iter)->_rc.right) / 2 <= (ir->_rc.right + 30)) //x좌표도 확인해서 x,y 좌표 모두 가까우면
-			{
-				IRList->push_back(*_iter);
+			if (i != temp1 && ((*_iter)->_rc.top / 10) <= i-1) 
+			{//이미 이전 i-1에서 추가되었을 경우 리스트에 중복해서 넣지 않고 continue
+				continue;
 			}
-		}
-	}
-
-	if (temp3 != temp1)
-	{
-		for (_iter = _hashTable[temp3]->begin(); _iter != _hashTable[temp3]->end(); ++_iter)
-		{
-			if (((*_iter)->_rc.left + (*_iter)->_rc.right) / 2 >= (ir->_rc.left - 30) && ((*_iter)->_rc.left + (*_iter)->_rc.right) / 2 <= (ir->_rc.right + 30)) //x좌표도 확인해서 x,y 좌표 모두 가까우면
+			if (IntersectRect(&tempRECT, &irRC30, &((*_iter)->_rc))) //RECT 충돌
 			{
 				IRList->push_back(*_iter);
 			}
@@ -137,45 +125,31 @@ bool CollisionManager::checkCollision(IR * ir, OUT vector<IR*>* colList)
 {
 	//ir의 top, bottom 그리고 중점을 h()에 대입
 	int temp1 = ir->_rc.top / 10;
-	int temp2 = ir->_rc.bottom / 10;
-	int temp3 = ((ir->_rc.top + ir->_rc.bottom) / 2) / 10; //y축으로 얇은 물체 있을 경우 플레이어 중간부분도 체크하기
-
-	bool tempbool = false;
+	int temp2 = ir->_rc.bottom / 10; 
 
 	//%%temp1~temp3으로 해쉬테이블에 접근하여 그 안의 리스트들을 순회
-	for (_iter = _hashTable[temp1]->begin(); _iter != _hashTable[temp1]->end(); ++_iter)
+	for (int i = temp1; i <= temp2; ++i)
 	{
-		if (pixelCol(ir, *_iter)) //픽셀충돌체크
+		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); ++_iter)
 		{
-			tempbool = true;
-			colList->push_back(*_iter);
-		}
-	}
-	if (temp2 != temp3)
-	{
-		for (_iter = _hashTable[temp2]->begin(); _iter != _hashTable[temp2]->end(); ++_iter)
-		{
-			if (pixelCol(ir, *_iter)) //픽셀충돌체크
-			{
-				tempbool = true;
-				colList->push_back(*_iter);
+			if (i != temp1 && ((*_iter)->_rc.top / 10) <= i - 1)
+			{//이미 이전 i-1에서 추가되었을 경우 리스트에 중복해서 넣지 않고 continue
+				continue;
 			}
-		}
-	}
-	if (temp3 != temp1)
-	{
-		for (_iter = _hashTable[temp3]->begin(); _iter != _hashTable[temp3]->end(); ++_iter)
-		{
 			if (pixelCol(ir, *_iter)) //픽셀충돌체크
 			{
-				tempbool = true;
 				colList->push_back(*_iter);
 			}
 		}
 	}
 	//%%
 
-	return tempbool;
+	if (colList->size() == 0)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 CollisionManager::CollisionManager()
