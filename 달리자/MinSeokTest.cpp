@@ -23,7 +23,7 @@ HRESULT MinseokTest::init(void)
 	m_pBack->linkPlayer(m_pPlayer);
 
 
-	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 50, 50);
+	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
 	return S_OK;
 }
 

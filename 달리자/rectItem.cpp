@@ -9,7 +9,7 @@ HRESULT rectItem::init(void)
 	m_rc = RectMakeCenter(m_pPosition.x, m_pPosition.y, 50, 50);
 	m_pSpeed = { 0,0 };
 
-	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 50, 50);
+	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
 	return S_OK;
 }
 
@@ -29,20 +29,29 @@ void rectItem::update(void)
 	//플레이어에게 종속되엇을때 속도를 계산해주는 함수
 	else if (m_pPlayer)
 	{
-		
+		float maxSpeed = 15.f;
 		if (!m_pItem)
 		{
 			goalPoint = { m_pPlayer->GetPoint().x + 32,m_pPlayer->GetPoint().y + 70 };
-			m_pSpeed.x = linearInterpol(&goalPoint, &m_pPosition, 0.8).x - m_pPosition.x;
-			m_pSpeed.y = linearInterpol(&goalPoint, &m_pPosition, 0.8).y - m_pPosition.y;
+			m_pSpeed.x = linearInterpol(&goalPoint, &m_pPosition, 0.9).x - m_pPosition.x;
+			m_pSpeed.y = linearInterpol(&goalPoint, &m_pPosition, 0.9).y - m_pPosition.y;
+
+			if (m_pSpeed.x >= maxSpeed) m_pSpeed.x = maxSpeed;
+			else if (m_pSpeed.x <= -maxSpeed) m_pSpeed.x = -maxSpeed;
+			if (m_pSpeed.y >= maxSpeed) m_pSpeed.y = maxSpeed;
+			else if (m_pSpeed.y <= -maxSpeed) m_pSpeed.y = -maxSpeed;
 			
 		} 
 		else if (m_pItem)
 		{
 			goalPoint = { m_pItem->GetPos().x ,m_pItem->GetPos().y + 70 };
-			m_pSpeed.x = linearInterpol(&goalPoint, &m_pPosition, 0.8).x - m_pPosition.x;
-			m_pSpeed.y = linearInterpol(&goalPoint, &m_pPosition, 0.8).y - m_pPosition.y;
+			m_pSpeed.x = linearInterpol(&goalPoint, &m_pPosition, 0.9).x - m_pPosition.x;
+			m_pSpeed.y = linearInterpol(&goalPoint, &m_pPosition, 0.9).y - m_pPosition.y;
 
+			if (m_pSpeed.x >= maxSpeed) m_pSpeed.x = maxSpeed;
+			else  if (m_pSpeed.x <= -maxSpeed) m_pSpeed.x = -maxSpeed;
+			if (m_pSpeed.y >= maxSpeed) m_pSpeed.y = maxSpeed;
+			else  if (m_pSpeed.y <= -maxSpeed) m_pSpeed.y = -maxSpeed;
 		}
 	}
 
