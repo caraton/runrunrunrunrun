@@ -10,7 +10,7 @@
 HRESULT player::init(void)
 {
 	//이미지 관련 초기화 모음
-	_playerImage = IMAGEMANAGER->addFrameImage("player", "Image/player_walk.bmp", 200, 50, 4, 1, true, RGB(255, 0, 255));
+	_playerImage = IMAGEMANAGER->addFrameImage("player", "Image/player_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 
 	//플레이어 좌표 초기화(화면중앙)
 	_player.x = WINSIZEX / 2;
@@ -76,7 +76,7 @@ void player::update(void)
 		SAFE_DELETE(temp);
 	}
 
-	_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 4);
+	_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 6);
 }
 
 void player::render()
