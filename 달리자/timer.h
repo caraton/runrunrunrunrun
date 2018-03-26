@@ -31,6 +31,7 @@ public:
 	
 	inline float getElapsedTime() const { return _timeElapsed; }; //inline, template는 한 파일에 선언 정의 다 되어야 사용가능
 	inline float getWorldTime() const { return _worldTime; };
+	inline int getFrameCount() const { return _FPSFrameCount; }
 
 	timer();
 	~timer();

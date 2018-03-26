@@ -37,6 +37,10 @@ void SiwoongTest::update(void)
 	{
 		SCENEMANAGER->changeScene("¹Î¼®¾À");
 	}
+	if (KEYMANAGER->isOnceKeyDown(VK_F3))
+	{
+		SCENEMANAGER->changeScene("¿µÈÖ¾À");
+	}
 
 	if (_colManager->GetGameover())
 	{

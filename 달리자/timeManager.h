@@ -15,6 +15,7 @@ public:
 
 	inline float getElapsedTime() const { return _timer->getElapsedTime(); }; //unity의 Time.deltaTime처럼 사용가능
 	inline float getWorldTime() const { return _timer->getWorldTime(); };
+	inline int getFrameCount() const { return _timer->getFrameCount(); }
 
 	timeManager();
 	~timeManager();

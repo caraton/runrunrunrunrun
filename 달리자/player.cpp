@@ -4,10 +4,13 @@
 
 //슝아 너말이 맞는듯
 
+//ToDoList: 속도 가속도
+//
+
 HRESULT player::init(void)
 {
 	//이미지 관련 초기화 모음
-	_playerImage = IMAGEMANAGER->addImage("player", "Image/Player/plane.bmp", 64, 64, true, RGB(255, 0, 255));
+	_playerImage = IMAGEMANAGER->addFrameImage("player", "Image/player_walk.bmp", 200, 50, 4, 1, true, RGB(255, 0, 255));
 
 	//플레이어 좌표 초기화(화면중앙)
 	_player.x = WINSIZEX / 2;
@@ -72,11 +75,13 @@ void player::update(void)
 		//다쓴 temp지우기
 		SAFE_DELETE(temp);
 	}
+
+	_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 4);
 }
 
 void player::render()
 {
-	_IR._image->render(getMemDC(), _player.x, _player.y);
+	_IR._image->frameRender(getMemDC(), _player.x, _player.y);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
 		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top, (*_testIter).right, (*_testIter).bottom);
