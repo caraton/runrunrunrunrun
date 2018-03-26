@@ -29,5 +29,5 @@ namespace THETA_UTIL
 	bool pixelCol(ST_ImageAndRect* ir1, ST_ImageAndRect* ir2);
 
 	void linearInterpol(const IN POINT* p1, OUT POINT* p2, float weight);
-	void linearInterpol(const IN fPoint* p1, OUT fPoint * p2, float weight);
+	fPoint linearInterpol(const IN fPoint* p1, const IN fPoint * p2, float weight);
 }

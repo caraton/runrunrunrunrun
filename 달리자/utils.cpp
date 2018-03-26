@@ -105,11 +105,13 @@ namespace THETA_UTIL
 		//p2->y = resultY;
 	}
 
-	void linearInterpol(const IN fPoint* p1, OUT fPoint * p2, float weight)
+	fPoint linearInterpol(const IN fPoint* p1, const IN fPoint * p2, float weight)
 	{
-		p2->x = (p1->x * (1.0f - weight) + p2->x * weight);
-		p2->y = (p1->y * (1.0f - weight) + p2->y * weight);
+		fPoint result;
+		result.x = (p1->x * (1.0f - weight) + p2->x * weight);
+		result.y = (p1->y * (1.0f - weight) + p2->y * weight);
 
+		return result;
 	}
 
 }
