@@ -20,7 +20,7 @@ HRESULT player::init(void)
 
 	//IR 초기화
 	_IR._image = _playerImage;
-	_IR._rc = RectMake(_player.x, _player.y, 64, 64);
+	_IR._rc = RectMake(_player.x, _player.y, 50, 50);
 
 	return S_OK;
 }
@@ -53,7 +53,7 @@ void player::update(void)
 		_player.x += 5;
 	}
 
-	_IR._rc = RectMake(_player.x, _player.y, 64, 64);
+	_IR._rc = RectMake(_player.x, _player.y, 50, 50);
 
 	//z,x,c,space bar
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE)) //상호작용
