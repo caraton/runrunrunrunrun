@@ -3,6 +3,7 @@
 #include "mainGame.h"
 #include "MinseokTest.h"
 #include "SiwoongTest.h"
+#include "YounghuiTest.h"
 
 //초기화는 앞으로 여기에다가 해라
 HRESULT mainGame::init(void)
@@ -14,6 +15,7 @@ HRESULT mainGame::init(void)
 
 	SCENEMANAGER->addScene("민석씬", new MinseokTest);
 	SCENEMANAGER->addScene("시웅씬", new SiwoongTest);
+	SCENEMANAGER->addScene("영휘씬", new YounghuiTest);
 	SCENEMANAGER->changeScene("시웅씬");
 
 	return S_OK; //S_OK : 때때로 Boolean TRUE 값(0X0)으로 S_FALSE와 함께 사용되며 함수가 성공하였음을 의미한다.
