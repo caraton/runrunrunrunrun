@@ -11,7 +11,8 @@ HRESULT player::init(void)
 {
 	//이미지 관련 초기화 모음
 	_playerImage = IMAGEMANAGER->addFrameImage("player", "Image/player_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
-
+	IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("guard", "Image/guard_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 	//플레이어 좌표 초기화(화면중앙)
 	_player.x = WINSIZEX / 2;
 	_player.y = WINSIZEY / 2;
@@ -74,6 +75,18 @@ void player::update(void)
 
 		//다쓴 temp지우기
 		SAFE_DELETE(temp);
+	}
+	if (KEYMANAGER->isOnceKeyDown('Z')) //이미지변경테스트
+	{
+		_IR._image = IMAGEMANAGER->findImage("prisoner01");
+	}
+	if (KEYMANAGER->isOnceKeyDown('X')) //이미지변경테스트
+	{
+		_IR._image = IMAGEMANAGER->findImage("guard");
+	}
+	if (KEYMANAGER->isOnceKeyDown('C')) //이미지변경테스트
+	{
+		_IR._image = IMAGEMANAGER->findImage("player");
 	}
 
 	_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 6);
