@@ -16,6 +16,12 @@ namespace THETA_UTIL
 		RECT _rc;
 	} IR;
 
+	typedef struct tagFloatPOINT
+	{
+		float  x;
+		float  y;
+	} fPoint;
+
 	float getDistance(float startX, float startY, float endX, float endY);
 
 	float getAngle(float x1, float y1, float x2, float y2);
@@ -23,4 +29,5 @@ namespace THETA_UTIL
 	bool pixelCol(ST_ImageAndRect* ir1, ST_ImageAndRect* ir2);
 
 	void linearInterpol(const IN POINT* p1, OUT POINT* p2, float weight);
+	void linearInterpol(const IN fPoint* p1, OUT fPoint * p2, float weight);
 }

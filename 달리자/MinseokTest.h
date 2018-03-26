@@ -10,7 +10,7 @@ class Minseokplayer : public gameNode
 private:
 	SYNTHESIZE(ST_ImageAndRect ,_IR,IR);
 
-	SYNTHESIZE(POINT, _player, Point);
+	SYNTHESIZE(fPoint, _player, Point);
 
 	image* _playerImage;
 

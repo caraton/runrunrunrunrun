@@ -9,7 +9,7 @@ HRESULT rectItem::init(void)
 	m_rc = RectMakeCenter(m_pPosition.x, m_pPosition.y, 50, 50);
 	m_pSpeed = { 0,5 };
 
-	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 100, 100);
+	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 50, 50);
 	return S_OK;
 }
 
@@ -19,7 +19,7 @@ void rectItem::release(void)
 
 void rectItem::update(void)
 {
-	POINT finalPos;
+	fPoint finalPos;
 	finalPos = m_pPosition;
 	if (!m_pPlayer)
 	{
@@ -29,14 +29,14 @@ void rectItem::update(void)
 	
 	else if (m_pPlayer)
 	{
-		POINT tempPoint;
+		fPoint tempPoint;
 		if (!m_pItem)
 		{
 			tempPoint = { m_pPlayer->GetPoint().x + 32,m_pPlayer->GetPoint().y + 70 };
-			linearInterpol(&tempPoint, &finalPos, 0.8);
+			linearInterpol(&tempPoint, &finalPos, 0.8 );
 			//m_pPosition = m_pPlayer->GetPoint();
 			//m_pPosition.y += 100;
-		}
+		} 
 		else if (m_pItem)
 		{
 			tempPoint = { m_pItem->GetPos().x ,m_pItem->GetPos().y + 70 };

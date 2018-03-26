@@ -12,7 +12,7 @@ HRESULT MinseokTest::init(void)
 
 	m_pItem2 = new rectItem;
 	m_pItem2->init();
-	m_pItem2->SetPos(POINT{ WINSIZEX/2, - 1000 });
+	m_pItem2->SetPos(fPoint{ WINSIZEX/2, - 1000 });
 
 	m_pPlayer = new Minseokplayer;
 	m_pPlayer->init();
@@ -23,7 +23,7 @@ HRESULT MinseokTest::init(void)
 	m_pBack->linkPlayer(m_pPlayer);
 
 
-	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 100, 100);
+	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 50, 50);
 	return S_OK;
 }
 
@@ -38,7 +38,10 @@ void MinseokTest::update(void)
 	{
 		SCENEMANAGER->changeScene("½Ã¿õ¾À");
 	}
-
+	if (KEYMANAGER->isOnceKeyDown(VK_F3))
+	{
+		SCENEMANAGER->changeScene("¿µÈÖ¾À");
+	}
 	m_pPlayer->update();
 	m_pItem->update();
 	m_pItem2->update();

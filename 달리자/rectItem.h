@@ -7,8 +7,8 @@ class rectItem : public gameNode
 {
 private:
 	SYNTHESIZE(RECT, m_rc, Rect);
-	SYNTHESIZE(POINT, m_pPosition, Pos);
-	SYNTHESIZE(POINT, m_pSpeed, Speed);
+	SYNTHESIZE(fPoint, m_pPosition, Pos);
+	SYNTHESIZE(fPoint, m_pSpeed, Speed);
 	Minseokplayer* m_pPlayer;
 	rectItem* m_pItem;
 	RECT m_rcObstacle;

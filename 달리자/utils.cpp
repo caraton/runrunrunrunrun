@@ -81,7 +81,35 @@ namespace THETA_UTIL
 	}
 	void linearInterpol(const IN POINT * p1, OUT POINT * p2, float weight)
 	{
-		p2->x = (p1->x * (1 - weight) + p2->x * weight);
-		p2->y = (p1->y * (1 - weight) + p2->y * weight);
+
+		if (getDistance(p1->x, p1->y, p2->x, p2->y) <= 4.0f)
+		{
+			p2->x = p1->x;
+			p2->y = p1->y;
+			return;
+		}
+		float resultX = 0.f;
+		float resultY = 0.f;
+		float x1 = *(float*) &(p1->x);
+		float y1 = *(float*) &(p1->y);
+		float x2 = *(float*) &(p2->x);
+		float y2 = *(float*) &(p2->y);
+		resultX = (x1 * (1.0f - weight) + x2 * weight);
+		resultY = (y1 * (1.0f - weight) + y2 * weight);
+
+
+		//u_long nw_val = *((u_long *) &val);
+		p2->x = *((long*) &resultX);
+		p2->y = *((long*) &resultY);
+		//p2->x = resultX;
+		//p2->y = resultY;
 	}
+
+	void linearInterpol(const IN fPoint* p1, OUT fPoint * p2, float weight)
+	{
+		p2->x = (p1->x * (1.0f - weight) + p2->x * weight);
+		p2->y = (p1->y * (1.0f - weight) + p2->y * weight);
+
+	}
+
 }
