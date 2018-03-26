@@ -31,7 +31,7 @@ void YounghuiTest::update(void)
 		SCENEMANAGER->changeScene("¹Î¼®¾À");
 	}
 
-	_cameraY -= 3;
+	_cameraY -= 5;
 
 	_player->update();
 }
