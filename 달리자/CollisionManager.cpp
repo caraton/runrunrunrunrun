@@ -2,10 +2,12 @@
 #include "CollisionManager.h"
 #include "player.h"
 
-HRESULT CollisionManager::init(void)
+HRESULT CollisionManager::init(int maplength)
 {
+	_mapLength = maplength;
+	_mapLengthMinusWINSIZEY = maplength - WINSIZEY;
 	//해쉬테이블 각 엔트리에 리스트를 동적할당하여 주소를 저장
-	for (int i = 0; i < (WINSIZEY / 10); ++i) //(WINSIZEY/10)는 글로벌 총 Y길이로 수정하기
+	for (int i = 0; i < (_mapLength / 10); ++i) //(WINSIZEY/10)는 글로벌 총 Y길이로 수정하기
 	{
 		list<IR*>* templist = new list<IR*>();
 		_hashTable.push_back(templist);
@@ -54,8 +56,8 @@ IR * CollisionManager::addIR(IR * ir)
 	//}
 
 	//ir의 top과 bottom을 h()에 넣기
-	int temp1 = ir->_rc.top / 10;
-	int temp2 = ir->_rc.bottom / 10;
+	int temp1 = (ir->_rc.top +_mapLengthMinusWINSIZEY)/ 10;
+	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
 
 	//top과 bottom 사이에 해당하는 모든 해쉬테이블 엔트리안 리스트에 ir 저장
 	for (int i = temp1; i <= temp2; ++i)
@@ -67,8 +69,8 @@ IR * CollisionManager::addIR(IR * ir)
 
 void CollisionManager::deleteIR(IR * ir)
 {
-	int temp1 = ir->_rc.top / 10;
-	int temp2 = ir->_rc.bottom / 10;
+	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
+	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
 	for (int i = temp1; i <= temp2; ++i)
 	{
 		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); )
@@ -88,9 +90,9 @@ void CollisionManager::deleteIR(IR * ir)
 
 bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 {
-	//ir의 top, bottom 그리고 중점을 h()에 대입
-	int temp1 = (ir->_rc.top / 10) - 3;
-	int temp2 = (ir->_rc.bottom / 10) + 3;
+	//ir의 top, bottom 을 h()에 대입
+	int temp1 = ((ir->_rc.top + _mapLengthMinusWINSIZEY) / 10) - 3;
+	int temp2 = ((ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10) + 3;
 
 
 	RECT irRC30 = { ir->_rc.left - 30, ir->_rc.top - 30, ir->_rc.right + 30, ir->_rc.bottom + 30 };
@@ -101,7 +103,7 @@ bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 	{
 		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); ++_iter)
 		{
-			if (i != temp1 && ((*_iter)->_rc.top / 10) <= i-1) 
+			if (i != temp1 && (((*_iter)->_rc.top + _mapLengthMinusWINSIZEY) / 10) <= i-1)
 			{//이미 이전 i-1에서 추가되었을 경우 리스트에 중복해서 넣지 않고 continue
 				continue;
 			}
@@ -123,16 +125,16 @@ bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 
 bool CollisionManager::checkCollision(IR * ir, OUT vector<IR*>* colList)
 {
-	//ir의 top, bottom 그리고 중점을 h()에 대입
-	int temp1 = ir->_rc.top / 10;
-	int temp2 = ir->_rc.bottom / 10; 
+	//ir의 top, bottom 을 h()에 대입
+	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
+	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
 
-	//%%temp1~temp3으로 해쉬테이블에 접근하여 그 안의 리스트들을 순회
+	//%%temp1~temp2으로 해쉬테이블에 접근하여 그 안의 리스트들을 순회
 	for (int i = temp1; i <= temp2; ++i)
 	{
 		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); ++_iter)
 		{
-			if (i != temp1 && ((*_iter)->_rc.top / 10) <= i - 1)
+			if (i != temp1 && (((*_iter)->_rc.top + _mapLengthMinusWINSIZEY) / 10) <= i - 1)
 			{//이미 이전 i-1에서 추가되었을 경우 리스트에 중복해서 넣지 않고 continue
 				continue;
 			}

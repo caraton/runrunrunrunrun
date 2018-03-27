@@ -18,6 +18,10 @@ private:
 	
 	//void setBackBuffer(); 이미지매니저 생긴 후에는 필요없음
 
+	//충돌관련 추가 변수들 (2018/03/28)
+	//bool _isTrigger;
+	//bool _isOnCollision;
+
 public:
 	virtual HRESULT init(void);    //WM_CREATE  FAILED(_mg.init())를 사용하기 위해서는 HRESULT를 리턴해야함
 	virtual HRESULT init(bool managerInit); //새 init함수
@@ -33,6 +37,15 @@ public:
 	HDC getHDC() { return _hdc; };
 
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);
+
+	//충돌관련 추가 함수들 (2018/03/28)
+	//virtual void OnCollisionEnter(IR* toWhich);
+	//virtual void OnTriggerEnter(IR* toWhich);
+
+	//virtual void OnCollisionExit(IR* toWhich);
+	//virtual void OnTriggerExit(IR* toWhich);
+
+
 
 	gameNode();
 	virtual ~gameNode(); //소멸자를 virtual로 해두면 소멸자에서 메모리 해제할 때

@@ -10,18 +10,21 @@ class CollisionManager : public gameNode
 {
 private:
 	vector<list<IR*>*> _hashTable; //y축을 10단위로 쪼개서 저장할 테이블
-	//h(y좌표) = y좌표 / 10인 간단한 해쉬함수 사용 (0~9 -> 0, 10~19-> 1, ..., 420~429->42, ....)
-	//_hashTable[y좌표/10]으로 간단하게 내부에 접근가능
+	//h(y좌표) = y좌표 + _mapLengthMinusWINSIZEY / 10인 간단한 해쉬함수 사용 (0~9 -> 0, 10~19-> 1, ..., 420~429->42, ....)
+	//_hashTable[y좌표 + _mapLengthMinusWINSIZEY /10]으로 간단하게 내부에 접근가능
 	vector<list<IR*>*>::iterator _vecIter; //테이블을 돌 이터레이터
 	list<IR*>::iterator _iter; //테이블의 한 줄안의 리스트를 순회하기 위한 이터레이터
 
 	player* _player;
 
+	SYNTHESIZE(int, _mapLength, MapLength);
+	int _mapLengthMinusWINSIZEY; //y좌표를 받아서 이값을 더한 후에 /10을 하면 해쉬값이 나온다
+
 	//bool _gameover;
 	SYNTHESIZE(bool, _gameover, Gameover);
 
 public:
-	virtual HRESULT init(void);
+	virtual HRESULT init(int maplength);
 	virtual void release(void);
 	virtual void update(void);
 	virtual void render();

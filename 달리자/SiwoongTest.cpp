@@ -5,10 +5,10 @@
 
 HRESULT SiwoongTest::init(void)
 {
-	IMAGEMANAGER->addImage("배경", "Image/Backgrounds/background.bmp", 600, 800, true, RGB(255,0,255));
+	IMAGEMANAGER->addImage("background_jail", "Image/background_jail.bmp", 600, 800, true, RGB(255, 0, 255));
 
 	_colManager = new CollisionManager;
-	_colManager->init();
+	_colManager->init(WINSIZEY * 10); //맵 총 길이를 넣어줄것
 
 	_player = new player;
 	_player->init();
@@ -17,7 +17,7 @@ HRESULT SiwoongTest::init(void)
 	_player->linkColManager(_colManager);
 
 	_testIR._image = IMAGEMANAGER->addImage("테스트장애물", "Image/Obstacles/enemy.bmp", 40, 40, true, RGB(255,0,255));
-	_testIR._rc = RectMakeCenter(40, WINSIZEY/2, 40,40);
+	_testIR._rc = RectMake(40, -40, 40,40);
 
 	_colManager->addIR(&_testIR); //충돌처리할 IR들을 colManager에 보내주기
 
@@ -47,6 +47,8 @@ void SiwoongTest::update(void)
 		return;
 	}
 
+	//_cameraY -= 5;
+
 	_player->update();
 	_colManager->update();
 }
@@ -54,9 +56,15 @@ void SiwoongTest::update(void)
 void SiwoongTest::render(void)
 {
 	_cameraY = _player->GetCamY();
-	IMAGEMANAGER->findImage("배경")->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _cameraY);
+	IMAGEMANAGER->findImage("background_jail")->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _cameraY);
 
-	_testIR._image->render(getMemDC(), _testIR._rc.left, _testIR._rc.top);
+	//오브젝트들의 rc에는 글로벌 좌표를 저장하고
+	//렌더할때 _cameraY값을 이용해 플레이어 기준 로컬 좌표로 변환
+	if (_testIR._rc.top - _cameraY > 0 && _testIR._rc.top - _cameraY <= WINSIZEY)
+	{ 
+		_testIR._image->render(getMemDC(), _testIR._rc.left, _testIR._rc.top - _cameraY);
+	}
+	
 	//_colManager->render();
 
 	_player->render();

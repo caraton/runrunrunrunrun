@@ -17,7 +17,7 @@ HRESULT player::init(void)
 	_player.x = WINSIZEX / 2;
 	_player.y = WINSIZEY / 2;
 
-	_cameraY = WINSIZEY / 2;
+	_cameraY = 0;
 
 	//IR 초기화
 	_IR._image = _playerImage;
@@ -32,16 +32,21 @@ void player::release(void)
 
 void player::update(void)
 {
+	if (_cameraY >= -(_colManager->GetMapLength() -WINSIZEY))
+	{
+		_cameraY -= 5;
+	}
+
 	//상하이동
-	if (KEYMANAGER->isStayKeyDown(VK_UP) && _player.y > 0)
+	if (KEYMANAGER->isStayKeyDown(VK_UP) && _player.y - _cameraY > 0)
 	{
 		//_cameraY -= 5;
-		_player.y -= 5;
+		_player.y -= 10;
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN) && _player.y + 64 < WINSIZEY)
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN) && _player.y - _cameraY < WINSIZEY)
 	{
 		//_cameraY += 5;
-		_player.y += 5;
+		_player.y += 10;
 	}
 
 	//좌우이동
@@ -94,10 +99,10 @@ void player::update(void)
 
 void player::render()
 {
-	_IR._image->frameRender(getMemDC(), _player.x, _player.y);
+	_IR._image->frameRender(getMemDC(), _player.x, _player.y - _cameraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
-		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top, (*_testIter).right, (*_testIter).bottom);
+		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - _cameraY, (*_testIter).right, (*_testIter).bottom - _cameraY);
 	}
 }
 
