@@ -62,7 +62,7 @@ namespace THETA_UTIL
 
 				color1 = GetPixel(ir1->_image->getMemDC(), i - ir1->_rc.left + (ir1->_image->getFrameX()*ir1->_image->getFrameWidth()), j - ir1->_rc.top  +(ir1->_image->getFrameY()*ir1->_image->getFrameHeight()));
 				//_image안의 DC에서 그림은 0,0부터 그려져있으므로 (i - ir1->_rc.left, j - ir1->_rc.top) 가 맞는 좌표 
-				color2 = GetPixel(ir2->_image->getMemDC(), i - (ir2->_rc.left + (ir2->_image->getFrameX()*ir2->_image->getFrameWidth())), j - ir2->_rc.top +(ir2->_image->getFrameY()*ir2->_image->getFrameHeight()));
+				color2 = GetPixel(ir2->_image->getMemDC(), i - ir2->_rc.left + (ir2->_image->getFrameX()*ir2->_image->getFrameWidth()), j - ir2->_rc.top +(ir2->_image->getFrameY()*ir2->_image->getFrameHeight()));
 
 				r1 = GetRValue(color1);
 				g1 = GetGValue(color1);
