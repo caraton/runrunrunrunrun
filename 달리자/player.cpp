@@ -20,7 +20,7 @@ HRESULT player::init(void)
 	m_fpPosition.x = WINSIZEX / 2;
 	m_fpPosition.y = WINSIZEY / 2;
 
-	_cameraY = 0;
+	m_fCamaraY = 0;
 
 	//물리값 관련 초기화
 	m_fBasicSpeedY =  -5;
@@ -40,11 +40,11 @@ void player::release(void)
 
 void player::update(void)
 {
-	if ((m_pColManager) && _cameraY >= -(m_pColManager->GetMapLength() -WINSIZEY))
+	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() -WINSIZEY))
 	{
-		_cameraY -= 5;
+		m_fCamaraY -= 5;
 	}
-
+	
 	move();
 	
 
@@ -84,12 +84,21 @@ void player::update(void)
 	m_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 6);
 }
 
-void player::render()
+void player::render(float cameraY)
 {
-	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - _cameraY);
+	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - cameraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
-		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - _cameraY, (*_testIter).right, (*_testIter).bottom - _cameraY);
+		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - cameraY, (*_testIter).right, (*_testIter).bottom - cameraY);
+	}
+}
+
+void player::render()
+{
+	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - m_fCamaraY);
+	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
+	{
+		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top , (*_testIter).right, (*_testIter).bottom );
 	}
 }
 
@@ -99,12 +108,12 @@ void player::move()
 
 	
 	//상하이동
-	if (KEYMANAGER->isStayKeyDown(VK_UP) && m_fpPosition.y - _cameraY > 0)
+	if (KEYMANAGER->isStayKeyDown(VK_UP) && m_fpPosition.y - m_fCamaraY > 0)
 	{
 		//_cameraY -= 5;
 		m_fpSpeed.y = -10 + m_fBasicSpeedY;
 	}
-	else if (KEYMANAGER->isStayKeyDown(VK_DOWN) && m_fpPosition.y - _cameraY < WINSIZEY)
+	else if (KEYMANAGER->isStayKeyDown(VK_DOWN) && m_fpPosition.y - m_fCamaraY < WINSIZEY)
 	{
 		//_cameraY += 5;
 		m_fpSpeed.y = 10 + m_fBasicSpeedY;

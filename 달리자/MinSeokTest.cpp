@@ -2,6 +2,7 @@
 #include "MinseokTest.h"
 #include "rectItem.h"
 #include "player.h"
+#include "CollisionManager.h"
 
 HRESULT MinseokTest::init(void)
 {
@@ -14,14 +15,19 @@ HRESULT MinseokTest::init(void)
 	m_pItem2->init();
 	m_pItem2->SetPos(fPoint{ WINSIZEX/2, - 1000 });
 
-	m_pPlayer = new Minseokplayer;
+	m_pPlayer = new player;
 	m_pPlayer->init();
 
 	m_pBack = new MinseokBack;
 	m_pBack->init();
 
-	m_pBack->linkPlayer(m_pPlayer);
+	m_pColManager = new CollisionManager;
+	m_pColManager->init(WINSIZEY * 10);
 
+	m_pBack->linkPlayer(m_pPlayer);
+	m_pPlayer->linkColManager(m_pColManager);
+
+	m_fCameraY = 0.f;
 
 	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
 	return S_OK;
@@ -46,6 +52,7 @@ void MinseokTest::update(void)
 	m_pItem->update();
 	m_pItem2->update();
 	m_pBack->update();
+	m_fCameraY = m_pPlayer->GetCamY();
 
 
 	//플레이어와 아이템의 충돌처리 - 플레이어의 코드를 건들지 않으므로 구조적으로 좋지못함 추후에 수정요망
@@ -75,9 +82,9 @@ void MinseokTest::render()
 	
 	
 	m_pBack->render();
-	m_pItem->render();
-	m_pItem2->render();
-	m_pPlayer->render();
+	m_pItem->render(m_fCameraY);
+	m_pItem2->render(m_fCameraY);
+	m_pPlayer->render(m_fCameraY);
 	Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top, m_rcObstacle.right, m_rcObstacle.bottom);
 
 
@@ -153,67 +160,3 @@ MinseokBack::~MinseokBack()
 }
 
 
-
-
-
-
-HRESULT Minseokplayer::init(void)
-{
-	//플레이어 좌표 초기화(화면중앙)
-	_player.x = WINSIZEX / 2;
-	_player.y = WINSIZEY / 2;
-
-	//이미지 관련 초기화 모음
-	_playerImage = IMAGEMANAGER->addImage("player", "plane.bmp", 64, 64, true, RGB(255, 0, 255));
-
-	//IR 초기화
-	_IR._image = _playerImage;
-	_IR._rc = RectMake(_player.x, _player.y, 64, 64);
-
-	return S_OK;
-}
-
-void Minseokplayer::release(void)
-{
-}
-
-void Minseokplayer::update(void)
-{
-	//상하이동
-	if (KEYMANAGER->isStayKeyDown('W') && _player.y > 0)
-	{
-		_player.y -= 5;
-	}
-	if (KEYMANAGER->isStayKeyDown('S') && _player.y + 64 < WINSIZEY)
-	{
-		_player.y += 5;
-	}
-
-	//좌우이동
-	if (KEYMANAGER->isStayKeyDown('A') && _player.x > 0)
-	{
-		_player.x -= 5;
-	}
-	if (KEYMANAGER->isStayKeyDown('D') && _player.x + 64 <WINSIZEX)
-	{
-		_player.x += 5;
-	}
-
-
-	_IR._rc = RectMake(_player.x, _player.y, 64, 64);
-}
-
-void Minseokplayer::render()
-{
-	_IR._image->render(getMemDC(), _player.x, _player.y);
-}
-
-Minseokplayer::Minseokplayer()
-{
-	_playerImage = NULL;
-}
-
-Minseokplayer::~Minseokplayer()
-{
-
-}

@@ -10,6 +10,8 @@ HRESULT rectItem::init(void)
 	m_pSpeed = { 0,0 };
 
 	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
+
+	
 	return S_OK;
 }
 
@@ -32,7 +34,7 @@ void rectItem::update(void)
 		float maxSpeed = 15.f;
 		if (!m_pItem)
 		{
-			goalPoint = { m_pPlayer->GetPoint().x + 32,m_pPlayer->GetPoint().y + 70 };
+			goalPoint = { m_pPlayer->GetPos().x + 32,m_pPlayer->GetPos().y + 70 };
 			m_pSpeed.x = linearInterpol(&goalPoint, &m_pPosition, 0.9).x - m_pPosition.x;
 			m_pSpeed.y = linearInterpol(&goalPoint, &m_pPosition, 0.9).y - m_pPosition.y;
 
@@ -147,11 +149,14 @@ void rectItem::update(void)
 	m_rc = RectMakeCenter(m_pPosition.x, m_pPosition.y, 50, 50);
 
 	
+
+	
+	
 }
 
-void rectItem::render()
+void rectItem::render(float cameraY)
 {
-	Rectangle(getMemDC(), m_rc.left, m_rc.top, m_rc.right, m_rc.bottom);
+	Rectangle(getMemDC(), m_rc.left, m_rc.top- cameraY, m_rc.right, m_rc.bottom - cameraY);
 }
 
 

@@ -15,7 +15,7 @@ private:
 
 	//float _cameraY;
 
-	SYNTHESIZE(float, _cameraY, CamY);
+	SYNTHESIZE(float, m_fCamaraY, CamY);
 	SYNTHESIZE(fPoint, m_fpPosition, Pos);
 	SYNTHESIZE(ST_ImageAndRect, m_IR, IR);
 	SYNTHESIZE(fPoint, m_fpSpeed, Speed);
@@ -31,7 +31,8 @@ public:
 	virtual HRESULT init(void);	
 	virtual void release(void);		
 	virtual void update(void);		
-	virtual void render();		
+	virtual void render(float cameraY);
+	virtual void render();
 
 	void linkColManager(CollisionManager* col) { m_pColManager = col; }
 
