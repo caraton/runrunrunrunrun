@@ -13,11 +13,21 @@ namespace THETA_UTIL
 	typedef struct ST_ImageAndRect //픽셀 충돌에 사용할 스트럭쳐
 	{
 		image* _image;
-		void* _node = NULL; //IR을 포함하는 오브젝트를 가리킬 포인터 (2018/03/28)
+		void* _node; //IR을 포함하는 오브젝트를 가리킬 포인터 (2018/03/28)
 		//사용시에는 맞는 포인터 형 변환을 시행하여 사용할것
-		char* _type = NULL; //위에서 포인터 형변환을 할때 읽어올 타입 이름 저장 (2018/03/28)
+		char* _type; //위에서 포인터 형변환을 할때 읽어올 타입 이름 저장 (2018/03/28)
 		//ex) IR._type = "gameNode";
 		RECT _rc;
+
+		ST_ImageAndRect() 
+		{
+			_node = NULL;
+			_type = NULL;
+		};
+
+		~ST_ImageAndRect()
+		{
+		};
 	} IR;
 
 	typedef struct tagFloatPOINT

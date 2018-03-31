@@ -77,4 +77,6 @@ SiwoongTest::SiwoongTest()
 
 SiwoongTest::~SiwoongTest()
 {
+	SAFE_DELETE(_player);
+	SAFE_DELETE(_colManager);
 }
