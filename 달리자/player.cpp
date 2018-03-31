@@ -40,7 +40,7 @@ void player::release(void)
 
 void player::update(void)
 {
-	if (_cameraY >= -(_colManager->GetMapLength() -WINSIZEY))
+	if ((m_pColManager) && _cameraY >= -(m_pColManager->GetMapLength() -WINSIZEY))
 	{
 		_cameraY -= 5;
 	}
@@ -54,7 +54,7 @@ void player::update(void)
 		_test.clear();
 
 		vector<IR*>* temp = new vector<IR*>;
-		if (_colManager->findIRNear(&m_IR, temp))
+		if (m_pColManager->findIRNear(&m_IR, temp))
 		{
 			//주변에 무언가가 있어서 temp에 저장됨
 			vector<IR*>::iterator iter;
@@ -143,7 +143,7 @@ void player::move()
 player::player()
 {
 	m_pPlayerImage = NULL;
-	_colManager = NULL;
+	m_pColManager = NULL;
 }
 
 player::~player()

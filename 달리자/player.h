@@ -25,7 +25,7 @@ private:
 	vector<RECT>::iterator _testIter;
 
 	image* m_pPlayerImage;
-	CollisionManager* _colManager;
+	CollisionManager* m_pColManager;
 
 public:
 	virtual HRESULT init(void);	
@@ -33,7 +33,7 @@ public:
 	virtual void update(void);		
 	virtual void render();		
 
-	void linkColManager(CollisionManager* col) { _colManager = col; }
+	void linkColManager(CollisionManager* col) { m_pColManager = col; }
 
 	player();
 	~player();
