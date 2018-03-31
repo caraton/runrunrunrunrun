@@ -34,6 +34,8 @@ namespace THETA_UTIL
 	{
 		float  x;
 		float  y;
+
+		//연산자 +,-를 오버라이드해서 2x1 벡터의 component wise 연산 구현
 		tagFloatPOINT operator+(tagFloatPOINT fp)
 		{
 			tagFloatPOINT result;

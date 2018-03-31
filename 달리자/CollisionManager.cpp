@@ -24,16 +24,16 @@ void CollisionManager::release(void)
 
 void CollisionManager::update(void)
 {
-	//_player와 해쉬테이블 안의 오브젝트들 간의 충돌확인
-	vector<IR*>* temp = new vector<IR*>;
-	if (checkCollision(&(_player->GetIR()),temp))
-	{
-		//플레이어가 충돌했음
-		_gameover = true;
-	}
+	////_player와 해쉬테이블 안의 오브젝트들 간의 충돌확인
+	//vector<IR*>* temp = new vector<IR*>;
+	//if (checkCollision(&(_player->GetIR()),temp))
+	//{
+	//	//플레이어가 충돌했음
+	//	_gameover = true;
+	//}
 
-	//다쓴 temp 삭제
-	SAFE_DELETE(temp);
+	////다쓴 temp 삭제
+	//SAFE_DELETE(temp);
 }
 
 void CollisionManager::render()
@@ -103,6 +103,10 @@ bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 	{
 		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); ++_iter)
 		{
+			if (ir == (*_iter)) //자기자신이면 패스
+			{
+				continue;
+			}
 			if (i != temp1 && (((*_iter)->_rc.top + _mapLengthMinusWINSIZEY) / 10) <= i-1)
 			{//이미 이전 i-1에서 추가되었을 경우 리스트에 중복해서 넣지 않고 continue
 				continue;
@@ -134,6 +138,10 @@ bool CollisionManager::checkCollision(IR * ir, OUT vector<IR*>* colList)
 	{
 		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); ++_iter)
 		{
+			if (ir == (*_iter)) //자기자신이면 패스
+			{
+				continue;
+			}
 			if (i != temp1 && (((*_iter)->_rc.top + _mapLengthMinusWINSIZEY) / 10) <= i - 1)
 			{//이미 이전 i-1에서 추가되었을 경우 리스트에 중복해서 넣지 않고 continue
 				continue;
