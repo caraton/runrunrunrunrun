@@ -13,6 +13,7 @@ private:
 	//h(y좌표) = y좌표 + _mapLengthMinusWINSIZEY / 10인 간단한 해쉬함수 사용 (0~9 -> 0, 10~19-> 1, ..., 420~429->42, ....)
 	//_hashTable[y좌표 + _mapLengthMinusWINSIZEY /10]으로 간단하게 내부에 접근가능
 	vector<list<IR*>*>::iterator _vecIter; //테이블을 돌 이터레이터
+	list<IR*> _irList; //모든 ir을 모아서 매 업데이트 마다 수정할때 사용
 	list<IR*>::iterator _iter; //테이블의 한 줄안의 리스트를 순회하기 위한 이터레이터
 
 	player* _player;
@@ -22,6 +23,8 @@ private:
 
 	//bool _gameover;
 	SYNTHESIZE(bool, _gameover, Gameover);
+
+	IR* internalAddIR(IR* ir); //내부에서만 사용할 ir추가함수
 
 public:
 	virtual HRESULT init(int maplength);

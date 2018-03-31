@@ -24,16 +24,17 @@ void CollisionManager::release(void)
 
 void CollisionManager::update(void)
 {
-	////_player와 해쉬테이블 안의 오브젝트들 간의 충돌확인
-	//vector<IR*>* temp = new vector<IR*>;
-	//if (checkCollision(&(_player->GetIR()),temp))
-	//{
-	//	//플레이어가 충돌했음
-	//	_gameover = true;
-	//}
+	//해쉬테이블 안의 리스트들 초기화
+	for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
+	{
+		(*_vecIter)->clear();
+	}
 
-	////다쓴 temp 삭제
-	//SAFE_DELETE(temp);
+	//irList의 ir들을 다시 해쉬테이블에 저장
+	for (_iter = _irList.begin(); _iter != _irList.end(); ++_iter)
+	{
+		internalAddIR(*_iter);
+	}
 }
 
 void CollisionManager::render()
@@ -47,7 +48,7 @@ void CollisionManager::render()
 	//}
 }
 
-IR * CollisionManager::addIR(IR * ir)
+IR* CollisionManager::internalAddIR(IR* ir)
 {
 	////ir의 RECT값이 없으면
 	//if (ir->_rc == 0)??
@@ -56,7 +57,7 @@ IR * CollisionManager::addIR(IR * ir)
 	//}
 
 	//ir의 top과 bottom을 h()에 넣기
-	int temp1 = (ir->_rc.top +_mapLengthMinusWINSIZEY)/ 10;
+	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
 	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
 
 	//top과 bottom 사이에 해당하는 모든 해쉬테이블 엔트리안 리스트에 ir 저장
@@ -64,6 +65,16 @@ IR * CollisionManager::addIR(IR * ir)
 	{
 		_hashTable[i]->push_back(ir);
 	}
+
+	return ir;
+}
+
+IR * CollisionManager::addIR(IR * ir)
+{
+	internalAddIR(ir);
+
+	_irList.push_back(ir); //irList에도 저장해두었다가 update에서 초기화후 다시 집어넣을때 사용
+
 	return ir;
 }
 
@@ -73,19 +84,23 @@ void CollisionManager::deleteIR(IR * ir)
 	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
 	for (int i = temp1; i <= temp2; ++i)
 	{
-		for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); )
-		{
-			if (*_iter == ir)
-			{
-				_hashTable[i]->erase(_iter);
-				break;
-			}
-			else
-			{
-				++_iter;
-			}
-		}
+		//for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); )
+		//{
+		//	if (*_iter == ir)
+		//	{
+		//		_hashTable[i]->erase(_iter);
+		//		break;
+		//	}
+		//	else
+		//	{
+		//		++_iter;
+		//	}
+		//} list 자체 제공함수 remove 사용하기
+
+		_hashTable[i]->remove(ir);
 	}
+
+	_irList.remove(ir);
 }
 
 bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
