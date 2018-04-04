@@ -40,7 +40,7 @@ void player::release(void)
 
 void player::update(void)
 {
-	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() -WINSIZEY))
+	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() -WINSIZEY*8))
 	{
 		m_fCamaraY -= 5;
 	}
@@ -98,7 +98,7 @@ void player::render()
 	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - m_fCamaraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
-		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top , (*_testIter).right, (*_testIter).bottom );
+		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - m_fCamaraY, (*_testIter).right, (*_testIter).bottom - m_fCamaraY);
 	}
 }
 
