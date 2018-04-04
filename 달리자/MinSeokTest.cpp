@@ -6,7 +6,6 @@
 
 HRESULT MinseokTest::init(void)
 {
-	m_rPlayer = RectMakeCenter(WINSIZEX / 2, WINSIZEY / 2, 40, 40);
 	
 	m_pItem = new rectItem;
 	m_pItem->init();
@@ -48,6 +47,11 @@ void MinseokTest::update(void)
 	{
 		SCENEMANAGER->changeScene("¿µÈÖ¾À");
 	}
+
+	//»óÀÚÀÇ À§Ä¡¸¦ ¿Å°ÜÁÜ
+	m_rcObstacle.top -= 5;
+	m_rcObstacle.bottom -= 5;
+
 	m_pPlayer->update();
 	m_pItem->update();
 	m_pItem2->update();
@@ -59,11 +63,11 @@ void MinseokTest::update(void)
 	RECT temp;
 	RECT temp2;
 	temp2 = m_pPlayer->GetIR()._rc;
-	if (IntersectRect(&temp, &temp2, &m_pItem->GetRect()))
+	if (IntersectRect(&temp, &temp2, &(m_pItem->GetIR()._rc)))
 	{
 		m_pItem->linkPlayer(m_pPlayer);
 	}
-	if (IntersectRect(&temp, &temp2, &m_pItem2->GetRect()))
+	if (IntersectRect(&temp, &temp2, &(m_pItem2->GetIR()._rc)))
 	{
 
 		m_pItem2->linkPlayer(m_pPlayer);
@@ -85,7 +89,7 @@ void MinseokTest::render()
 	m_pItem->render(m_fCameraY);
 	m_pItem2->render(m_fCameraY);
 	m_pPlayer->render(m_fCameraY);
-	Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top, m_rcObstacle.right, m_rcObstacle.bottom);
+	Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - m_fCameraY, m_rcObstacle.right, m_rcObstacle.bottom - m_fCameraY);
 
 
 
@@ -131,7 +135,7 @@ void MinseokBack::release(void)
 
 void MinseokBack::update(void)
 {
-	m_nCameraY -= 5;
+	//m_nCameraY -= 5;
 	//if (m_pPlayer->GetPoint().y < WINSIZEY / 2)
 	//{
 	//	POINT tempP;
@@ -146,7 +150,7 @@ void MinseokBack::update(void)
 void MinseokBack::render()
 {
 	//m_pImage->render(getMemDC(), 0, 0);
-	m_pImage->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, m_nCameraY);
+	m_pImage->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, m_pPlayer->GetCamY());
 }
 
 MinseokBack::MinseokBack()
