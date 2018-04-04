@@ -53,7 +53,10 @@ void SiwoongTest::update(void)
 
 	_player->update();
 
-	_testIRy -= 1;
+	if (_testIRy > -2*WINSIZEY)
+	{
+		_testIRy -= 1;
+	}
 	_testIR._rc = RectMake(40, _testIRy, 40, 40);
 
 	_colManager->update();
