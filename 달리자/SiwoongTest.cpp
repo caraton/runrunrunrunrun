@@ -21,7 +21,7 @@ HRESULT SiwoongTest::init(void)
 	_testIRy = -40;
 	
 	_colManager->addIR(&_testIR); //충돌처리할 IR들을 colManager에 보내주기
-	//_colManager->addIR(&_player->GetIR());
+	_colManager->addIR(&_player->GetIR());
 
 	_cameraY = 0;
 
