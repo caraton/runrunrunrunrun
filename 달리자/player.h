@@ -25,6 +25,7 @@ private:
 	vector<RECT>::iterator _testIter;
 
 	image* m_pPlayerImage;
+	image* _playerDeath;
 	CollisionManager* m_pColManager;
 
 public:
@@ -33,6 +34,7 @@ public:
 	virtual void update(void);		
 	virtual void render(float cameraY);
 	virtual void render();
+	virtual void render(bool gameover);
 
 	void linkColManager(CollisionManager* col) { m_pColManager = col; }
 

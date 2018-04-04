@@ -4,6 +4,17 @@
 
 HRESULT CollisionManager::init(int maplength)
 {
+	if (_hashTable.size() != 0)
+	{
+		//동적할당 해제
+		for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
+		{
+			SAFE_DELETE(*_vecIter);
+		}
+
+		_hashTable.clear();
+	}
+
 	_mapLength = maplength;
 	_mapLengthMinusWINSIZEY = maplength - WINSIZEY;
 	//해쉬테이블 각 엔트리에 리스트를 동적할당하여 주소를 저장

@@ -76,7 +76,7 @@ void SiwoongTest::render(void)
 	
 	//_colManager->render();
 
-	_player->render();
+	_player->render(_colManager->GetGameover());
 }
 
 SiwoongTest::SiwoongTest()
