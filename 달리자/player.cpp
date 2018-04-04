@@ -129,8 +129,6 @@ void player::render(bool gameover)
 	{
 		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - m_fCamaraY, (*_testIter).right, (*_testIter).bottom - m_fCamaraY);
 	}
-
-	//Rectangle(getMemDC(), m_IR._rc.left, , (*_testIter).right, (*_testIter).bottom - m_fCamaraY);
 }
 
 

@@ -53,10 +53,11 @@ void SiwoongTest::update(void)
 
 	_player->update();
 
-	if (_testIRy > -2 * WINSIZEY)
+	if (_testIRy > -2*WINSIZEY +1)
 	{
 		_testIRy -= 1;
 	}
+
 	_testIR._rc = RectMakeCenter(100, _testIRy, 40, 40);
 
 	_colManager->update();
