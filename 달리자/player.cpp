@@ -30,7 +30,7 @@ HRESULT player::init(void)
 
 	//IR ÃÊ±âÈ­
 	//_IR._image = _playerImage;
-	m_IR._rc = RectMakeCenter(m_fpPosition.x, m_fpPosition.y, 50, 50);
+	m_IR._rc = RectMake(m_fpPosition.x, m_fpPosition.y, 50, 50);
 
 	return S_OK;
 }
@@ -118,16 +118,19 @@ void player::render(bool gameover)
 {
 	if (!gameover)
 	{
-		m_IR._image->frameRender(getMemDC(), m_fpPosition.x - 25, m_fpPosition.y - 25 - m_fCamaraY);
+		m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - m_fCamaraY);
 	}
 	else
 	{
-		m_IR._image->render(getMemDC(), m_fpPosition.x - 25, m_fpPosition.y - 25 - m_fCamaraY);
+		m_IR._image->render(getMemDC(), m_fpPosition.x, m_fpPosition.y - m_fCamaraY);
 	}
+
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
 		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - m_fCamaraY, (*_testIter).right, (*_testIter).bottom - m_fCamaraY);
 	}
+
+	//Rectangle(getMemDC(), m_IR._rc.left, , (*_testIter).right, (*_testIter).bottom - m_fCamaraY);
 }
 
 
