@@ -11,7 +11,7 @@ private:
 	CollisionManager* _colManager;
 
 	IR _testIR;
-
+	int _testIRy;
 
 	float _cameraY;
 
