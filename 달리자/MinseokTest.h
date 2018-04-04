@@ -32,7 +32,6 @@ private:
 
 	MinseokBack * m_pBack;
 	player* m_pPlayer;
-	RECT m_rPlayer;
 	rectItem* m_pItem;
 	rectItem* m_pItem2;
 	CollisionManager* m_pColManager;

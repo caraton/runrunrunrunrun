@@ -6,7 +6,7 @@ class player;
 class rectItem : public gameNode
 {
 private:
-	SYNTHESIZE(RECT, m_rc, Rect);
+	SYNTHESIZE(IR, m_pIR, IR);
 	SYNTHESIZE(fPoint, m_pPosition, Pos);
 	SYNTHESIZE(fPoint, m_pSpeed, Speed);
 	player* m_pPlayer;

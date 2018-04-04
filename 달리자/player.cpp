@@ -40,13 +40,14 @@ void player::release(void)
 
 void player::update(void)
 {
-	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() -WINSIZEY))
-	{
-		m_fCamaraY -= 5;
-	}
+	
 	
 	move();
 	
+	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() - WINSIZEY))
+	{
+		m_fCamaraY += m_fBasicSpeedY;
+	}
 
 	//z,x,c,space bar
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE)) //상호작용
@@ -68,25 +69,25 @@ void player::update(void)
 		//다쓴 temp지우기
 		SAFE_DELETE(temp);
 	}
-	if (KEYMANAGER->isOnceKeyDown('Z')) //이미지변경테스트
-	{
-		m_IR._image = IMAGEMANAGER->findImage("prisoner01");
-	}
-	if (KEYMANAGER->isOnceKeyDown('X')) //이미지변경테스트
-	{
-		m_IR._image = IMAGEMANAGER->findImage("guard");
-	}
-	if (KEYMANAGER->isOnceKeyDown('C')) //이미지변경테스트
-	{
-		m_IR._image = IMAGEMANAGER->findImage("player");
-	}
+	//if (KEYMANAGER->isOnceKeyDown('Z')) //이미지변경테스트
+	//{
+	//	m_IR._image = IMAGEMANAGER->findImage("prisoner01");
+	//}
+	//if (KEYMANAGER->isOnceKeyDown('X')) //이미지변경테스트
+	//{
+	//	m_IR._image = IMAGEMANAGER->findImage("guard");
+	//}
+	//if (KEYMANAGER->isOnceKeyDown('C')) //이미지변경테스트
+	//{
+	//	m_IR._image = IMAGEMANAGER->findImage("player");
+	//}
 
 	m_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 6);
 }
 
 void player::render(float cameraY)
 {
-	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - cameraY);
+	m_IR._image->frameRender(getMemDC(), m_fpPosition.x -25 , m_fpPosition.y - 25- cameraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
 		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - cameraY, (*_testIter).right, (*_testIter).bottom - cameraY);
@@ -95,7 +96,7 @@ void player::render(float cameraY)
 
 void player::render()
 {
-	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - m_fCamaraY);
+	m_IR._image->frameRender(getMemDC(), m_fpPosition.x-25, m_fpPosition.y - 25 - m_fCamaraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
 		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top , (*_testIter).right, (*_testIter).bottom );
@@ -106,7 +107,28 @@ void player::render()
 void player::move()
 {
 
-	
+
+	//달리기 속도 조절
+	if (KEYMANAGER->isOnceKeyDown('Z'))
+	{
+		m_fBasicSpeedY += 2;
+		if (m_fBasicSpeedY >= -1)
+		{
+			m_fBasicSpeedY = -1;
+		}
+	}
+	else if (KEYMANAGER->isOnceKeyDown('X'))
+	{
+		m_fBasicSpeedY -= 2;
+		if (m_fBasicSpeedY <= -9)
+		{
+			m_fBasicSpeedY = -9;
+		}
+	}
+
+
+
+
 	//상하이동
 	if (KEYMANAGER->isStayKeyDown(VK_UP) && m_fpPosition.y - m_fCamaraY > 0)
 	{
