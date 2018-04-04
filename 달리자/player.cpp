@@ -13,6 +13,7 @@ HRESULT player::init(void)
 	//이미지 관련 초기화 모음
 	//m_pPlayerImage 라는 변수를 삭제해도 될듯
 	m_IR._image = IMAGEMANAGER->addFrameImage("player", "Image/player_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	//_playerDeath = IMAGEMANAGER->addImage("player", "Image/player_walk.bmp", 50, 50, true, RGB(255, 0, 255));
 	m_pPlayerImage = m_IR._image;
 	IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("guard", "Image/guard_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
@@ -48,6 +49,16 @@ void player::update(void)
 	{
 		m_fCamaraY += m_fBasicSpeedY;
 	}
+
+	vector<IR*>* temp = new vector<IR*>;
+
+	if (m_pColManager->checkCollision(&m_IR, temp))
+	{
+		//m_IR._image = _playerDeath;
+		m_pColManager->SetGameover(true);
+	}
+
+	SAFE_DELETE(temp);
 
 	//z,x,c,space bar
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE)) //상호작용
@@ -99,7 +110,7 @@ void player::render()
 	m_IR._image->frameRender(getMemDC(), m_fpPosition.x-25, m_fpPosition.y - 25 - m_fCamaraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
-		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top , (*_testIter).right, (*_testIter).bottom );
+		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - m_fCamaraY, (*_testIter).right, (*_testIter).bottom - m_fCamaraY);
 	}
 }
 
