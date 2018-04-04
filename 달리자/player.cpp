@@ -52,6 +52,7 @@ void player::update(void)
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE)) //상호작용
 	{
 		_test.clear();
+		//m_pColManager->clearTable();
 
 		vector<IR*>* temp = new vector<IR*>;
 		if (m_pColManager->findIRNear(&m_IR, temp))

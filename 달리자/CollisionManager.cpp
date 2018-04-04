@@ -103,6 +103,21 @@ void CollisionManager::deleteIR(IR * ir)
 	_irList.remove(ir);
 }
 
+//void CollisionManager::clearTable()
+//{
+//	//해쉬테이블 안의 리스트들 초기화
+//	for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
+//	{
+//		(*_vecIter)->clear();
+//	}
+//
+//	//irList의 ir들을 다시 해쉬테이블에 저장
+//	for (_iter = _irList.begin(); _iter != _irList.end(); ++_iter)
+//	{
+//		internalAddIR(*_iter);
+//	}
+//}
+
 bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 {
 	//ir의 top, bottom 을 h()에 대입
