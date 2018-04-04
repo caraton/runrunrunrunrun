@@ -6,7 +6,7 @@
 HRESULT rectItem::init(void)
 {
 	m_pPosition = { WINSIZEX * 3 / 4, -400 };
-	m_pIR._rc = RectMakeCenter(m_pPosition.x, m_pPosition.y, 50, 50);
+	m_pIR._rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
 	m_pSpeed = { 0,0 };
 
 	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
@@ -21,6 +21,9 @@ void rectItem::release(void)
 
 void rectItem::update(void)
 {
+	
+	
+
 	fPoint goalPoint;
 	goalPoint = { 0.0f,0.0f };
 	if (!m_pPlayer)
@@ -57,6 +60,7 @@ void rectItem::update(void)
 		}
 	}
 	
+	
 	//물체를 옮겨줌 - 지울것
 	m_rcObstacle.top -= 5;
 	m_rcObstacle.bottom -= 5;
@@ -65,6 +69,9 @@ void rectItem::update(void)
 	
 	//물체와 충돌하엿을경우의 계산
 	RECT temp;
+	/*RECT thisRCTemp;
+	thisRCTemp = m_pIR._rc;
+	thisRCTemp.top += m_pSpeed.y;*/
 	if (IntersectRect(&temp, &m_rcObstacle, &m_pIR._rc))
 	{
 		int interW = temp.right - temp.left;
@@ -72,7 +79,8 @@ void rectItem::update(void)
 
 		if (interW > interH)
 		{
-			
+			float m_pObstacleSpeed = -5.0f;
+
 			//위쪽에서 충돌
 			if (temp.top == m_rcObstacle.top)
 			{
@@ -82,8 +90,9 @@ void rectItem::update(void)
 				OffsetRect(&m_pIR._rc, 0, -interH);
 				//if (goalPoint.y > m_pPosition.y)
 				//{
-					m_pSpeed.y = 0.0f;
+					m_pSpeed.y = m_pObstacleSpeed;
 				//}
+
 				
 			}
 			else if (temp.bottom == m_rcObstacle.bottom)
@@ -94,7 +103,7 @@ void rectItem::update(void)
 				OffsetRect(&m_pIR._rc, 0, interH);
 				//if (goalPoint.y < m_pPosition.y)
 				//{
-					m_pSpeed.y = 0.0f;
+					m_pSpeed.y = m_pObstacleSpeed;
 				//}
 			}
 
@@ -130,51 +139,63 @@ void rectItem::update(void)
 			}
 		}
 
-		m_pPosition.x = (m_pIR._rc.right + m_pIR._rc.left) / 2;
-		m_pPosition.y = (m_pIR._rc.bottom + m_pIR._rc.top) / 2;
+		m_pPosition.x = m_pIR._rc.left;
+		m_pPosition.y =  m_pIR._rc.top;
 
 	}
+
+	
 
 	//당연히 속도를받아서 움직여줌
 	fPoint finalPos;
 	finalPos.x = m_pPosition.x + m_pSpeed.x;
 	finalPos.y = m_pPosition.y + m_pSpeed.y;
-	RECT m_rc1 = RectMakeCenter(finalPos.x, m_pPosition.y, 50, 50);
-	RECT m_rc2 = RectMakeCenter(m_pPosition.x, finalPos.y, 50, 50);
-	if ( ! IntersectRect(&temp, &m_rcObstacle, &m_rc1))
+	RECT m_rc1 = RectMake(finalPos.x, m_pPosition.y, 50, 50);
+	RECT m_rc2 = RectMake(m_pPosition.x, finalPos.y, 50, 50);
+	if (!IntersectRect(&temp, &m_rcObstacle, &m_rc1))
 	{
 		m_pPosition.x = finalPos.x;
 	}
 	
 	if (!IntersectRect(&temp, &m_rcObstacle, &m_rc2))
 	{
+
 		m_pPosition.y = finalPos.y;
 	}
 
-	m_pIR._rc = RectMakeCenter(m_pPosition.x, m_pPosition.y, 50, 50);
+	m_pIR._rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
 	
 
 	//이미지 프레임 돌려주기
- 	m_pIR._image->setFrameX((TIMEMANAGER->getFrameCount() / 10) % 6);
+ 	m_pIR._image->setFrameX((TIMEMANAGER->getFrameCount() / 10 ) % 6);
+
+
+
+	
+
 }
 
 void rectItem::render(float cameraY)
 {
-	//Rectangle(getMemDC(), m_pIR._rc.left, m_pIR._rc.top- cameraY, m_pIR._rc.right, m_pIR._rc.bottom - cameraY);
+	Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - cameraY, m_rcObstacle.right, m_rcObstacle.bottom - cameraY);
+
+
+
+	Rectangle(getMemDC(), m_pIR._rc.left, m_pIR._rc.top- cameraY, m_pIR._rc.right, m_pIR._rc.bottom - cameraY);
 
 
 	
 
-
+	
 
 	//상태에 따른랜더 변화
 	if (!m_pPlayer)
 	{
-		m_pIR._image->frameRender(getMemDC(), m_pPosition.x- 25, m_pPosition.y- 25 - cameraY, 2, 0);
+		m_pIR._image->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY, 2, 0);
 	}
 	else
 	{
-		m_pIR._image->frameRender(getMemDC(), m_pPosition.x- 25, m_pPosition.y -25 - cameraY);
+		m_pIR._image->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY);
 	}
 
 	

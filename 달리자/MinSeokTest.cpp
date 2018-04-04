@@ -89,7 +89,7 @@ void MinseokTest::render()
 	m_pItem->render(m_fCameraY);
 	m_pItem2->render(m_fCameraY);
 	m_pPlayer->render(m_fCameraY);
-	Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - m_fCameraY, m_rcObstacle.right, m_rcObstacle.bottom - m_fCameraY);
+	//Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - m_fCameraY, m_rcObstacle.right, m_rcObstacle.bottom - m_fCameraY);
 
 
 
