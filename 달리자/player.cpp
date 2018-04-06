@@ -6,6 +6,7 @@
 
 //ToDoList: 속도 가속도
 //아이템 슬롯은 벡터로
+//can과 충돌시 밀려나기(can방향으로 이동하는것 막기)
 
 
 HRESULT player::init(void)
@@ -90,13 +91,13 @@ void player::update(void)
 	{
 		for (_colIter = temp->begin(); _colIter != temp->end(); ++_colIter)
 		{
-			if (!strcmp((*_colIter)->_type, "devil"))
+			if (!strncmp((*_colIter)->_type, "devil", 10))
 			{
 				m_IR._image = IMAGEMANAGER->findImage("playerDeath");
 				m_pColManager->SetGameover(true);
 				break;
 			}
-			else if (!strcmp((*_colIter)->_type, "can"))
+			else if (!strncmp((*_colIter)->_type, "can", 10))
 			{
 
 				break;
