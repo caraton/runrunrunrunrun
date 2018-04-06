@@ -8,7 +8,7 @@ HRESULT SiwoongTest::init(void)
 	IMAGEMANAGER->addImage("background_jail", "Image/background_jail.bmp", 600, 800, true, RGB(255, 0, 255));
 
 	_colManager = new CollisionManager;
-	_colManager->init(WINSIZEY * 10); //맵 총 길이를 넣어줄것
+	_colManager->init(WINSIZEY * 2); //맵 총 길이를 넣어줄것
 
 	_player = new player;
 	_player->init();
@@ -21,7 +21,7 @@ HRESULT SiwoongTest::init(void)
 	_testIRy = -40;
 	
 	_colManager->addIR(&_testIR); //충돌처리할 IR들을 colManager에 보내주기
-	//_colManager->addIR(&_player->GetIR());
+	_colManager->addIR(&_player->GetIR());
 
 	_cameraY = 0;
 
@@ -30,6 +30,8 @@ HRESULT SiwoongTest::init(void)
 
 void SiwoongTest::release(void)
 {
+	SAFE_DELETE(_player);
+	SAFE_DELETE(_colManager);
 }
 
 void SiwoongTest::update(void)
@@ -38,10 +40,14 @@ void SiwoongTest::update(void)
 	if (KEYMANAGER->isOnceKeyDown(VK_F2))
 	{
 		SCENEMANAGER->changeScene("민석씬");
+		return; //changeScene을 하면 이 SiwoongTest의 release 함수가 실행되지만
+		//changeScene이 실행된 update는 한번끝까지 실행되버린다 
+		//release에서 _colManager를 지우고 밑에서 _colManager->GetGameover()를 하므로 터짐
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_F3))
 	{
 		SCENEMANAGER->changeScene("영휘씬");
+		return;
 	}
 
 	if (_colManager->GetGameover())

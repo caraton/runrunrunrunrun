@@ -43,7 +43,7 @@ void player::update(void)
 {
 	move();
 	
-	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() - WINSIZEY*8))
+	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() - WINSIZEY))
 	{
 		m_fCamaraY += m_fBasicSpeedY;
 	}

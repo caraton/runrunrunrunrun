@@ -4,21 +4,21 @@
 
 HRESULT CollisionManager::init(int maplength)
 {
-	if (_hashTable.size() != 0)
-	{
-		//동적할당 해제
-		for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
-		{
-			SAFE_DELETE(*_vecIter);
-		}
+	//if (_hashTable.size() != 0)
+	//{
+	//	//동적할당 해제
+	//	for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
+	//	{
+	//		SAFE_DELETE(*_vecIter);
+	//	}
 
-		_hashTable.clear();
-	}
+	//	_hashTable.clear();
+	//}
 
 	_mapLength = maplength;
 	_mapLengthMinusWINSIZEY = maplength - WINSIZEY;
 	//해쉬테이블 각 엔트리에 리스트를 동적할당하여 주소를 저장
-	for (int i = 0; i < (_mapLength / 10); ++i) //(WINSIZEY/10)는 글로벌 총 Y길이로 수정하기
+	for (int i = 0; i <= (_mapLength / 10); ++i) //(WINSIZEY/10)는 글로벌 총 Y길이로 수정하기
 	{
 		list<IR*>* templist = new list<IR*>();
 		_hashTable.push_back(templist);
@@ -71,6 +71,30 @@ IR* CollisionManager::internalAddIR(IR* ir)
 	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
 	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
 
+	//%% 예외처리
+	if (temp1 > temp2)
+	{
+		return ir; //ir의 rc가 이상함 그냥 return 하기
+	} //이 이후에는 temp1 <= temp2인 경우만 넘어옴
+
+	if (temp2 < 0) //temp1 <= temp2 < 0 맵보다 위쪽에 ir 이 존재
+	{
+		return ir; 
+	}
+	else if (temp1 < 0 && temp2 >= 0) //ir이 맵 위 경계선에 걸친경우
+	{
+		temp1 = 0;
+	}
+	else if (temp2 > (_mapLength / 10) && temp1 <= (_mapLength / 10))
+	{
+		temp2 = (_mapLength / 10);
+	}
+	else if (temp1 > (_mapLength / 10)) //맵보다 아래쪽에 ir 존재
+	{
+		return ir; 
+	}
+	//%%
+
 	//top과 bottom 사이에 해당하는 모든 해쉬테이블 엔트리안 리스트에 ir 저장
 	for (int i = temp1; i <= temp2; ++i)
 	{
@@ -93,6 +117,31 @@ void CollisionManager::deleteIR(IR * ir)
 {
 	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
 	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
+
+	//%% 예외처리
+	if (temp1 > temp2)
+	{
+		return; //ir의 rc가 이상함 그냥 return 하기
+	} //이 이후에는 temp1 <= temp2인 경우만 넘어옴
+
+	if (temp2 < 0) //temp1 <= temp2 < 0 맵보다 위쪽에 ir 이 존재
+	{
+		return;
+	}
+	else if (temp1 < 0 && temp2 >= 0) //ir이 맵 위 경계선에 걸친경우
+	{
+		temp1 = 0;
+	}
+	else if (temp2 >(_mapLength / 10) && temp1 <= (_mapLength / 10))
+	{
+		temp2 = (_mapLength / 10);
+	}
+	else if (temp1 > (_mapLength / 10)) //맵보다 아래쪽에 ir 존재
+	{
+		return;
+	}
+	//%%
+
 	for (int i = temp1; i <= temp2; ++i)
 	{
 		//for (_iter = _hashTable[i]->begin(); _iter != _hashTable[i]->end(); )
@@ -135,6 +184,29 @@ bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 	int temp1 = ((ir->_rc.top + _mapLengthMinusWINSIZEY) / 10) - 3;
 	int temp2 = ((ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10) + 3;
 
+	//%% 예외처리
+	if (temp1 > temp2)
+	{
+		return false; //ir의 rc가 이상함 그냥 return 하기
+	} //이 이후에는 temp1 <= temp2인 경우만 넘어옴
+
+	if (temp2 < 0) //temp1 <= temp2 < 0 맵보다 위쪽에 ir 이 존재
+	{
+		return false;
+	}
+	else if (temp1 < 0 && temp2 >= 0) //ir이 맵 위 경계선에 걸친경우
+	{
+		temp1 = 0;
+	}
+	else if (temp2 >(_mapLength / 10) && temp1 <= (_mapLength / 10))
+	{
+		temp2 = (_mapLength / 10);
+	}
+	else if (temp1 > (_mapLength / 10)) //맵보다 아래쪽에 ir 존재
+	{
+		return false;
+	}
+	//%%
 
 	RECT irRC30 = { ir->_rc.left - 30, ir->_rc.top - 30, ir->_rc.right + 30, ir->_rc.bottom + 30 };
 	RECT tempRECT;
@@ -173,6 +245,30 @@ bool CollisionManager::checkCollision(IR * ir, OUT vector<IR*>* colList)
 	//ir의 top, bottom 을 h()에 대입
 	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
 	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
+
+	//%% 예외처리
+	if (temp1 > temp2)
+	{
+		return false; //ir의 rc가 이상함 그냥 return 하기
+	} //이 이후에는 temp1 <= temp2인 경우만 넘어옴
+
+	if (temp2 < 0) //temp1 <= temp2 < 0 맵보다 위쪽에 ir 이 존재
+	{
+		return false;
+	}
+	else if (temp1 < 0 && temp2 >= 0) //ir이 맵 위 경계선에 걸친경우
+	{
+		temp1 = 0;
+	}
+	else if (temp2 >(_mapLength / 10) && temp1 <= (_mapLength / 10))
+	{
+		temp2 = (_mapLength / 10);
+	}
+	else if (temp1 > (_mapLength / 10)) //맵보다 아래쪽에 ir 존재
+	{
+		return false;
+	}
+	//%%
 
 	//%%temp1~temp2으로 해쉬테이블에 접근하여 그 안의 리스트들을 순회
 	for (int i = temp1; i <= temp2; ++i)
