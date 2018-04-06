@@ -123,6 +123,12 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>MainGame\CollisionManager</Filter>
     </ClInclude>
+    <ClInclude Include="Items.h">
+      <Filter>MainGame\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="prisoner.h">
+      <Filter>MainGame\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -178,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>MainGame\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Items.cpp">
+      <Filter>MainGame\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="prisoner.cpp">
+      <Filter>MainGame\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

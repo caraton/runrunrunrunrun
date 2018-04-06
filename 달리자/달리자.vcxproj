@@ -147,10 +147,12 @@
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
+    <ClInclude Include="Items.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="mainGame.h" />
     <ClInclude Include="MinseokTest.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="prisoner.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="rectItem.h" />
     <ClInclude Include="resource.h" />
@@ -171,10 +173,12 @@
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
+    <ClCompile Include="Items.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="mainGame.cpp" />
     <ClCompile Include="MinseokTest.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="prisoner.cpp" />
     <ClCompile Include="rectItem.cpp" />
     <ClCompile Include="sceneManager.cpp" />
     <ClCompile Include="SiwoongTest.cpp" />
