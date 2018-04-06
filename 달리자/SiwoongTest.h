@@ -13,6 +13,9 @@ private:
 	IR _testIR;
 	int _testIRy;
 
+	vector<IR> _trashcans;
+	vector<IR>::iterator _tcIter;
+
 	float _cameraY;
 
 public:

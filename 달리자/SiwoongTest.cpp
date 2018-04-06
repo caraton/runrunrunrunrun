@@ -18,9 +18,23 @@ HRESULT SiwoongTest::init(void)
 
 	_testIR._image = IMAGEMANAGER->addImage("테스트장애물", "Image/Obstacles/enemy.bmp", 40, 40, true, RGB(255,0,255));
 	_testIR._rc = RectMakeCenter(100, -40, 40,40);
+	_testIR._type = "devil";
 	_testIRy = -40;
+
+	for (int i = 0; i < _colManager->GetMapLength()/ 100; ++i)
+	{
+		IR temp;
+		temp._image = IMAGEMANAGER->addImage("테스트장애물2", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
+		temp._rc = RectMakeCenter(WINSIZEX / 2 - 100, 25 + i*100 - _colManager->GetMapLength() + WINSIZEY,50,50);
+		temp._type = "can";
+		_trashcans.push_back(temp);
+	}
 	
 	_colManager->addIR(&_testIR); //충돌처리할 IR들을 colManager에 보내주기
+	for (_tcIter = _trashcans.begin(); _tcIter != _trashcans.end(); ++_tcIter)
+	{
+		_colManager->addIR(&*_tcIter);
+	}
 	_colManager->addIR(&_player->GetIR());
 
 	_cameraY = 0;
@@ -79,6 +93,14 @@ void SiwoongTest::render(void)
 	if (_testIR._rc.top - _cameraY > 0 && _testIR._rc.top - _cameraY <= WINSIZEY)
 	{ 
 		_testIR._image->render(getMemDC(), _testIR._rc.left, _testIR._rc.top - _cameraY);
+	}
+
+	for (_tcIter = _trashcans.begin(); _tcIter != _trashcans.end(); ++_tcIter)
+	{
+		if ((*_tcIter)._rc.top - _cameraY > 0 && (*_tcIter)._rc.top - _cameraY <= WINSIZEY)
+		{
+			(*_tcIter)._image->render(getMemDC(), (*_tcIter)._rc.left, (*_tcIter)._rc.top - _cameraY);
+		}
 	}
 	
 	//_colManager->render();

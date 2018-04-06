@@ -5,7 +5,7 @@
 //슝아 너말이 맞는듯
 
 //ToDoList: 속도 가속도
-//
+//아이템 슬롯은 벡터로
 
 
 HRESULT player::init(void)
@@ -82,14 +82,26 @@ void player::update(void)
 	//}
 
 	m_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 6);
-
+	//이 이후에 충돌 체크를 해야 프레임 이미지에 맞게 픽셀충돌이 실행된다
 
 	vector<IR*>* temp = new vector<IR*>;
 
 	if (m_pColManager->checkCollision(&m_IR, temp))
 	{
-		m_IR._image = IMAGEMANAGER->findImage("playerDeath");
-		m_pColManager->SetGameover(true);
+		for (_colIter = temp->begin(); _colIter != temp->end(); ++_colIter)
+		{
+			if (!strcmp((*_colIter)->_type, "devil"))
+			{
+				m_IR._image = IMAGEMANAGER->findImage("playerDeath");
+				m_pColManager->SetGameover(true);
+				break;
+			}
+			else if (!strcmp((*_colIter)->_type, "can"))
+			{
+
+				break;
+			}
+		}
 	}
 
 	SAFE_DELETE(temp);
@@ -97,7 +109,7 @@ void player::update(void)
 
 void player::render(float cameraY)
 {
-	m_IR._image->frameRender(getMemDC(), m_fpPosition.x -25 , m_fpPosition.y - 25- cameraY);
+	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y- cameraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
 		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - cameraY, (*_testIter).right, (*_testIter).bottom - cameraY);
@@ -106,7 +118,7 @@ void player::render(float cameraY)
 
 void player::render()
 {
-	m_IR._image->frameRender(getMemDC(), m_fpPosition.x-25, m_fpPosition.y - 25 - m_fCamaraY);
+	m_IR._image->frameRender(getMemDC(), m_fpPosition.x, m_fpPosition.y - m_fCamaraY);
 	for (_testIter = _test.begin(); _testIter != _test.end(); ++_testIter)
 	{
 		Rectangle(getMemDC(), (*_testIter).left, (*_testIter).top - m_fCamaraY, (*_testIter).right, (*_testIter).bottom - m_fCamaraY);

@@ -24,6 +24,8 @@ private:
 	vector<RECT> _test;
 	vector<RECT>::iterator _testIter;
 
+	vector<IR*>::iterator _colIter;
+
 	image* m_pPlayerImage;
 	image* _playerDeath;
 	CollisionManager* m_pColManager;
