@@ -34,7 +34,7 @@ namespace THETA_UTIL
 	}
 	bool pixelCol(ST_ImageAndRect * ir1, ST_ImageAndRect * ir2)
 	{
-		RECT tempRC; //충돌영
+		RECT tempRC; //충돌영역
 		if (!IntersectRect(&tempRC, &(ir1->_rc), &(ir2->_rc))) //두 이미지를 담은 렉트 사이 충돌이 없을 경우
 		{
 			return false;
@@ -63,6 +63,54 @@ namespace THETA_UTIL
 				color1 = GetPixel(ir1->_image->getMemDC(), i - ir1->_rc.left + (ir1->_image->getFrameX()*ir1->_image->getFrameWidth()), j - ir1->_rc.top  +(ir1->_image->getFrameY()*ir1->_image->getFrameHeight()));
 				//_image안의 DC에서 그림은 0,0부터 그려져있으므로 (i - ir1->_rc.left, j - ir1->_rc.top) 가 맞는 좌표 
 				color2 = GetPixel(ir2->_image->getMemDC(), i - ir2->_rc.left + (ir2->_image->getFrameX()*ir2->_image->getFrameWidth()), j - ir2->_rc.top +(ir2->_image->getFrameY()*ir2->_image->getFrameHeight()));
+
+				r1 = GetRValue(color1);
+				g1 = GetGValue(color1);
+				b1 = GetBValue(color1);
+
+				r2 = GetRValue(color2);
+				g2 = GetGValue(color2);
+				b2 = GetBValue(color2);
+
+				if (!(r1 == 255 && g1 == 0 && b1 == 255) && !(r2 == 255 && g2 == 0 && b2 == 255))
+				{	//ir1, ir2 의 이미지에서 (i,j) 지점이 둘 다 마젠타 색이 아닌 경우  
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	bool pixelCol(ST_ImageAndRect * ir1, int framex1, int framey1, ST_ImageAndRect * ir2, int framex2, int framey2)
+	{
+		RECT tempRC; //충돌영역
+		if (!IntersectRect(&tempRC, &(ir1->_rc), &(ir2->_rc))) //두 이미지를 담은 렉트 사이 충돌이 없을 경우
+		{
+			return false;
+		}
+
+		//for 구문 안에서 사용될 변수들
+		COLORREF color1;
+		COLORREF color2;
+		int r1;
+		int g1;
+		int b1;
+		int r2;
+		int g2;
+		int b2;
+
+		//기본 아이디어
+		//렉트충돌로 충돌한 영역을 얻어와서
+		//얻어온 영역에서 두 그림에 대하여 모든 픽셀에서 충돌체크를 한다
+		//두 그림 모두 마젠타가 아닌 색깔이 잇는 픽셀이 하나라도 존재한다면 true
+		for (int i = tempRC.left; i < tempRC.right; i++)
+		{
+			for (int j = tempRC.top; j < tempRC.bottom; j++)
+			{
+
+				color1 = GetPixel(ir1->_image->getMemDC(), i - ir1->_rc.left + (framex1*ir1->_image->getFrameWidth()), j - ir1->_rc.top + (framey1*ir1->_image->getFrameHeight()));
+				//_image안의 DC에서 그림은 0,0부터 그려져있으므로 (i - ir1->_rc.left, j - ir1->_rc.top) 가 맞는 좌표 
+				color2 = GetPixel(ir2->_image->getMemDC(), i - ir2->_rc.left + (framex2*ir2->_image->getFrameWidth()), j - ir2->_rc.top + (framey2*ir2->_image->getFrameHeight()));
 
 				r1 = GetRValue(color1);
 				g1 = GetGValue(color1);

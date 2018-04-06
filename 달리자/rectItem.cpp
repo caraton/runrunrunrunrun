@@ -10,7 +10,7 @@ HRESULT rectItem::init(void)
 	m_pSpeed = { 0,0 };
 
 	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
-	m_pIR._image = IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	m_pIR._image = IMAGEMANAGER->addFrameImage("prisoner02", "Image/guard_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 	
 	return S_OK;
 }

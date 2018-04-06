@@ -3,6 +3,7 @@
 #include "rectItem.h"
 #include "player.h"
 #include "CollisionManager.h"
+#include "prisoner.h"
 
 HRESULT MinseokTest::init(void)
 {
@@ -29,11 +30,29 @@ HRESULT MinseokTest::init(void)
 	m_fCameraY = 0.f;
 
 	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
+
+	//죄수들 초기화
+	for (int i = 0; i < 4; i++)
+	{
+		prisoner* temp;
+		temp = new prisoner;
+		temp->init();
+		float tempposy = -1 * 200 * i;
+		temp->SetPos(fPoint{ WINSIZEX / 2,  tempposy });
+		m_vecPrisoner.push_back(temp);
+	}
+	
+
 	return S_OK;
 }
 
 void MinseokTest::release(void)
 {
+	for (int i = 0; i < m_vecPrisoner.size(); i++)
+	{
+		SAFE_DELETE(m_vecPrisoner[i]);
+	}
+	m_vecPrisoner.clear();
 }
 
 void MinseokTest::update(void)
@@ -42,10 +61,12 @@ void MinseokTest::update(void)
 	if (KEYMANAGER->isOnceKeyDown(VK_F1))
 	{
 		SCENEMANAGER->changeScene("시웅씬");
+		return;
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_F3))
 	{
 		SCENEMANAGER->changeScene("영휘씬");
+		return;
 	}
 
 	//상자의 위치를 옮겨줌
@@ -57,6 +78,10 @@ void MinseokTest::update(void)
 	m_pItem2->update();
 	m_pBack->update();
 	m_fCameraY = m_pPlayer->GetCamY();
+	for (int i = 0; i < m_vecPrisoner.size(); i++)
+	{
+		m_vecPrisoner[i]->update();
+	}
 
 
 	//플레이어와 아이템의 충돌처리 - 플레이어의 코드를 건들지 않으므로 구조적으로 좋지못함 추후에 수정요망
@@ -78,6 +103,17 @@ void MinseokTest::update(void)
 	//isCollisionReaction(&temp2, &(m_pItem2->GetRect()));
 	// ↑↑↑↑↑수정요망↑↑↑↑↑
 
+	//플레이어와 아이템의 충돌처리 - 아이템끼리는 아직 못할듯 수정요망
+	for (int i = 0; i < m_vecPrisoner.size(); i++)
+	{
+		if (IntersectRect(&temp, &temp2, &(m_vecPrisoner[i]->GetIR()._rc)))
+		{
+			m_vecPrisoner[i]->linkHead(m_pPlayer,t_player);
+		}
+	}
+	//↑↑↑↑↑수정요망↑↑↑↑↑
+
+
 }
 
 void MinseokTest::render()
@@ -90,7 +126,10 @@ void MinseokTest::render()
 	m_pItem2->render(m_fCameraY);
 	m_pPlayer->render(m_fCameraY);
 	//Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - m_fCameraY, m_rcObstacle.right, m_rcObstacle.bottom - m_fCameraY);
-
+	for (int i = 0; i < m_vecPrisoner.size(); i++)
+	{
+		m_vecPrisoner[i]->render(m_fCameraY);
+	}
 
 
 	//시웅씬과 안 햇갈리게 하기위한 글자

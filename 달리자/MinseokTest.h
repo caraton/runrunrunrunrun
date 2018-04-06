@@ -4,6 +4,7 @@
 class SiwoongTest;
 class rectItem;
 class player;
+class prisoner;
 class CollisionManager;
 
 class MinseokBack : public gameNode
@@ -34,6 +35,7 @@ private:
 	player* m_pPlayer;
 	rectItem* m_pItem;
 	rectItem* m_pItem2;
+	std::vector<prisoner*> m_vecPrisoner;
 	CollisionManager* m_pColManager;
 	RECT m_rcObstacle;
 	float m_fCameraY;

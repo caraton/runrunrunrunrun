@@ -59,6 +59,7 @@ namespace THETA_UTIL
 	float getAngle(float x1, float y1, float x2, float y2);
 
 	bool pixelCol(ST_ImageAndRect* ir1, ST_ImageAndRect* ir2);
+	bool pixelCol(ST_ImageAndRect* ir1,int framex1, int framey1, ST_ImageAndRect* ir2, int framex2, int framey2);
 
 	void linearInterpol(const IN POINT* p1, OUT POINT* p2, float weight);
 	fPoint linearInterpol(const IN fPoint* p1, const IN fPoint * p2, float weight);
