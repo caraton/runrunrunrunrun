@@ -6,6 +6,7 @@ class rectItem;
 class player;
 class prisoner;
 class CollisionManager;
+class Obstacles;
 
 class MinseokBack : public gameNode
 {
@@ -39,6 +40,7 @@ private:
 	CollisionManager* m_pColManager;
 	RECT m_rcObstacle;
 	float m_fCameraY;
+	Obstacles* m_pBigRect;
 
 public:
 	HRESULT init(void);

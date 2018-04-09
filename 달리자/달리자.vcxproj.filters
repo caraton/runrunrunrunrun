@@ -129,6 +129,9 @@
     <ClInclude Include="prisoner.h">
       <Filter>MainGame\Items</Filter>
     </ClInclude>
+    <ClInclude Include="Obstacles.h">
+      <Filter>MainGame\Obstacles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -190,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="prisoner.cpp">
       <Filter>MainGame\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacles.cpp">
+      <Filter>MainGame\Obstacles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

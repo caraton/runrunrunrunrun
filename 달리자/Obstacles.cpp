@@ -1,17 +1,17 @@
 #include "stdafx.h"
-#include "Items.h"
+#include "Obstacles.h"
 
 
-Items::Items()
+Obstacles::Obstacles()
 {
 }
 
 
-Items::~Items()
+Obstacles::~Obstacles()
 {
 }
 
-HRESULT Items::init(void)
+HRESULT Obstacles::init(void)
 {
 	m_pPosition = { 0, 0 };
 	m_pSpeed = { 0,0 };
@@ -19,19 +19,23 @@ HRESULT Items::init(void)
 	return S_OK;
 }
 
-void Items::release(void)
+void Obstacles::release(void)
 {
 }
 
-void Items::update(void)
+void Obstacles::update(void)
 {
 	m_pPosition = m_pPosition + m_pSpeed;
+
 	m_pIR._rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
 }
 
-void Items::render(float cameraY)
+void Obstacles::render(float cameraY)
 {
 	if (m_pIR._image)
 		m_pIR._image->render(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY);
-
+	else
+	{
+		Rectangle(getMemDC(), m_pIR._rc.left, m_pIR._rc.top - cameraY, m_pIR._rc.right, m_pIR._rc.bottom - cameraY);
+	}
 }

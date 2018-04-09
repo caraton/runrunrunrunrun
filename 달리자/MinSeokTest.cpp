@@ -4,6 +4,7 @@
 #include "player.h"
 #include "CollisionManager.h"
 #include "prisoner.h"
+#include "Obstacles.h"
 
 HRESULT MinseokTest::init(void)
 {
@@ -26,6 +27,11 @@ HRESULT MinseokTest::init(void)
 
 	m_pBack->linkPlayer(m_pPlayer);
 	m_pPlayer->linkColManager(m_pColManager);
+
+	m_pBigRect = new Obstacles;
+	m_pBigRect->init();
+	m_pBigRect->SetPos({ WINSIZEX / 2,-10 });
+
 
 	m_fCameraY = 0.f;
 
@@ -78,6 +84,7 @@ void MinseokTest::update(void)
 	m_pItem2->update();
 	m_pBack->update();
 	m_fCameraY = m_pPlayer->GetCamY();
+	m_pBigRect->update();
 	for (int i = 0; i < m_vecPrisoner.size(); i++)
 	{
 		m_vecPrisoner[i]->update();
@@ -125,6 +132,7 @@ void MinseokTest::render()
 	m_pItem->render(m_fCameraY);
 	m_pItem2->render(m_fCameraY);
 	m_pPlayer->render(m_fCameraY);
+	m_pBigRect->render(m_fCameraY);
 	//Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - m_fCameraY, m_rcObstacle.right, m_rcObstacle.bottom - m_fCameraY);
 	for (int i = 0; i < m_vecPrisoner.size(); i++)
 	{

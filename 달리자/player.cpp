@@ -166,6 +166,10 @@ void player::move()
 			m_fBasicSpeedY = -9;
 		}
 	}
+	else if (KEYMANAGER->isOnceKeyDown('C'))
+	{
+		m_fBasicSpeedY = 0;
+	}
 
 
 
