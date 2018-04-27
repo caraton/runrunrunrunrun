@@ -99,7 +99,21 @@ void player::update(void)
 			}
 			else if (!strncmp((*_colIter)->_type, "can", 10))
 			{
+				fPoint tempf;
+				tempf.x = ((*_colIter)->_rc.left + (*_colIter)->_rc.right) / 2;
+				tempf.y = ((*_colIter)->_rc.top + (*_colIter)->_rc.bottom) / 2;
+				fPoint tempm;
+				tempm.x = 25;
+				tempm.y = 25;
 
+				float t = 1.00;
+
+				while (pixelCol(&m_IR, *_colIter))
+				{
+					t = t + 0.01;
+					m_fpPosition = (tempf + (((m_fpPosition + tempm) - tempf) * t)) - tempm;
+					m_IR._rc = RectMake(m_fpPosition.x, m_fpPosition.y, 50, 50);
+				}
 				break;
 			}
 		}

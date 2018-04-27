@@ -52,6 +52,14 @@ namespace THETA_UTIL
 
 			return result;
 		}
+		tagFloatPOINT operator*(float fp)
+		{
+			tagFloatPOINT result;
+			result.x = this->x * fp;
+			result.y = this->y * fp;
+
+			return result;
+		}
 	} fPoint;
 
 	float getDistance(float startX, float startY, float endX, float endY);
