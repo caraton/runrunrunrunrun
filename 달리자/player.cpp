@@ -111,7 +111,7 @@ void player::update(void)
 
 				while (pixelCol(&m_IR, *_colIter))
 				{
-					t = t + 0.1;
+					t = t + 0.07;
 					m_fpPosition = (tempf + (((m_fpPosition + tempm) - tempf) * t)) - tempm;
 					m_IR._rc = RectMake(m_fpPosition.x, m_fpPosition.y, 50, 50);
 				}
