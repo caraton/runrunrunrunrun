@@ -52,7 +52,7 @@ namespace THETA_UTIL
 
 			return result;
 		}
-		tagFloatPOINT operator*(float fp)
+		tagFloatPOINT operator*(float fp) //¿¬»êÀÚ overide·Î ½ºÄ®¶ó °ö ±¸Çö
 		{
 			tagFloatPOINT result;
 			result.x = this->x * fp;

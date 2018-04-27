@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "player.h"
 #include "CollisionManager.h"
+#include "Items.h"
 
 //슝아 너말이 맞는듯
 
@@ -110,7 +111,7 @@ void player::update(void)
 
 				while (pixelCol(&m_IR, *_colIter))
 				{
-					t = t + 0.01;
+					t = t + 0.1;
 					m_fpPosition = (tempf + (((m_fpPosition + tempm) - tempf) * t)) - tempm;
 					m_IR._rc = RectMake(m_fpPosition.x, m_fpPosition.y, 50, 50);
 				}

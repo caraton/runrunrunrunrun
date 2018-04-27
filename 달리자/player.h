@@ -2,6 +2,7 @@
 #include "gameNode.h"
 
 class CollisionManager;
+class Items;
 
 class player : public gameNode
 {
@@ -25,6 +26,9 @@ private:
 	vector<RECT>::iterator _testIter;
 
 	vector<IR*>::iterator _colIter;
+
+	vector<Items*> _items;
+	vector<Items*>::iterator _itemIter;
 
 	image* m_pPlayerImage;
 	image* _playerDeath;
