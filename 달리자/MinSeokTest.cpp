@@ -2,7 +2,7 @@
 #include "MinseokTest.h"
 #include "rectItem.h"
 #include "player.h"
-#include "CollisionManager.h"
+#include "CollisionCheckManager.h"
 #include "prisoner.h"
 #include "Obstacles.h"
 
@@ -22,7 +22,7 @@ HRESULT MinseokTest::init(void)
 	m_pBack = new MinseokBack;
 	m_pBack->init();
 
-	m_pColManager = new CollisionManager;
+	m_pColManager = new CollisionCheckManager;
 	m_pColManager->init(WINSIZEY * 10);
 
 	m_pBack->linkPlayer(m_pPlayer);

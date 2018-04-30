@@ -5,7 +5,7 @@ class SiwoongTest;
 class rectItem;
 class player;
 class prisoner;
-class CollisionManager;
+class CollisionCheckManager;
 class Obstacles;
 
 class MinseokBack : public gameNode
@@ -37,7 +37,7 @@ private:
 	rectItem* m_pItem;
 	rectItem* m_pItem2;
 	std::vector<prisoner*> m_vecPrisoner;
-	CollisionManager* m_pColManager;
+	CollisionCheckManager* m_pColManager;
 	RECT m_rcObstacle;
 	float m_fCameraY;
 	Obstacles* m_pBigRect;
