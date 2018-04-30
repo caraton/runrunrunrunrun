@@ -1,7 +1,7 @@
 #pragma once
 #include "gameNode.h"
 
-class CollisionManager;
+class CollisionCheckManager;
 class Items;
 
 class player : public gameNode
@@ -32,7 +32,7 @@ private:
 
 	image* m_pPlayerImage;
 	image* _playerDeath;
-	CollisionManager* m_pColManager;
+	CollisionCheckManager* m_pColManager;
 
 public:
 	virtual HRESULT init(void);	
@@ -42,7 +42,7 @@ public:
 	virtual void render();
 	virtual void render(bool gameover);
 
-	void linkColManager(CollisionManager* col) { m_pColManager = col; }
+	void linkColManager(CollisionCheckManager* col) { m_pColManager = col; }
 
 	player();
 	~player();

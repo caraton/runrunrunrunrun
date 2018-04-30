@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "SiwoongTest.h"
 #include "player.h"
-#include "CollisionManager.h"
+#include "CollisionCheckManager.h"
 
 HRESULT SiwoongTest::init(void)
 {
 	IMAGEMANAGER->addImage("background_jail", "Image/background_jail.bmp", 600, 800, true, RGB(255, 0, 255));
 
-	_colManager = new CollisionManager;
+	_colManager = new CollisionCheckManager;
 	_colManager->init(WINSIZEY * 2); //맵 총 길이를 넣어줄것
 
 	_player = new player;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "player.h"
-#include "CollisionManager.h"
+#include "CollisionCheckManager.h"
 #include "Items.h"
 
 //슝아 너말이 맞는듯
@@ -14,6 +14,8 @@
 //player에 저장된 아이템의 정보는 (포인터)
 //내부: 아이템을 사용하기 (또 플레이어가 취득한 죄수들은 플레이어 정보를 받아 이동)
 //외부: 아이템 정보를 이용 (예: 3번째 먹은 아이템이 2번째 아이템의 포인터를 받아야함, )
+
+//아이템 사용하기
 
 HRESULT player::init(void)
 {
@@ -88,9 +90,15 @@ void player::update(void)
 	//	m_IR._image = IMAGEMANAGER->findImage("player");
 	//}
 
+	if (KEYMANAGER->isOnceKeyDown('C')) //아이템 사용
+	{
+
+	}
+
 	m_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 6);
 	//이 이후에 충돌 체크를 해야 프레임 이미지에 맞게 픽셀충돌이 실행된다
 
+	//플레이어 충돌처리 부분
 	vector<IR*>* temp = new vector<IR*>;
 
 	if (m_pColManager->checkCollision(&m_IR, temp))
@@ -122,6 +130,23 @@ void player::update(void)
 				}
 				break;
 			}
+			//else if (!strncmp((*_colIter)->_type, "prisoner", 10))
+			//{
+			//	if (_items.size() < 3)
+			//	{
+			//		_items.push_back((Items *)(*_colIter)->_node);
+
+			//		//아이템 이동관련
+			//		if (_items.size() == 1)
+			//		{
+			//			(*_items.begin())->linkHead(this, t_player);
+			//		}
+			//		else
+			//		{
+			//			(*(_items.end()--))->linkHead((_items.end()--)--, t_item);
+			//		}
+			//	}
+			//}
 		}
 	}
 

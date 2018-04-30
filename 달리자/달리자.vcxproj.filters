@@ -120,9 +120,6 @@
     <ClInclude Include="rectItem.h">
       <Filter>MainGame\Items</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>MainGame\CollisionManager</Filter>
-    </ClInclude>
     <ClInclude Include="Items.h">
       <Filter>MainGame\Items</Filter>
     </ClInclude>
@@ -131,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="Obstacles.h">
       <Filter>MainGame\Obstacles</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionCheckManager.h">
+      <Filter>MainGame\CollisionManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +185,6 @@
     <ClCompile Include="rectItem.cpp">
       <Filter>MainGame\Items</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>MainGame\CollisionManager</Filter>
-    </ClCompile>
     <ClCompile Include="Items.cpp">
       <Filter>MainGame\Items</Filter>
     </ClCompile>
@@ -196,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="Obstacles.cpp">
       <Filter>MainGame\Obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionCheckManager.cpp">
+      <Filter>MainGame\CollisionManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

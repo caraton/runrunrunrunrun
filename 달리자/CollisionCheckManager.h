@@ -6,7 +6,7 @@
 
 class player;
 
-class CollisionManager : public gameNode
+class CollisionCheckManager : public gameNode
 {
 private:
 	vector<list<IR*>*> _hashTable; //y축을 10단위로 쪼개서 저장할 테이블
@@ -17,6 +17,7 @@ private:
 	list<IR*>::iterator _iter; //테이블의 한 줄안의 리스트를 순회하기 위한 이터레이터
 
 	player* _player;
+	vector<IR*>::iterator _colIter; //플레이어 충돌 체크에 사용할 이터레이터
 
 	SYNTHESIZE(int, _mapLength, MapLength);
 	int _mapLengthMinusWINSIZEY; //y좌표를 받아서 이값을 더한 후에 /10을 하면 해쉬값이 나온다
@@ -42,6 +43,6 @@ public:
 
 	void linkPlayer(player* player) { _player = player; }
 
-	CollisionManager();
-	~CollisionManager();
+	CollisionCheckManager();
+	~CollisionCheckManager();
 };

@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "CollisionManager.h"
+#include "CollisionCheckManager.h"
 #include "player.h"
 
-HRESULT CollisionManager::init(int maplength)
+HRESULT CollisionCheckManager::init(int maplength)
 {
 	//if (_hashTable.size() != 0)
 	//{
@@ -29,11 +29,11 @@ HRESULT CollisionManager::init(int maplength)
 	return S_OK;
 }
 
-void CollisionManager::release(void)
+void CollisionCheckManager::release(void)
 {
 }
 
-void CollisionManager::update(void)
+void CollisionCheckManager::update(void)
 {
 	//해쉬테이블 안의 리스트들 초기화
 	for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
@@ -48,7 +48,7 @@ void CollisionManager::update(void)
 	}
 }
 
-void CollisionManager::render()
+void CollisionCheckManager::render()
 {
 	//for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
 	//{
@@ -59,7 +59,7 @@ void CollisionManager::render()
 	//}
 }
 
-IR* CollisionManager::internalAddIR(IR* ir)
+IR* CollisionCheckManager::internalAddIR(IR* ir)
 {
 	////ir의 RECT값이 없으면
 	//if (ir->_rc == 0)??
@@ -104,7 +104,7 @@ IR* CollisionManager::internalAddIR(IR* ir)
 	return ir;
 }
 
-IR * CollisionManager::addIR(IR * ir)
+IR * CollisionCheckManager::addIR(IR * ir)
 {
 	internalAddIR(ir);
 
@@ -113,7 +113,7 @@ IR * CollisionManager::addIR(IR * ir)
 	return ir;
 }
 
-void CollisionManager::deleteIR(IR * ir)
+void CollisionCheckManager::deleteIR(IR * ir)
 {
 	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
 	int temp2 = (ir->_rc.bottom + _mapLengthMinusWINSIZEY) / 10;
@@ -163,7 +163,7 @@ void CollisionManager::deleteIR(IR * ir)
 	_irList.remove(ir);
 }
 
-//void CollisionManager::clearTable()
+//void CollisionCheckManager::clearTable()
 //{
 //	//해쉬테이블 안의 리스트들 초기화
 //	for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)
@@ -178,7 +178,7 @@ void CollisionManager::deleteIR(IR * ir)
 //	}
 //}
 
-bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
+bool CollisionCheckManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 {
 	//ir의 top, bottom 을 h()에 대입
 	int temp1 = ((ir->_rc.top + _mapLengthMinusWINSIZEY) / 10) - 3;
@@ -240,7 +240,7 @@ bool CollisionManager::findIRNear(IR* ir, OUT vector<IR*>* IRList)
 	return true;
 }
 
-bool CollisionManager::checkCollision(IR * ir, OUT vector<IR*>* colList)
+bool CollisionCheckManager::checkCollision(IR * ir, OUT vector<IR*>* colList)
 {
 	//ir의 top, bottom 을 h()에 대입
 	int temp1 = (ir->_rc.top + _mapLengthMinusWINSIZEY) / 10;
@@ -299,12 +299,12 @@ bool CollisionManager::checkCollision(IR * ir, OUT vector<IR*>* colList)
 	return true;
 }
 
-CollisionManager::CollisionManager()
+CollisionCheckManager::CollisionCheckManager()
 {
 	_player = NULL;
 }
 
-CollisionManager::~CollisionManager()
+CollisionCheckManager::~CollisionCheckManager()
 {
 	//동적할당 해제
 	for (_vecIter = _hashTable.begin(); _vecIter != _hashTable.end(); ++_vecIter)

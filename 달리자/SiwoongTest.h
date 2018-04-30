@@ -2,13 +2,13 @@
 #include "gameNode.h"
 
 class player;
-class CollisionManager;
+class CollisionCheckManager;
 
 class SiwoongTest : public gameNode
 {
 private:
 	player* _player;
-	CollisionManager* _colManager;
+	CollisionCheckManager* _colManager;
 
 	IR _testIR;
 	int _testIRy;
