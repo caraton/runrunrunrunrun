@@ -1,5 +1,5 @@
 #pragma once
-#include "singletonBase.h"
+//#include "singletonBase.h"
 #include "gameNode.h"
 #include <vector>
 #include <list>
