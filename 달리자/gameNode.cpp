@@ -224,13 +224,35 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			PostMessage(hWnd, WM_DESTROY, 0, 0); //hWnd의 iMessage에 WM_DESTROY 메세지를 보내줌
 			break;
 		}
+		case VK_F8:
+		{
+			_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
+			//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
+			ShowWindow(_hMapTool, _cmdShow);
+			break;
+		}
+		case VK_F9:
+		{
+			//ShowWindow(_hMapTool, SW_HIDE);
+			DestroyWindow(_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
+			//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
+			break;
+		}
 		}
 		break;
 	}
 
 	case WM_DESTROY:
 	{
-		PostQuitMessage(0);
+		if(hWnd == _hWnd) //WM_DESTROY가 메인창에서 온다면
+		{
+			PostQuitMessage(0);
+		}
+		else if (hWnd == _hMapTool) //WM_DESTROY가 맵툴창에서 온다면
+		{
+			//PostQuitMessage(0);을 하면 전체 앱이 꺼지므로 여기선 아무것도 하지않는다.
+		}
+
 		break;
 	}
 	}
