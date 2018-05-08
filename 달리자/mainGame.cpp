@@ -54,6 +54,17 @@ void mainGame::render()
 	//==============================================================================================================
 	//최종적으로 BackBuffer에서 hdc의 비트맵 도화지로 복사
 	this->getBackBuffer()->render(getHDC(), 0, 0); //백버퍼에서 hdc로 복사
+
+	if (_mapToolOn)
+	{
+		HDC mapToolDCtest;
+		mapToolDCtest = GetDC(_hMapTool);
+
+		char str[256] = "맵툴테스트";
+		TextOut(mapToolDCtest, WINSIZEX / 2, WINSIZEY / 2, str, strlen(str));
+
+		ReleaseDC(_hMapTool, mapToolDCtest);
+	}
 }
 
 mainGame::mainGame()
