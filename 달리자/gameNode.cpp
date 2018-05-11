@@ -214,6 +214,73 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		break;
 	}
 
+	case WM_COMMAND:
+	{
+		switch (LOWORD(wParam)) //LOWORD(wParam): WM_COMMAND 신호를 보낸 메뉴나 액셀러레이터, 컨트롤의 ID
+		{
+			case ID_INPUT:
+			{
+				switch (HIWORD(wParam)) //HIWORD(wParam): ID_INPUT이 무슨 메시지를 보내주었는가?
+				{
+					case EN_CHANGE: //EN_CHANGE 문자열이 변경되었고 화면에 출력되었다 EN_UPDATE 문자열이 변경되었고 화면에 출력되기 직전이다.
+					{
+						GetWindowText(_hInput, mstr, 128); //_hInput의 문자열을 받아 str에 저장, 마지막 인수는 str 맥스 크기
+						break;
+					}
+				}
+				break;
+			}
+			case ID_CLEAR:
+			{
+				SetWindowText(_hInput, "");
+
+				*(mstr) = '\0'; //'\0'은 문자열에서 데이터가 들어있는 마지막칸 바로 다음의 칸에 들어있는 값
+								//따라서 첫번째칸에 이 값을 넣어주면 비어있는 문자열이 된다.
+								//memset(mstr, 0, sizeof(mstr)); 이방식도 가능
+				
+				//기존의 mstr로 TextOut 그려진 부분을 지워준다
+				RECT clearbox = RectMake(0, 0, WINSIZEX, WINSIZEY);
+				InvalidateRect(_hMapTool, &clearbox, true);
+			
+
+				_buttonCount = 0;
+
+				break;
+			}
+			case ID_BUTTON1:
+			{
+				_buttonCount++;
+
+				//if (_buttonCount == 10)
+				//{
+				//	MessageBox(_hMapTool, "content:카운트가 10을 넘음", "title: 연습", MB_OK | MB_ICONINFORMATION);
+				//	//참조:https://www.youtube.com/watch?v=NZkpp-a-tYA
+				//} //렌더하는곳으로 옮기면 10이 딱 되는 순간 메시지박스가 뜨지만 _buttonCount가 계속 10이라 메시지가 무한정 뜬다
+				//렌더하고 PostMessage  사용하기
+
+				break;
+			}
+			//case 999:
+			//{
+			//	if (_buttonCount == 10)
+			//	{
+			//		MessageBox(_hMapTool, "content:카운트가 10을 넘음", "title: 연습", MB_OK | MB_ICONINFORMATION);
+			//		//참조:https://www.youtube.com/watch?v=NZkpp-a-tYA
+			//	}
+			//	break;
+			//}
+		}
+
+		//switch (wParam)
+		//{
+		//	case ID_BUTTON1:
+		//	{
+		//		_buttonCount++;
+		//		break;
+		//	}
+		//}
+	}
+
 	//키보드 이벤트 관련 : http://jurang5.tistory.com/
 	case WM_KEYDOWN:
 	{
@@ -227,9 +294,25 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		case VK_F8:
 		{
 			_mapToolOn = true;
-			_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
-			//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
+			if (_hMapTool == NULL)
+			{
+				_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
+				//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
+			}
+
 			ShowWindow(_hMapTool, _cmdShow);
+
+			//참조:http://www.soen.kr/
+			//CreateWindow의 첫번째 인수에는 메인 창의 wndClass 이름을 넣어줘도 되지만
+			//api에 자체 정의된 클래스를 사용할 수도 있다.
+			//TEXT("") 안에 button, static, scrollbar, edit, listbox, combobox를 넣어주면 된다.
+
+			_hInput = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 100, 200, 25, _hMapTool, (HMENU) ID_INPUT, NULL, NULL);
+			//WS_VISIBLE가 있으면 윈도우를 만들자마자 화면에 출력한다 (ShowWindow없이도)
+			CreateWindow(TEXT("button"), TEXT("Clear"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 300, 50, 25, _hMapTool, (HMENU)ID_CLEAR, NULL, NULL);
+			//_test1 = CreateWindow(_lpszClass, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 200, 200, 25, _hMapTool, (HMENU)ID_COUNT, _hInstance, NULL);
+			CreateWindow(TEXT("button"), TEXT("Click"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 250, 200, 25, _hMapTool, (HMENU)ID_BUTTON1, NULL, NULL);
+			//참조:https://www.youtube.com/watch?v=NZkpp-a-tYA
 			break;
 		}
 		case VK_F9:
@@ -237,7 +320,14 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			_mapToolOn = false;
 			//ShowWindow(_hMapTool, SW_HIDE);
 			DestroyWindow(_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
+			_hMapTool = NULL;
 			//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
+
+			DestroyWindow(_hInput);
+			_hInput = NULL;
+			//DestroyWindow(_test1);
+			//DestroyWindow(_test2);
+
 			break;
 		}
 		}

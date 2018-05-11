@@ -6,6 +6,8 @@ F8키로 맵툴 시작
 
 (_hWnd 대신 _hMapTool을 받는 새로운 DC를 만들어야 함 -> image, imageManager 수정 필요)
 
+//첫화면 
+
 //초기화
 맵 길이 지정, 배경 그림 지정 >>API에서 입력 받기
 
