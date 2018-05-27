@@ -1,5 +1,12 @@
 #pragma once
 
+inline POINT PointMake(int x, int y)
+{
+	POINT pt = { x, y };
+
+	return pt;
+}
+
 inline void LineMake(HDC hdc, int x1, int y1, int x2, int y2)
 {
 	MoveToEx(hdc, x1, y1, NULL); // hdc 도화지 위에 (x1,y1)을 시작점으로 정한다

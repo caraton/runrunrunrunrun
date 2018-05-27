@@ -52,6 +52,9 @@
     <Filter Include="MainGame\CollisionManager">
       <UniqueIdentifier>{cca6202d-0b4a-4987-ad0a-e710b3e044e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2DGameFramework\button">
+      <UniqueIdentifier>{067a5dee-67ea-4d5d-8483-fe727e8de480}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -132,6 +135,12 @@
     <ClInclude Include="CollisionCheckManager.h">
       <Filter>MainGame\CollisionManager</Filter>
     </ClInclude>
+    <ClInclude Include="button.h">
+      <Filter>2DGameFramework\button</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolScene.h">
+      <Filter>MainGame\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -196,6 +205,12 @@
     </ClCompile>
     <ClCompile Include="CollisionCheckManager.cpp">
       <Filter>MainGame\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="button.cpp">
+      <Filter>2DGameFramework\button</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolScene.cpp">
+      <Filter>MainGame\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

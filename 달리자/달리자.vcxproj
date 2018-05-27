@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="button.h" />
     <ClInclude Include="CollisionCheckManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="gameNode.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Items.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="mainGame.h" />
+    <ClInclude Include="MapToolScene.h" />
     <ClInclude Include="MinseokTest.h" />
     <ClInclude Include="Obstacles.h" />
     <ClInclude Include="player.h" />
@@ -170,6 +172,7 @@
     <ClInclude Include="달리자.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="button.cpp" />
     <ClCompile Include="CollisionCheckManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
@@ -177,6 +180,7 @@
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="mainGame.cpp" />
+    <ClCompile Include="MapToolScene.cpp" />
     <ClCompile Include="MinseokTest.cpp" />
     <ClCompile Include="Obstacles.cpp" />
     <ClCompile Include="player.cpp" />

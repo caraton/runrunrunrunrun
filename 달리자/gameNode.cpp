@@ -12,7 +12,8 @@
 HRESULT gameNode::init(void) //WM_CREATE (윈도우프로시저 콜백함수의 switch case에 해당하는 메시지)
 {
 	_hdc = GetDC(_hWnd); //_hWnd (윈도우 핸들번호를 담고있는 _hWnd를 인풋으로 넣으면 그 윈도우의 DC를 내보냄)
-	
+	//_hdcMapTool = GetDC(_hMapTool);
+
 	_managerInit = false;
 
 	return S_OK; //S_OK : 때때로 Boolean TRUE 값(0X0)으로 S_FALSE와 함께 사용되며 함수가 성공하였음을 의미한다.
@@ -22,6 +23,8 @@ HRESULT gameNode::init(bool managerInit)
 {
 	_hdc = GetDC(_hWnd); //_hWnd (윈도우 핸들번호를 담고있는 _hWnd를 인풋으로 넣으면 그 윈도우의 DC를 내보냄)
 	//GetDC와 ReleaseDC를 사용하면 WM_PAINT에서 쓰던 BeginPaint와 EndPaint를 쓰지 않아도 된다.
+	//_hdcMapTool = GetDC(_hMapTool);
+
 	_managerInit = managerInit;
 
 	if (_managerInit)
@@ -216,7 +219,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 	case WM_COMMAND:
 	{
-		switch (LOWORD(wParam)) //LOWORD(wParam): WM_COMMAND 신호를 보낸 메뉴나 액셀러레이터, 컨트롤의 ID
+		switch (LOWORD(wParam)) //LOWORD(wParam): WM_COMMAND 신호를 보낸 메뉴(ID_INPUT과 같은)나 액셀러레이터, 컨트롤의 ID
 		{
 			case ID_INPUT:
 			{
@@ -238,12 +241,44 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 								//따라서 첫번째칸에 이 값을 넣어주면 비어있는 문자열이 된다.
 								//memset(mstr, 0, sizeof(mstr)); 이방식도 가능
 				
+				_buttonCount = 0;
+
 				//기존의 mstr로 TextOut 그려진 부분을 지워준다
 				RECT clearbox = RectMake(0, 0, WINSIZEX, WINSIZEY);
 				InvalidateRect(_hMapTool, &clearbox, true);
-			
+	
+				break;
+			}
+			case ID_SAVE:
+			{
+				vector<string> toSave;
+
+				toSave.push_back(mstr);
+
+				toSave.push_back(to_string(_buttonCount));
+
+				TXTDATA->txtSave("맵툴 실험.txt", toSave);
+
+				break;
+			}
+			case ID_LOAD:
+			{
+				vector<string> toLoad;
+				
+				toLoad = TXTDATA->txtLoad("맵툴 실험.txt");
+
+				*(mstr) = '\0'; //'\0'은 문자열에서 데이터가 들어있는 마지막칸 바로 다음의 칸에 들어있는 값
+								//따라서 첫번째칸에 이 값을 넣어주면 비어있는 문자열이 된다.
+								//memset(mstr, 0, sizeof(mstr)); 이방식도 가능
 
 				_buttonCount = 0;
+
+				//기존의 mstr로 TextOut 그려진 부분을 지워준다
+				RECT clearbox = RectMake(0, 0, WINSIZEX, WINSIZEY);
+				InvalidateRect(_hMapTool, &clearbox, true);
+
+				strcpy_s(mstr, (*toLoad.begin()).c_str());
+				_buttonCount = stoi((*(toLoad.begin() + 1)));
 
 				break;
 			}
@@ -310,6 +345,8 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			_hInput = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 100, 200, 25, _hMapTool, (HMENU) ID_INPUT, NULL, NULL);
 			//WS_VISIBLE가 있으면 윈도우를 만들자마자 화면에 출력한다 (ShowWindow없이도)
 			CreateWindow(TEXT("button"), TEXT("Clear"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 300, 50, 25, _hMapTool, (HMENU)ID_CLEAR, NULL, NULL);
+			CreateWindow(TEXT("button"), TEXT("Save"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 90, 300, 50, 25, _hMapTool, (HMENU)ID_SAVE, NULL, NULL);
+			CreateWindow(TEXT("button"), TEXT("Load"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 140, 300, 50, 25, _hMapTool, (HMENU)ID_LOAD, NULL, NULL);
 			//_test1 = CreateWindow(_lpszClass, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 200, 200, 25, _hMapTool, (HMENU)ID_COUNT, _hInstance, NULL);
 			CreateWindow(TEXT("button"), TEXT("Click"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 250, 200, 25, _hMapTool, (HMENU)ID_BUTTON1, NULL, NULL);
 			//참조:https://www.youtube.com/watch?v=NZkpp-a-tYA

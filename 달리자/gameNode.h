@@ -5,11 +5,13 @@
 static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", WINSIZEX, WINSIZEY);
 //hdc의 비트맵 도화지로 개별 이미지들을 바로 복사하지 않고 _backBuffer의 hMemDC의 비트맵도화지로 일단 먼저 복사함
 //그 후 다 모아진 다음에 hMemDC의 비트맵 도화지에서 hdc의 비트맵 도화지로 복사
+static image* _backBufferMapTool = IMAGEMANAGER->addImage("backBufferMapTool", WINSIZEX, WINSIZEY);
 
 class gameNode
 {
 private:
 	HDC _hdc;
+	//HDC _hdcMapTool;
 	bool _managerInit; //gameNode의 init에서 싱글톤 매니저들의 init 함수들을 실행하는가?
 
 	//image* _backBuffer;	
@@ -32,9 +34,12 @@ public:
 	//상속, 오버라이딩, virtual에 대한 참조:http://blog.eairship.kr/175
 
 	image* getBackBuffer(void) { return _backBuffer; }; //_backBuffer 접근(get) 함수
+	image* getBackBufferMapTool(void) { return _backBufferMapTool; };
 
 	HDC getMemDC() { return _backBuffer->getMemDC(); };
 	HDC getHDC() { return _hdc; };
+	HDC getMemDCMapTool() { return _backBufferMapTool->getMemDC(); };
+	//HDC getHDCMapTool() { return _hdcMapTool; };
 
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);
 

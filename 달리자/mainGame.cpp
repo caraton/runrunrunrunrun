@@ -4,6 +4,7 @@
 #include "MinseokTest.h"
 #include "SiwoongTest.h"
 #include "YounghuiTest.h"
+#include "MapToolScene.h"
 
 //초기화는 앞으로 여기에다가 해라
 HRESULT mainGame::init(void)
@@ -18,6 +19,9 @@ HRESULT mainGame::init(void)
 	SCENEMANAGER->addScene("영휘씬", new YounghuiTest);
 	SCENEMANAGER->changeScene("시웅씬");
 
+	_mapToolScene = new MapToolScene;
+	_mapToolScene->init();
+
 	return S_OK; //S_OK : 때때로 Boolean TRUE 값(0X0)으로 S_FALSE와 함께 사용되며 함수가 성공하였음을 의미한다.
 }
 
@@ -25,6 +29,7 @@ HRESULT mainGame::init(void)
 void mainGame::release(void)
 {
 	gameNode::release();
+	delete _mapToolScene;
 }
 
 //연산은(는) 앞으로 여기에다가 해라
@@ -35,6 +40,10 @@ void mainGame::update(void)
 		gameNode::update();
 
 		SCENEMANAGER->update();
+	}
+	else
+	{
+		_mapToolScene->update();
 	}
 }
 
@@ -62,25 +71,7 @@ void mainGame::render()
 	}
 	else
 	{
-		HDC mapToolDCtest;
-		mapToolDCtest = GetDC(_hMapTool);
-		char teststr[128] = "맵길이 :";
-		sprintf_s(teststr, "맵길이 : %s", mstr);
-
-		TextOut(mapToolDCtest, 30, 150, teststr, strlen(teststr));
-		//TextOut(mapToolDCtest, 90, 150, mstr, strlen(mstr));
-
-		char testtest[128];
-		sprintf_s(testtest, "카운트 : %d", _buttonCount);
-
-		TextOut(mapToolDCtest, 30, 200, testtest, strlen(testtest));
-		//
-		//if (_buttonCount == 10)
-		//{
-		//	PostMessage(_hMapTool, WM_COMMAND, 999, 0); //_hMapTool의 WM_COMMAND 메시지 포스트 wParam에 999저장
-		//}
-
-		ReleaseDC(_hMapTool, mapToolDCtest);
+		_mapToolScene->render();
 	}
 }
 
