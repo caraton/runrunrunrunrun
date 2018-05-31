@@ -4,12 +4,9 @@
 class MinseokTest;
 class YounghuiTest;
 class SiwoongTest;
-class MapToolScene;
 
 class mainGame : public gameNode
 {
-private:
-	MapToolScene * _mapToolScene;
 public:
 	virtual HRESULT init(void);		//WM_CREATE 게임노드에서 상속받음 FAILED(_mg.init())를 사용하기 위해서는 HRESULT를 리턴해야함
 	virtual void release(void);		//WM_DESTROY 게임노드에서 상속받음

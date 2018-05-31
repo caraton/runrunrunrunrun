@@ -7,8 +7,6 @@ HRESULT SiwoongTest::init(void)
 {
 	IMAGEMANAGER->addImage("background_jail", "Image/background_jail.bmp", 600, 800, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("background", "Image/background.bmp", 600, 800, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("bg_jail_mini_02", "Image/bg_jail_mini_02.bmp", 180, 80, 3, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("bg_city_mini_02", "Image/bg_city_mini_02.bmp", 180, 80, 3, 1, true, RGB(255, 0, 255));
 
 	_colManager = new CollisionCheckManager;
 	_colManager->init(WINSIZEY * 2); //맵 총 길이를 넣어줄것

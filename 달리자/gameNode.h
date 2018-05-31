@@ -1,11 +1,15 @@
 #pragma once
 #include "image.h"
 
+#define IMAGEMANAGER imageManager::getSingleton()
+#define WINSIZEX 600						//윈도우 가로크기
+#define WINSIZEY 800						//윈도우 세로크기
+
 //이제 gameNode를 상속받는 클래스들이 복수이므로 class 바깥에 static으로 선언
 static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", WINSIZEX, WINSIZEY);
 //hdc의 비트맵 도화지로 개별 이미지들을 바로 복사하지 않고 _backBuffer의 hMemDC의 비트맵도화지로 일단 먼저 복사함
 //그 후 다 모아진 다음에 hMemDC의 비트맵 도화지에서 hdc의 비트맵 도화지로 복사
-static image* _backBufferMapTool = IMAGEMANAGER->addImage("backBufferMapTool", WINSIZEX, WINSIZEY);
+//static image* _backBufferMapTool = IMAGEMANAGER->addImage("backBufferMapTool", WINSIZEX, WINSIZEY);
 
 class gameNode
 {
@@ -34,11 +38,11 @@ public:
 	//상속, 오버라이딩, virtual에 대한 참조:http://blog.eairship.kr/175
 
 	image* getBackBuffer(void) { return _backBuffer; }; //_backBuffer 접근(get) 함수
-	image* getBackBufferMapTool(void) { return _backBufferMapTool; };
+	//image* getBackBufferMapTool(void) { return _backBufferMapTool; };
 
 	HDC getMemDC() { return _backBuffer->getMemDC(); };
 	HDC getHDC() { return _hdc; };
-	HDC getMemDCMapTool() { return _backBufferMapTool->getMemDC(); };
+	//HDC getMemDCMapTool() { return _backBufferMapTool->getMemDC(); };
 	//HDC getHDCMapTool() { return _hdcMapTool; };
 
 	LRESULT MainProc(HWND, UINT, WPARAM, LPARAM);

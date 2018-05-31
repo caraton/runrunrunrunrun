@@ -4,7 +4,6 @@
 #include "MinseokTest.h"
 #include "SiwoongTest.h"
 #include "YounghuiTest.h"
-#include "MapToolScene.h"
 
 //초기화는 앞으로 여기에다가 해라
 HRESULT mainGame::init(void)
@@ -19,8 +18,8 @@ HRESULT mainGame::init(void)
 	SCENEMANAGER->addScene("영휘씬", new YounghuiTest);
 	SCENEMANAGER->changeScene("시웅씬");
 
-	_mapToolScene = new MapToolScene;
-	_mapToolScene->init();
+	//_mapToolScene = new MapToolScene; singletonBase를 상속받는것으로 변경
+	//_mapToolScene->init();
 
 	return S_OK; //S_OK : 때때로 Boolean TRUE 값(0X0)으로 S_FALSE와 함께 사용되며 함수가 성공하였음을 의미한다.
 }
@@ -29,13 +28,12 @@ HRESULT mainGame::init(void)
 void mainGame::release(void)
 {
 	gameNode::release();
-	delete _mapToolScene;
 }
 
 //연산은(는) 앞으로 여기에다가 해라
 void mainGame::update(void)
 {
-	if (!_mapToolOn)
+	if (MAPTOOLSCENE->_mapToolOn == 0)
 	{
 		gameNode::update();
 
@@ -43,13 +41,13 @@ void mainGame::update(void)
 	}
 	else
 	{
-		_mapToolScene->update();
+		MAPTOOLSCENE->update();
 	}
 }
 
 void mainGame::render()
 {
-	if (!_mapToolOn)
+	if (MAPTOOLSCENE->_mapToolOn == 0)
 	{
 		//%%민석커리큘럼 더블버퍼링
 
@@ -71,7 +69,7 @@ void mainGame::render()
 	}
 	else
 	{
-		_mapToolScene->render();
+		MAPTOOLSCENE->render();
 	}
 }
 

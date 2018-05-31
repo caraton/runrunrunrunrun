@@ -1,5 +1,6 @@
-#include "stdafx.h" //stdafx는 참조를 모아놓은 헤더파일이므로 다른곳에서 stdafx를 참조할 경우 상호참조가 
-					//아니더라도 안전하게 cpp에 적어놓기
+#include "stdafx.h" 
+//stdafx는 참조를 모아놓은 헤더파일이므로 다른곳에서 stdafx를 참조할 경우 상호참조가 
+//아니더라도 안전하게 cpp에 적어놓기
 #include "gameNode.h"
 
 //void gameNode::setBackBuffer()
@@ -36,6 +37,7 @@ HRESULT gameNode::init(bool managerInit)
 		TIMEMANAGER->init();
 		SCENEMANAGER->init();
 		TXTDATA->init();
+		//MAPTOOLSCENE->init();
 	}
 
 	return S_OK;
@@ -51,6 +53,7 @@ void gameNode::release(void) //WM_DESTROY
 		TIMEMANAGER->releaseSingleton();
 		SCENEMANAGER->releaseSingleton();
 		TXTDATA->releaseSingleton();
+		MAPTOOLSCENE->releaseSingleton();
 		
 		//RND->releaseSingleton(); 커리큘럼에서는 하고 있지 않음
 	}
@@ -217,6 +220,13 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		break;
 	}
 
+	case WM_MOUSEWHEEL:
+	{
+		((short)HIWORD(wParam) < 0) ? MAPTOOLSCENE->_scrollY-- : MAPTOOLSCENE->_scrollY++;
+		//마우스 스크롤 참조: http://sisman.tistory.com/4
+		break;
+	}
+
 	case WM_COMMAND:
 	{
 		switch (LOWORD(wParam)) //LOWORD(wParam): WM_COMMAND 신호를 보낸 메뉴(ID_INPUT과 같은)나 액셀러레이터, 컨트롤의 ID
@@ -227,7 +237,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 				{
 					case EN_CHANGE: //EN_CHANGE 문자열이 변경되었고 화면에 출력되었다 EN_UPDATE 문자열이 변경되었고 화면에 출력되기 직전이다.
 					{
-						GetWindowText(_hInput, mstr, 128); //_hInput의 문자열을 받아 str에 저장, 마지막 인수는 str 맥스 크기
+						GetWindowText(MAPTOOLSCENE->_hInput, MAPTOOLSCENE->mstr, 128); //_hInput의 문자열을 받아 str에 저장, 마지막 인수는 str 맥스 크기
 						break;
 					}
 				}
@@ -235,17 +245,17 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			}
 			case ID_CLEAR:
 			{
-				SetWindowText(_hInput, "");
+				SetWindowText(MAPTOOLSCENE->_hInput, "");
 
-				*(mstr) = '\0'; //'\0'은 문자열에서 데이터가 들어있는 마지막칸 바로 다음의 칸에 들어있는 값
+				*(MAPTOOLSCENE->mstr) = '\0'; //'\0'은 문자열에서 데이터가 들어있는 마지막칸 바로 다음의 칸에 들어있는 값
 								//따라서 첫번째칸에 이 값을 넣어주면 비어있는 문자열이 된다.
 								//memset(mstr, 0, sizeof(mstr)); 이방식도 가능
 				
-				_buttonCount = 0;
+				MAPTOOLSCENE->_buttonCount = 0;
 
 				//기존의 mstr로 TextOut 그려진 부분을 지워준다
 				RECT clearbox = RectMake(0, 0, WINSIZEX, WINSIZEY);
-				InvalidateRect(_hMapTool, &clearbox, true);
+				InvalidateRect(MAPTOOLSCENE->_hMapTool, &clearbox, true);
 	
 				break;
 			}
@@ -253,9 +263,9 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			{
 				vector<string> toSave;
 
-				toSave.push_back(mstr);
+				toSave.push_back(MAPTOOLSCENE->mstr);
 
-				toSave.push_back(to_string(_buttonCount));
+				toSave.push_back(to_string(MAPTOOLSCENE->_buttonCount));
 
 				TXTDATA->txtSave("맵툴 실험.txt", toSave);
 
@@ -267,24 +277,64 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 				
 				toLoad = TXTDATA->txtLoad("맵툴 실험.txt");
 
-				*(mstr) = '\0'; //'\0'은 문자열에서 데이터가 들어있는 마지막칸 바로 다음의 칸에 들어있는 값
+				*(MAPTOOLSCENE->mstr) = '\0'; //'\0'은 문자열에서 데이터가 들어있는 마지막칸 바로 다음의 칸에 들어있는 값
 								//따라서 첫번째칸에 이 값을 넣어주면 비어있는 문자열이 된다.
 								//memset(mstr, 0, sizeof(mstr)); 이방식도 가능
 
-				_buttonCount = 0;
+				MAPTOOLSCENE->_buttonCount = 0;
 
 				//기존의 mstr로 TextOut 그려진 부분을 지워준다
 				RECT clearbox = RectMake(0, 0, WINSIZEX, WINSIZEY);
-				InvalidateRect(_hMapTool, &clearbox, true);
+				InvalidateRect(MAPTOOLSCENE->_hMapTool, &clearbox, true);
 
-				strcpy_s(mstr, (*toLoad.begin()).c_str());
-				_buttonCount = stoi((*(toLoad.begin() + 1)));
+				strcpy_s(MAPTOOLSCENE->mstr, (*toLoad.begin()).c_str());
+				MAPTOOLSCENE->_buttonCount = stoi((*(toLoad.begin() + 1)));
+
+				break;
+			}
+			case ID_CREATE:
+			{
+
+				vector<string> toSave;
+
+				toSave.push_back(MAPTOOLSCENE->mstr);
+
+				toSave.push_back(to_string(MAPTOOLSCENE->_buttonCount));
+
+				char nteststr[128] = "맵이름 :";
+				sprintf_s(nteststr, "맵이름 : %s", MAPTOOLSCENE->nstr);
+
+				TXTDATA->txtSave(nteststr, toSave);
+
+				MAPTOOLSCENE->_mapToolOn = 2;
+
+				DestroyWindow(MAPTOOLSCENE->_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
+				MAPTOOLSCENE->_hMapTool = NULL;
+				//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
+
+				DestroyWindow(MAPTOOLSCENE->_hInput);
+				MAPTOOLSCENE->_hInput = NULL;
+
+				if (MAPTOOLSCENE->_hMapTool == NULL)
+				{
+					MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX+200, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
+					//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
+				}
+
+				ShowWindow(MAPTOOLSCENE->_hMapTool, _cmdShow);
+
+				//%%여기에 위에서 저장한 값을 로드해서 scene2 에 적용하기
+				//vector<string> toLoad;
+
+				//toLoad = TXTDATA->txtLoad(nteststr);
+
+				//MAPTOOLSCENE->의 퍼블릭 변수에도 저장?
 
 				break;
 			}
 			case ID_BUTTON1:
 			{
-				_buttonCount++;
+				MAPTOOLSCENE->_buttonCount++;
 
 				//if (_buttonCount == 10)
 				//{
@@ -328,40 +378,43 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		}
 		case VK_F8:
 		{
-			_mapToolOn = true;
-			if (_hMapTool == NULL)
+			MAPTOOLSCENE->init();
+			MAPTOOLSCENE->_mapToolOn = 1;
+			if (MAPTOOLSCENE->_hMapTool == NULL)
 			{
-				_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
+				MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
 				//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
 			}
 
-			ShowWindow(_hMapTool, _cmdShow);
+			ShowWindow(MAPTOOLSCENE->_hMapTool, _cmdShow);
 
 			//참조:http://www.soen.kr/
 			//CreateWindow의 첫번째 인수에는 메인 창의 wndClass 이름을 넣어줘도 되지만
 			//api에 자체 정의된 클래스를 사용할 수도 있다.
 			//TEXT("") 안에 button, static, scrollbar, edit, listbox, combobox를 넣어주면 된다.
 
-			_hInput = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 100, 200, 25, _hMapTool, (HMENU) ID_INPUT, NULL, NULL);
+			MAPTOOLSCENE->_hInput = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 100, 200, 25, MAPTOOLSCENE->_hMapTool, (HMENU) ID_INPUT, NULL, NULL);
 			//WS_VISIBLE가 있으면 윈도우를 만들자마자 화면에 출력한다 (ShowWindow없이도)
-			CreateWindow(TEXT("button"), TEXT("Clear"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 300, 50, 25, _hMapTool, (HMENU)ID_CLEAR, NULL, NULL);
-			CreateWindow(TEXT("button"), TEXT("Save"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 90, 300, 50, 25, _hMapTool, (HMENU)ID_SAVE, NULL, NULL);
-			CreateWindow(TEXT("button"), TEXT("Load"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 140, 300, 50, 25, _hMapTool, (HMENU)ID_LOAD, NULL, NULL);
+			CreateWindow(TEXT("button"), TEXT("Clear"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 300, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_CLEAR, NULL, NULL);
+			CreateWindow(TEXT("button"), TEXT("Save"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 90, 300, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_SAVE, NULL, NULL);
+			CreateWindow(TEXT("button"), TEXT("Load"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 140, 300, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_LOAD, NULL, NULL);
 			//_test1 = CreateWindow(_lpszClass, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 200, 200, 25, _hMapTool, (HMENU)ID_COUNT, _hInstance, NULL);
-			CreateWindow(TEXT("button"), TEXT("Click"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 250, 200, 25, _hMapTool, (HMENU)ID_BUTTON1, NULL, NULL);
+			CreateWindow(TEXT("button"), TEXT("Click"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 250, 200, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_BUTTON1, NULL, NULL);
+
+			CreateWindow(TEXT("button"), TEXT("Create"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 400, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_CREATE, NULL, NULL);
 			//참조:https://www.youtube.com/watch?v=NZkpp-a-tYA
 			break;
 		}
 		case VK_F9:
 		{
-			_mapToolOn = false;
+			MAPTOOLSCENE->_mapToolOn = 0;
 			//ShowWindow(_hMapTool, SW_HIDE);
-			DestroyWindow(_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
-			_hMapTool = NULL;
+			DestroyWindow(MAPTOOLSCENE->_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
+			MAPTOOLSCENE->_hMapTool = NULL;
 			//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
 
-			DestroyWindow(_hInput);
-			_hInput = NULL;
+			DestroyWindow(MAPTOOLSCENE->_hInput);
+			MAPTOOLSCENE->_hInput = NULL;
 			//DestroyWindow(_test1);
 			//DestroyWindow(_test2);
 
@@ -377,7 +430,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		{
 			PostQuitMessage(0);
 		}
-		else if (hWnd == _hMapTool) //WM_DESTROY가 맵툴창에서 온다면
+		else if (hWnd == MAPTOOLSCENE->_hMapTool) //WM_DESTROY가 맵툴창에서 온다면
 		{
 			//PostQuitMessage(0);을 하면 전체 앱이 꺼지므로 여기선 아무것도 하지않는다.
 		}
