@@ -37,6 +37,33 @@ image * imageManager::addImage(string strKey, int width, int height)
 	return img;
 }
 
+//빈 비트맵 이미지 %%맵툴용
+image * imageManager::addImageMapTool(string strKey, int width, int height)
+{
+	image* img = findImage(strKey); //먼저 strKey의 key값을 가진 image가 존재하는지 확인 (_mImageList) 에서
+
+	if (img) //만약 img가 null이 아니면 == _mImageList에 이미 존재하면
+	{
+		return img;
+	}
+
+	//img 가 null이면
+	img = new image;
+
+	if (FAILED(img->initMapTool(width, height))) //img 초기화
+	{
+		SAFE_DELETE(img);
+
+		return NULL;
+	}
+
+	//map에서 insert할때 1)make_pair(first, second) <--- 알아서 형을 찾아서 추가
+	//					 2)pair(자료형, 자료형)<first, second> <-- 형 지정하고 추가
+	_mImageList.insert(make_pair(strKey, img));
+
+	return img;
+}
+
 //파일 이미지 1
 image * imageManager::addImage(string strKey, const char * fileName, int width, int height, BOOL trans, COLORREF transColor, BOOL reset)
 {

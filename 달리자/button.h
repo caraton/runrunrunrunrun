@@ -27,6 +27,7 @@ private:
 	const char* _imageName; //버튼 이미지 이름
 	image* _image; //이미지 매니저의 findImage(_imageName)으로 리턴받은 이미지 포인터 저장
 	RECT _rc; //버튼 인식부분 영역을 담을 렉트
+
 	float _x, _y; //버튼의 중점 x,y 좌표값들 init에서 받아 저장
 
 	POINT _btnDownFramePoint; //버튼이 눌릴 때 프레임렌더에서 몇번째 그림을 렌더할지 알려줄 정보 담음
@@ -40,10 +41,16 @@ public:
 	//이미지매니저에서 이미지를 불러들일때 사용할 imageName, 버튼 중점 x좌표, 버튼 중점 y좌표 (RectMakeCenter사용)
 	//, POINT btnDownFramePoint, POINT btnUpFramePoint 둘은 버튼의 상태에 따라 프레임 렌더로 버튼 이미지 그림을 바꿀 때 필요한
 	//프레임 렌더 x,y 좌표값 저장, 버튼이 눌렸을 때 실행할 콜백함수 포인터 cbFunction
-	
+	//3프레임짜리 버튼 init
+
+	HRESULT init(const char* imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION cbFunction);
+	//2 프레임짜리 init
+
 	void release();
 	void update();
 	void render(HDC hdc); //맵툴에서도 이 버튼 클래스를 사용할 수 있도록 render함수 변경(HDC를 인수로 받도록)
+
+	void changeRECTCoordinate(int x, int y) { _rc = RectMakeCenter(x, y, _image->getFrameWidth(), _image->getFrameHeight()); };
 
 	button();
 	~button();

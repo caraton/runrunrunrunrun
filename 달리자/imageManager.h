@@ -20,6 +20,7 @@ public:
 
 	//빈 비트맵 이미지
 	image* addImage(string strKey, int width, int height);
+	image* addImageMapTool(string strKey, int width, int height);
 	
 	//파일 이미지
 	image* addImage(string strKey, const char* fileName, int width, int height, BOOL trans = FALSE, COLORREF transColor = FALSE , BOOL reset = FALSE);

@@ -48,6 +48,35 @@ HRESULT button::init(const char * imageName, int x, int y, POINT btnDownFramePoi
 	return S_OK;
 }
 
+HRESULT button::init(const char * imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION cbFunction)
+{
+	_callbackFunction = static_cast<CALLBACK_FUNCTION>(cbFunction);
+	//c++ 변수들 형변환을 위한 4가지 형변환 연산자들 : http://egloos.zum.com/sweeper/v/1907485
+
+	_direction = BUTTONDIRECTION_NULL;
+
+	_x = x;
+	_y = y;
+
+	_btnUpFramePoint = btnUpFramePoint;
+	_btnDownFramePoint = btnDownFramePoint;
+	_btnMouseoverFramePoint = btnUpFramePoint;
+
+	_imageName = imageName;
+	_image = IMAGEMANAGER->findImage(imageName);
+
+	//if (_image->getFrameHeight() != 0)
+	//{
+	_rc = RectMakeCenter(x, y, _image->getFrameWidth(), _image->getFrameHeight());
+	//}
+	//else //버튼 이미지가 프레임렌더 이용 이미지가 아닌 경우
+	//{
+	//_rc = RectMakeCenter(x, y, _image->getWidth(), _image->getHeight());
+	//}
+
+	return S_OK;
+}
+
 void button::release()
 {
 }

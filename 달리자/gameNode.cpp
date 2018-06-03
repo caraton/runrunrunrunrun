@@ -224,6 +224,10 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	{
 		((short)HIWORD(wParam) < 0) ? MAPTOOLSCENE->_scrollY-- : MAPTOOLSCENE->_scrollY++;
 		//마우스 스크롤 참조: http://sisman.tistory.com/4
+
+		//맵툴 2번째창도 더블버퍼링 적용완료
+		//RECT clearbox = RectMake( WINSIZEX, 0, 200, WINSIZEY );
+		//InvalidateRect(MAPTOOLSCENE->_hMapTool, &clearbox, true);
 		break;
 	}
 
@@ -314,12 +318,15 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 				DestroyWindow(MAPTOOLSCENE->_hInput);
 				MAPTOOLSCENE->_hInput = NULL;
+				MAPTOOLSCENE->release();
 
 				if (MAPTOOLSCENE->_hMapTool == NULL)
 				{
 					MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX+200, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
 					//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
 				}
+
+				MAPTOOLSCENE->init2(); //창이 새로 열리면서 크기가 달라졌으므로 GetDC(_hMapTool)을 새로이 실행해서 수정
 
 				ShowWindow(MAPTOOLSCENE->_hMapTool, _cmdShow);
 
@@ -378,13 +385,15 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		}
 		case VK_F8:
 		{
-			MAPTOOLSCENE->init();
-			MAPTOOLSCENE->_mapToolOn = 1;
 			if (MAPTOOLSCENE->_hMapTool == NULL)
 			{
 				MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
 				//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
 			}
+
+			MAPTOOLSCENE->init(); //_hMapTool이 위에서 생성된 후에야 init 안에서 GetDC(_hMapTool)을 제대로 할 수 있다.
+			MAPTOOLSCENE->_mapToolOn = 1;
+
 
 			ShowWindow(MAPTOOLSCENE->_hMapTool, _cmdShow);
 

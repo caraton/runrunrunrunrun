@@ -11,20 +11,22 @@ MapToolScene::MapToolScene()
 
 MapToolScene::~MapToolScene()
 {
+	ReleaseDC(_hMapTool, _hdcMapTool);
 }
 
 HRESULT MapToolScene::init(void)
 {
+	_hdcMapTool = GetDC(_hMapTool);
 
 	//%%맵툴용
 	IMAGEMANAGER->addFrameImage("bg_jail_mini_02", "Image/bg_jail_mini_02.bmp", 180, 80, 3, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("bg_city_mini_02", "Image/bg_city_mini_02.bmp", 180, 80, 3, 1, true, RGB(255, 0, 255));
 
-	IMAGEMANAGER->addImage("object_box", "Image/Obstacles/object_box.bmp", 50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("object_can", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("object_greeen", "Image/Obstacles/object_greeen.bmp", 50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("object_yellow", "Image/Obstacles/object_yellow.bmp", 50, 50, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("테스트장애물", "Image/Obstacles/enemy.bmp", 40, 40, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("object_box", "Image/Obstacles/object_box.bmp", 50, 50, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("object_can", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("object_greeen", "Image/Obstacles/object_greeen.bmp", 50, 50, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("object_yellow", "Image/Obstacles/object_yellow.bmp", 50, 50, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("테스트장애물", "Image/Obstacles/enemy.bmp", 40, 40, true, RGB(255, 0, 255));
 
 	_mapToolOn = 0;
 	_jailB = new button;
@@ -41,6 +43,44 @@ HRESULT MapToolScene::init(void)
 	//button* temp = new button;
 	//temp->init("object_box", 700, 50, )
 
+	//_loopY = 0;
+	//_scrollY = 0;
+
+	return S_OK;
+}
+
+HRESULT MapToolScene::init2(void)
+{
+	_hdcMapTool = GetDC(_hMapTool);
+
+	//%%맵툴용
+
+	IMAGEMANAGER->addFrameImage("테스트장애물맵툴", "Image/Obstacles/enemy_icon.bmp", 80, 40, 2, 1, true, RGB(255, 0, 255));
+	button* btemp = new button;
+	btemp->init("테스트장애물맵툴", 675, 45, PointMake(1, 0), PointMake(0, 0), &obButton);
+	_bList.push_back(btemp);
+
+	_obList = TXTDATA->txtLoad("장애물 목록.txt");
+
+	int i = 0;
+	for (_oliter = _obList.begin(); _oliter != _obList.end()-1; ++_oliter)
+	{
+		char temp[128];
+		char temp2[128];
+		strcpy_s(temp2, (*_oliter).c_str());
+		sprintf_s(temp, "Image/Obstacles/%s.bmp", temp2);
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, 100, 50, 2, 1, true, RGB(255, 0, 255));
+		button* btemp = new button;
+		btemp->init(temp2, 675, 145+ i*100, PointMake(1,0), PointMake(0, 0), &obButton);
+		_bList.push_back(btemp);
+		i++;
+	}
+
+	//IMAGEMANAGER->addImage("object_box", "Image/Obstacles/object_box.bmp", 50, 50, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("object_can", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("object_greeen", "Image/Obstacles/object_greeen.bmp", 50, 50, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("object_yellow", "Image/Obstacles/object_yellow.bmp", 50, 50, true, RGB(255, 0, 255));
+
 	_loopY = 0;
 	_scrollY = 0;
 
@@ -49,6 +89,7 @@ HRESULT MapToolScene::init(void)
 
 void MapToolScene::release(void)
 {
+	ReleaseDC(_hMapTool, _hdcMapTool);
 }
 
 void MapToolScene::update(void)
@@ -86,12 +127,19 @@ void MapToolScene::update(void)
 		{
 			_loopY += 5;
 		}
+
+		int i = 0;
+		for (_bliter = _bList.begin(); _bliter != _bList.end(); ++_bliter)
+		{
+			(*_bliter)->changeRECTCoordinate(675, 45 + i * 100 + _scrollY * 10);
+			(*_bliter)->update();
+			i++;
+		}
 	}
 }
 
 void MapToolScene::render(void)
 {
-	HDC _hdcMapTool = GetDC(_hMapTool);
 
 	if (_mapToolOn == 1)
 	{
@@ -131,7 +179,6 @@ void MapToolScene::render(void)
 
 		//IMAGEMANAGER->findImage("background_jail")->render()
 
-		//ReleaseDC(_hMapTool, mapToolDCtest);
 		//==============================================================================================================
 		//최종적으로 BackBuffer에서 hdc의 비트맵 도화지로 복사
 
@@ -139,15 +186,23 @@ void MapToolScene::render(void)
 	}
 	else if (_mapToolOn == 2)
 	{
-		IMAGEMANAGER->findImage("background_jail")->loopRender(_hdcMapTool, &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _loopY);
-		IMAGEMANAGER->findImage("object_box")->render(_hdcMapTool, 650, 20 + _scrollY);
-		IMAGEMANAGER->findImage("object_can")->render(_hdcMapTool, 650, 120 + _scrollY);
-		IMAGEMANAGER->findImage("object_greeen")->render(_hdcMapTool, 650, 220 + _scrollY);
-		IMAGEMANAGER->findImage("object_yellow")->render(_hdcMapTool, 650, 320 + _scrollY);
-		IMAGEMANAGER->findImage("테스트장애물")->render(_hdcMapTool, 650, 420 + _scrollY);
+		PatBlt(_backBufferMapTool->getMemDC(), 0, 0, WINSIZEX + 200, WINSIZEY, WHITENESS);
+		//==============================================================================================================
+		IMAGEMANAGER->findImage("background_jail")->loopRender(_backBufferMapTool->getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _loopY);
+		//IMAGEMANAGER->findImage("object_box")->render(_backBufferMapTool->getMemDC(), 650, 20 + _scrollY*10);
+		//IMAGEMANAGER->findImage("object_can")->render(_backBufferMapTool->getMemDC(), 650, 120 + _scrollY*10);
+		//IMAGEMANAGER->findImage("object_greeen")->render(_backBufferMapTool->getMemDC(), 650, 220 + _scrollY*10);
+		//IMAGEMANAGER->findImage("object_yellow")->render(_backBufferMapTool->getMemDC(), 650, 320 + _scrollY*10);
+		//IMAGEMANAGER->findImage("테스트장애물")->render(_backBufferMapTool->getMemDC(), 650, 20 + _scrollY * 10);
+		int i = 0;
+		for (_bliter = _bList.begin(); _bliter != _bList.end(); ++_bliter)
+		{
+			(*_bliter)->render(_backBufferMapTool->getMemDC());
+			i++;
+		}
+		//==============================================================================================================
+		_backBufferMapTool->render(_hdcMapTool, 0, 0);
 	}
-
-	ReleaseDC(_hMapTool, _hdcMapTool);
 }
 
 void MapToolScene::cityButton(void)
@@ -162,5 +217,10 @@ void MapToolScene::jailButton(void)
 	RECT clearbox = RectMake(250, 200, 500, 100);
 	InvalidateRect(_hMapTool, &clearbox, true);
 	strcpy_s(backgroundChoiceStr, "bg_jail_mini_02");
+}
+
+void MapToolScene::obButton(void)
+{
+
 }
 

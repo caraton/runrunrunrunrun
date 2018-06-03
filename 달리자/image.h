@@ -73,6 +73,8 @@ public:
 
 	//빈 비트맵 초기화
 	HRESULT init(int width, int height);
+	//빈 비트맵 초기화 %%맵툴용
+	HRESULT initMapTool(int width, int height);
 	//파일 비트맵 초기화
 	HRESULT init(const char* fileName, int width, int height, BOOL trans = FALSE, COLORREF transColor = FALSE);
 	//함수 사용할 때, 4번째 5번째 인수를 적지 않아도 기본값 FALSE가 들어감

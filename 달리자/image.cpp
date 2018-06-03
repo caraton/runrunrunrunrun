@@ -69,6 +69,60 @@ HRESULT image::init(int width, int height)
 	return S_OK;
 }
 
+//빈 비트맵 초기화 (BackDC를 담은 백버퍼 초기화에 사용) %% 맵툴용
+HRESULT image::initMapTool(int width, int height)
+{
+	//혹시나 이미지 정보가 들어가 있으면 해제
+	if (_imageInfo != NULL)
+	{
+		release();
+	}
+
+	HDC hdc = GetDC(MAPTOOLSCENE->_hMapTool);
+
+	_imageInfo = new IMAGE_INFO; //_imageInfo는 tagImageInfo(== IMAGE_INFO)를 가리키는 포인터(LPIMAGE_INFO)
+								 //=> 동적할당해야함
+	_imageInfo->loadType = LOAD_EMPTY; //빈 비트맵 초기화
+	_imageInfo->resID = 0;
+	_imageInfo->hMemDC = CreateCompatibleDC(hdc);
+	_imageInfo->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, width, height);
+	_imageInfo->hOBit = (HBITMAP)SelectObject(_imageInfo->hMemDC, _imageInfo->hBit);
+	//SelectObject로 hMemDC에 hBit를 집어넣고 리턴값으로 나오는 기존값을 hObit에 저장
+	_imageInfo->width = width;
+	_imageInfo->height = height;
+
+	_fileName = NULL;
+
+	_trans = FALSE;
+	_transColor = RGB(0, 0, 0);
+
+	//알파블렌드 셋팅
+	_blendFunc.BlendFlags = 0;
+	_blendFunc.AlphaFormat = 0;
+	_blendFunc.BlendOp = AC_SRC_OVER;
+
+	_blendImage = new IMAGE_INFO;
+	_blendImage->loadType = LOAD_EMPTY;
+	_blendImage->resID = 0;
+	_blendImage->hMemDC = CreateCompatibleDC(hdc);
+	_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
+	_blendImage->hOBit = (HBITMAP)SelectObject(_blendImage->hMemDC, _blendImage->hBit);
+	_blendImage->width = WINSIZEX;
+	_blendImage->height = WINSIZEY;
+	//
+
+	if (_imageInfo->hBit == NULL) //초기화가 안되어있음
+	{
+		release();
+
+		return E_FAIL;
+	}
+
+	ReleaseDC(MAPTOOLSCENE->_hMapTool, hdc); //HDC hdc = GetDC(_hWnd); 로 가져온 것을 반드시 해제해주어야 한다.
+
+	return S_OK;
+}
+
 //파일 비트맵 초기화
 HRESULT image::init(const char * fileName, int width, int height, BOOL trans, COLORREF transColor)
 {
