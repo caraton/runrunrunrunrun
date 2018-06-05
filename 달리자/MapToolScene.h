@@ -15,18 +15,21 @@ private:
 	vector<button*> _objectBs;
 	int _totalObjectCount = 5;
 
-	//char backgroundChoiceStr[128];
-	static char backgroundChoiceStr[128];
-	//backgroundChoiceStr은 static 콜백함수 cityButton과 jailButton에서 사용되므로 static 변수여야한다.
-	//(static 함수는 멤버변수 사용 불가능하고 오직 static 변수만 사용 가능)
+
 
 	float _loopY;
+	float _maxY;
 
 	vector<string> _obList;
 	vector<string>::iterator _oliter;
 
 	vector<button*> _bList;
 	vector<button*>::iterator _bliter;
+
+	static string _currentImageName;
+	static image* _currentImage;
+	static bool _isCurrentOn;
+	vector<string> _3tuplesList;
 
 public:
 	//HWND _hMapTool; //맵툴 윈도우 핸들 //CreateWindow는 gameNode의 MainProc에서 한다
@@ -36,9 +39,16 @@ public:
 	int _mapToolOn = 0;
 
 	HWND _hInput;
-	char mstr[128] = "맵길이";
+	char mstr[128] = "0";
+	int mint;
+
 
 	char nstr[128] = "맵이름";
+
+	//char backgroundChoiceStr[128];
+	static char backgroundChoiceStr[128];
+	//backgroundChoiceStr은 static 콜백함수 cityButton과 jailButton에서 사용되므로 static 변수여야한다.
+	//(static 함수는 멤버변수 사용 불가능하고 오직 static 변수만 사용 가능)
 
 	int _buttonCount = 0;
 
@@ -59,7 +69,7 @@ public:
 	//void cityButton(void);	  //button 클래스의 CALLBACK_FUNCTION의 타입 void (*) (void)와 달라지므로
 	//void jailButton(void);	  //button 클래스의 init에 넣을 수가 없다.
 
-	static void obButton(void);
+	static void obButton(image* image);
 
 	MapToolScene();
 	~MapToolScene();

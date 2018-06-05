@@ -3,6 +3,9 @@
 
 char MapToolScene::backgroundChoiceStr[128] = " ";
 HWND MapToolScene::_hMapTool = NULL;
+string MapToolScene::_currentImageName;
+image* MapToolScene::_currentImage = NULL;
+bool MapToolScene::_isCurrentOn = false;
 
 MapToolScene::MapToolScene()
 {
@@ -33,6 +36,8 @@ HRESULT MapToolScene::init(void)
 	_jailB->init("bg_jail_mini_02", 280, 140, PointMake(2, 0), PointMake(0, 0), PointMake(1, 0), &jailButton);
 	_cityB = new button;
 	_cityB->init("bg_city_mini_02", 350, 140, PointMake(2, 0), PointMake(0, 0), PointMake(1, 0), &cityButton);
+
+	mint = 0;
 
 	//for (int i = 0; i < _totalObjectCount; ++i)
 	//{
@@ -121,18 +126,34 @@ void MapToolScene::update(void)
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			_loopY -= 5;
-		}	
-		else if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-			_loopY += 5;
+			if (_loopY >= -mint)
+			{
+				_loopY -= 5;
+			}
+			else
+			{
+				_loopY = -mint;
+			}
 		}
+
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+		{
+			if (_loopY <= 0)
+			{
+				_loopY += 5;
+			}
+			else
+			{
+				_loopY = 0;
+			}
+		}
+
 
 		int i = 0;
 		for (_bliter = _bList.begin(); _bliter != _bList.end(); ++_bliter)
 		{
 			(*_bliter)->changeRECTCoordinate(675, 45 + i * 100 + _scrollY * 10);
-			(*_bliter)->update();
+			(*_bliter)->update2();
 			i++;
 		}
 	}
@@ -188,7 +209,14 @@ void MapToolScene::render(void)
 	{
 		PatBlt(_backBufferMapTool->getMemDC(), 0, 0, WINSIZEX + 200, WINSIZEY, WHITENESS);
 		//==============================================================================================================
-		IMAGEMANAGER->findImage("background_jail")->loopRender(_backBufferMapTool->getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _loopY);
+		if (!strcmp(backgroundChoiceStr, "bg_jail_mini_02"))
+		{
+			IMAGEMANAGER->findImage("background_jail")->loopRender(_backBufferMapTool->getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _loopY);
+		}
+		else if (!strcmp(backgroundChoiceStr, "bg_city_mini_02"))
+		{
+			IMAGEMANAGER->findImage("background")->loopRender(_backBufferMapTool->getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _loopY);
+		}
 		//IMAGEMANAGER->findImage("object_box")->render(_backBufferMapTool->getMemDC(), 650, 20 + _scrollY*10);
 		//IMAGEMANAGER->findImage("object_can")->render(_backBufferMapTool->getMemDC(), 650, 120 + _scrollY*10);
 		//IMAGEMANAGER->findImage("object_greeen")->render(_backBufferMapTool->getMemDC(), 650, 220 + _scrollY*10);
@@ -199,6 +227,11 @@ void MapToolScene::render(void)
 		{
 			(*_bliter)->render(_backBufferMapTool->getMemDC());
 			i++;
+		}
+
+		if (_isCurrentOn && _ptMouse.x <= WINSIZEX)
+		{
+			_currentImage->frameRender(_backBufferMapTool->getMemDC(), _ptMouse.x - (_currentImage->getFrameWidth() / 2), _ptMouse.y - (_currentImage->getFrameHeight() / 2), 0, 0);
 		}
 		//==============================================================================================================
 		_backBufferMapTool->render(_hdcMapTool, 0, 0);
@@ -219,8 +252,10 @@ void MapToolScene::jailButton(void)
 	strcpy_s(backgroundChoiceStr, "bg_jail_mini_02");
 }
 
-void MapToolScene::obButton(void)
+void MapToolScene::obButton(image* image)
 {
-
+	//_currentImageName = imageName;
+	_currentImage = image;
+	_isCurrentOn = true;
 }
 

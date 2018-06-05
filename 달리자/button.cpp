@@ -77,6 +77,35 @@ HRESULT button::init(const char * imageName, int x, int y, POINT btnDownFramePoi
 	return S_OK;
 }
 
+HRESULT button::init(const char * imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION2 cbFunction2)
+{
+	_callbackFunction2 = static_cast<CALLBACK_FUNCTION2>(cbFunction2);
+	//c++ 변수들 형변환을 위한 4가지 형변환 연산자들 : http://egloos.zum.com/sweeper/v/1907485
+
+	_direction = BUTTONDIRECTION_NULL;
+
+	_x = x;
+	_y = y;
+
+	_btnUpFramePoint = btnUpFramePoint;
+	_btnDownFramePoint = btnDownFramePoint;
+	_btnMouseoverFramePoint = btnUpFramePoint;
+
+	_imageName = imageName;
+	_image = IMAGEMANAGER->findImage(imageName);
+
+	//if (_image->getFrameHeight() != 0)
+	//{
+	_rc = RectMakeCenter(x, y, _image->getFrameWidth(), _image->getFrameHeight());
+	//}
+	//else //버튼 이미지가 프레임렌더 이용 이미지가 아닌 경우
+	//{
+	//_rc = RectMakeCenter(x, y, _image->getWidth(), _image->getHeight());
+	//}
+
+	return S_OK;
+}
+
 void button::release()
 {
 }
@@ -93,6 +122,31 @@ void button::update()
 		{
 			_direction = BUTTONDIRECTION_UP;
 			_callbackFunction(); //콜백함수는 버튼이 눌린 순간이 아니라 눌리고 나서 때어진 순간에 실행
+		}
+		else if (_direction != BUTTONDIRECTION_DOWN)
+		{
+			_direction = BUTTONDIRECTION_MOUSEOVER;
+		}
+	}
+	else
+	{
+		_direction = BUTTONDIRECTION_NULL;
+	}
+}
+
+void button::update2()
+{
+	if (PtInRect(&_rc, _ptMouse)) //버튼 영역 안에 마우스가 들어왔는가?
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) //VK_LBUTTON 마우스 왼쪽키
+		{
+			_direction = BUTTONDIRECTION_DOWN;
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && _direction == BUTTONDIRECTION_DOWN)
+		{
+			_direction = BUTTONDIRECTION_UP;
+			//string temp(_imageName);
+			_callbackFunction2(_image); //콜백함수는 버튼이 눌린 순간이 아니라 눌리고 나서 때어진 순간에 실행
 		}
 		else if (_direction != BUTTONDIRECTION_DOWN)
 		{

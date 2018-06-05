@@ -242,6 +242,8 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 					case EN_CHANGE: //EN_CHANGE 문자열이 변경되었고 화면에 출력되었다 EN_UPDATE 문자열이 변경되었고 화면에 출력되기 직전이다.
 					{
 						GetWindowText(MAPTOOLSCENE->_hInput, MAPTOOLSCENE->mstr, 128); //_hInput의 문자열을 받아 str에 저장, 마지막 인수는 str 맥스 크기
+						//MAPTOOLSCENE->mint = GetDlgItemInt(MAPTOOLSCENE->_hInput, ID_INPUT, NULL, FALSE);
+						//GetDlgItemInt(HWND, int(데이터를 받아올 컨트롤 이름), BOOL* 이 함수의 성공여부를 받을 불포인터, BOOL(참이면 텍스트 맨 앞에-부호가 있는지 확인하고, 거짓이면 확인안함))
 						break;
 					}
 				}
@@ -268,6 +270,8 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 				vector<string> toSave;
 
 				toSave.push_back(MAPTOOLSCENE->mstr);
+
+				toSave.push_back(MAPTOOLSCENE->backgroundChoiceStr);
 
 				toSave.push_back(to_string(MAPTOOLSCENE->_buttonCount));
 
@@ -303,12 +307,11 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 				toSave.push_back(MAPTOOLSCENE->mstr);
 
+				toSave.push_back(MAPTOOLSCENE->backgroundChoiceStr);
+
 				toSave.push_back(to_string(MAPTOOLSCENE->_buttonCount));
 
-				char nteststr[128] = "맵이름 :";
-				sprintf_s(nteststr, "맵이름 : %s", MAPTOOLSCENE->nstr);
-
-				TXTDATA->txtSave(nteststr, toSave);
+				TXTDATA->txtSave("맵툴 실험.txt", toSave);
 
 				MAPTOOLSCENE->_mapToolOn = 2;
 
@@ -331,6 +334,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 				ShowWindow(MAPTOOLSCENE->_hMapTool, _cmdShow);
 
 				//%%여기에 위에서 저장한 값을 로드해서 scene2 에 적용하기
+				MAPTOOLSCENE->mint = stoi(toSave[0]);
 				//vector<string> toLoad;
 
 				//toLoad = TXTDATA->txtLoad(nteststr);
@@ -402,7 +406,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			//api에 자체 정의된 클래스를 사용할 수도 있다.
 			//TEXT("") 안에 button, static, scrollbar, edit, listbox, combobox를 넣어주면 된다.
 
-			MAPTOOLSCENE->_hInput = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 100, 200, 25, MAPTOOLSCENE->_hMapTool, (HMENU) ID_INPUT, NULL, NULL);
+			MAPTOOLSCENE->_hInput = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | ES_NUMBER, 30, 100, 200, 25, MAPTOOLSCENE->_hMapTool, (HMENU) ID_INPUT, NULL, NULL);
 			//WS_VISIBLE가 있으면 윈도우를 만들자마자 화면에 출력한다 (ShowWindow없이도)
 			CreateWindow(TEXT("button"), TEXT("Clear"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 300, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_CLEAR, NULL, NULL);
 			CreateWindow(TEXT("button"), TEXT("Save"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 90, 300, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_SAVE, NULL, NULL);

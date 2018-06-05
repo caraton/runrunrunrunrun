@@ -11,6 +11,8 @@
 typedef void(*CALLBACK_FUNCTION)(void);
 //void func (void) 인 함수의 포인터 void (*) (void)를 typedef를 이용해 CALLBACK_FUNCTION으로 정의
 
+typedef void(*CALLBACK_FUNCTION2)(image*);
+
 enum BUTTONDIRECTION
 {
 	BUTTONDIRECTION_NULL, //버튼이 안눌릴 때
@@ -35,6 +37,7 @@ private:
 	POINT _btnMouseoverFramePoint; //마우스오버 상태일 때 프레임렌더에서 몇번째 그림을 렌더할지 알려줄 정보 담음
 
 	CALLBACK_FUNCTION _callbackFunction; //버튼이 눌리면 실행할 함수의 포인터를 담을 변수
+	CALLBACK_FUNCTION2 _callbackFunction2;
 
 public:
 	HRESULT init(const char* imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, POINT btnMouseoverFramePoint, CALLBACK_FUNCTION cbFunction);
@@ -45,9 +48,12 @@ public:
 
 	HRESULT init(const char* imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION cbFunction);
 	//2 프레임짜리 init
+	HRESULT init(const char* imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION2 cbFunction2);
+	//2 프레임짜리 init + CALLBACK_FUNCTION2
 
 	void release();
 	void update();
+	void update2();
 	void render(HDC hdc); //맵툴에서도 이 버튼 클래스를 사용할 수 있도록 render함수 변경(HDC를 인수로 받도록)
 
 	void changeRECTCoordinate(int x, int y) { _rc = RectMakeCenter(x, y, _image->getFrameWidth(), _image->getFrameHeight()); };
