@@ -4,6 +4,13 @@
 
 static image* _backBufferMapTool = IMAGEMANAGER->addImage("backBufferMapTool", WINSIZEX + 200, WINSIZEY);
 
+struct newObjectData
+{
+	POINT _xycoordinate;
+	string _imageName;
+	image* _image;
+};
+
 class MapToolScene : public singletonBase<MapToolScene>
 {
 private:
@@ -15,7 +22,7 @@ private:
 	vector<button*> _objectBs;
 	int _totalObjectCount = 5;
 
-
+	RECT _mapArea;
 
 	float _loopY;
 	float _maxY;
@@ -29,7 +36,8 @@ private:
 	static string _currentImageName;
 	static image* _currentImage;
 	static bool _isCurrentOn;
-	vector<string> _3tuplesList;
+	vector<newObjectData*> _3tuplesList;
+	vector<newObjectData*>::iterator _3tupleiter;
 
 public:
 	//HWND _hMapTool; //맵툴 윈도우 핸들 //CreateWindow는 gameNode의 MainProc에서 한다
@@ -69,7 +77,7 @@ public:
 	//void cityButton(void);	  //button 클래스의 CALLBACK_FUNCTION의 타입 void (*) (void)와 달라지므로
 	//void jailButton(void);	  //button 클래스의 init에 넣을 수가 없다.
 
-	static void obButton(image* image);
+	static void obButton(int imageNumer);
 
 	MapToolScene();
 	~MapToolScene();

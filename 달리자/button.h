@@ -11,7 +11,7 @@
 typedef void(*CALLBACK_FUNCTION)(void);
 //void func (void) 인 함수의 포인터 void (*) (void)를 typedef를 이용해 CALLBACK_FUNCTION으로 정의
 
-typedef void(*CALLBACK_FUNCTION2)(image*);
+typedef void(*CALLBACK_FUNCTION2)(int);
 
 enum BUTTONDIRECTION
 {
@@ -26,7 +26,7 @@ class button : public gameNode
 private:
 	BUTTONDIRECTION _direction; //버튼의 상태를 알려줄 enum BUTTONDIRECTION 의 인스턴스
 
-	const char* _imageName; //버튼 이미지 이름
+	string _imageName; //버튼 이미지 이름
 	image* _image; //이미지 매니저의 findImage(_imageName)으로 리턴받은 이미지 포인터 저장
 	RECT _rc; //버튼 인식부분 영역을 담을 렉트
 
@@ -40,15 +40,15 @@ private:
 	CALLBACK_FUNCTION2 _callbackFunction2;
 
 public:
-	HRESULT init(const char* imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, POINT btnMouseoverFramePoint, CALLBACK_FUNCTION cbFunction);
+	HRESULT init(string imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, POINT btnMouseoverFramePoint, CALLBACK_FUNCTION cbFunction);
 	//이미지매니저에서 이미지를 불러들일때 사용할 imageName, 버튼 중점 x좌표, 버튼 중점 y좌표 (RectMakeCenter사용)
 	//, POINT btnDownFramePoint, POINT btnUpFramePoint 둘은 버튼의 상태에 따라 프레임 렌더로 버튼 이미지 그림을 바꿀 때 필요한
 	//프레임 렌더 x,y 좌표값 저장, 버튼이 눌렸을 때 실행할 콜백함수 포인터 cbFunction
 	//3프레임짜리 버튼 init
 
-	HRESULT init(const char* imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION cbFunction);
+	HRESULT init(string imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION cbFunction);
 	//2 프레임짜리 init
-	HRESULT init(const char* imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION2 cbFunction2);
+	HRESULT init(string imageName, int x, int y, POINT btnDownFramePoint, POINT btnUpFramePoint, CALLBACK_FUNCTION2 cbFunction2);
 	//2 프레임짜리 init + CALLBACK_FUNCTION2
 
 	void release();

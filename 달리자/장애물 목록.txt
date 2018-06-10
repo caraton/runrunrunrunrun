@@ -1,1 +1,1 @@
-object_box_icon,object_can_icon,object_greeen_icon,object_yellow_icon,
+enemy_icon,object_box_icon,object_can_icon,object_greeen_icon,object_yellow_icon,

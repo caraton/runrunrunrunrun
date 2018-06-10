@@ -60,10 +60,10 @@ HRESULT MapToolScene::init2(void)
 
 	//%%맵툴용
 
-	IMAGEMANAGER->addFrameImage("테스트장애물맵툴", "Image/Obstacles/enemy_icon.bmp", 80, 40, 2, 1, true, RGB(255, 0, 255));
-	button* btemp = new button;
-	btemp->init("테스트장애물맵툴", 675, 45, PointMake(1, 0), PointMake(0, 0), &obButton);
-	_bList.push_back(btemp);
+	//IMAGEMANAGER->addFrameImage("테스트장애물맵툴", "Image/Obstacles/enemy_icon.bmp", 80, 40, 2, 1, true, RGB(255, 0, 255));
+	//button* btemp = new button;
+	//btemp->init("테스트장애물맵툴", 675, 45, PointMake(1, 0), PointMake(0, 0), &obButton);
+	//_bList.push_back(btemp);
 
 	_obList = TXTDATA->txtLoad("장애물 목록.txt");
 
@@ -76,7 +76,7 @@ HRESULT MapToolScene::init2(void)
 		sprintf_s(temp, "Image/Obstacles/%s.bmp", temp2);
 		IMAGEMANAGER->addFrameImage(*_oliter, temp, 100, 50, 2, 1, true, RGB(255, 0, 255));
 		button* btemp = new button;
-		btemp->init(temp2, 675, 145+ i*100, PointMake(1,0), PointMake(0, 0), &obButton);
+		btemp->init(temp2, 675, 45+ i*100, PointMake(1,0), PointMake(0, 0), &obButton);
 		_bList.push_back(btemp);
 		i++;
 	}
@@ -85,6 +85,8 @@ HRESULT MapToolScene::init2(void)
 	//IMAGEMANAGER->addImage("object_can", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addImage("object_greeen", "Image/Obstacles/object_greeen.bmp", 50, 50, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addImage("object_yellow", "Image/Obstacles/object_yellow.bmp", 50, 50, true, RGB(255, 0, 255));
+
+	_mapArea = RectMake(0, 0, WINSIZEX, WINSIZEY);
 
 	_loopY = 0;
 	_scrollY = 0;
@@ -155,6 +157,19 @@ void MapToolScene::update(void)
 			(*_bliter)->changeRECTCoordinate(675, 45 + i * 100 + _scrollY * 10);
 			(*_bliter)->update2();
 			i++;
+		}
+
+		if (_isCurrentOn && PtInRect(&_mapArea, _ptMouse))
+		{
+			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				newObjectData* temp = new newObjectData;
+				temp->_imageName = _currentImageName;
+				temp->_image = _currentImage;
+				temp->_xycoordinate.x = _ptMouse.x;
+				temp->_xycoordinate.y = _ptMouse.y +_loopY;
+				_3tuplesList.push_back(temp);
+			}
 		}
 	}
 }
@@ -233,6 +248,12 @@ void MapToolScene::render(void)
 		{
 			_currentImage->frameRender(_backBufferMapTool->getMemDC(), _ptMouse.x - (_currentImage->getFrameWidth() / 2), _ptMouse.y - (_currentImage->getFrameHeight() / 2), 0, 0);
 		}
+
+		for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+		{
+			(*_3tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_3tupleiter)->_xycoordinate.x - ((*_3tupleiter)->_image->getFrameWidth() / 2), (*_3tupleiter)->_xycoordinate.y - ((*_3tupleiter)->_image->getFrameHeight() / 2) -_loopY, 0, 0);
+		}
+
 		//==============================================================================================================
 		_backBufferMapTool->render(_hdcMapTool, 0, 0);
 	}
@@ -252,10 +273,11 @@ void MapToolScene::jailButton(void)
 	strcpy_s(backgroundChoiceStr, "bg_jail_mini_02");
 }
 
-void MapToolScene::obButton(image* image)
+void MapToolScene::obButton(int imageNumber)
 {
-	//_currentImageName = imageName;
-	_currentImage = image;
+	vector<string> temp = TXTDATA->txtLoad("장애물 목록.txt");
+	_currentImageName = temp[imageNumber];
+	_currentImage = IMAGEMANAGER->findImage(_currentImageName);
 	_isCurrentOn = true;
 }
 
