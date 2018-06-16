@@ -1,0 +1,106 @@
+﻿  stdafx.cpp
+  button.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\button.cpp(29): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\button.cpp(30): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\button.cpp(58): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\button.cpp(59): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\button.cpp(87): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\button.cpp(88): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  CollisionCheckManager.cpp
+  gameNode.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\gamenode.cpp(206): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\gamenode.cpp(207): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  image.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\image.cpp(156): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\image.cpp(215): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\image.cpp(282): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\image.cpp(345): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\image.cpp(540): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\image.cpp(539): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\image.cpp(553): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  imageManager.cpp
+  Items.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\items.cpp(18): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\items.cpp(29): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\items.cpp(35): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  keyManager.cpp
+  mainGame.cpp
+  MapToolScene.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(151): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(173): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(186): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(215): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(221): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(231): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(234): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(260): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(264): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\maptoolscene.cpp(285): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  MinseokTest.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\minseoktest.cpp(46): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\minseoktest.cpp(146): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\minseoktest.cpp(200): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Obstacles.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\obstacles.cpp(18): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\obstacles.cpp(30): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\obstacles.cpp(36): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\obstacles.cpp(39): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  player.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(42): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(117): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(118): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(127): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(129): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(158): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(161): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(167): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(170): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(179): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(183): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(188): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\player.cpp(256): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  prisoner.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\prisoner.cpp(9): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\prisoner.cpp(43): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\prisoner.cpp(65): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\prisoner.cpp(76): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\prisoner.cpp(81): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  rectItem.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(9): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(41): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(42): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(53): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(54): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(142): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(143): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(153): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(154): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(166): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(180): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(184): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(194): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\rectitem.cpp(198): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  sceneManager.cpp
+  SiwoongTest.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\siwoongtest.cpp(90): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\siwoongtest.cpp(96): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\siwoongtest.cpp(103): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  timeManager.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\timemanager.cpp(43): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\timemanager.cpp(47): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\timemanager.cpp(51): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  timer.cpp
+  txtData.cpp
+  utils.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\utils.cpp(135): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\utils.cpp(135): warning C4244: '인수': 'const LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\txtdata.cpp(82): warning C4172: 지역 변수 또는 임시: str의 주소를 반환하고 있습니다.
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\txtdata.cpp(46): warning C4172: 지역 변수 또는 임시: str의 주소를 반환하고 있습니다.
+  컴파일하고 있습니다...
+  YounghuiTest.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\younghuitest.cpp(42): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  달리자.cpp
+c:\users\tagno\documents\github\runrunrunrunrun\달리자\달리자.cpp(118): warning C4244: 'return': 'WPARAM'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  달리자.vcxproj -> C:\Users\tagno\Documents\GitHub\runrunrunrunrun\x64\Debug\달리자.exe
