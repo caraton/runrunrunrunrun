@@ -358,5 +358,5 @@ void MapToolScene::mapSave()
 
 	string nametemp = _mapname + ".txt";
 	
-	TXTDATA->txtSaveExt(nametemp.c_str(), toSave);
+	TXTDATA->txtSaveExt(nametemp.c_str(), toSave, 2048);
 }
