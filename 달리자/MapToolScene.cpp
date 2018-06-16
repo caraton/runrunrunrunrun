@@ -329,6 +329,7 @@ void MapToolScene::mapSave()
 {
 	//y좌표 크기순으로 정렬하는거 만들기
 	//임시
+	_rearrangedList.clear();
 	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
 	{
 		newObjectData* temp = new newObjectData;
