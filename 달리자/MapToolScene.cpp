@@ -6,6 +6,8 @@ HWND MapToolScene::_hMapTool = NULL;
 string MapToolScene::_currentImageName;
 image* MapToolScene::_currentImage = NULL;
 bool MapToolScene::_isCurrentOn = false;
+bool MapToolScene::_savefbool = false;
+bool MapToolScene::_clearfbool = false;
 
 MapToolScene::MapToolScene()
 {
@@ -68,23 +70,35 @@ HRESULT MapToolScene::init2(void)
 	_obList = TXTDATA->txtLoad("장애물 목록.txt");
 
 	int i = 0;
-	for (_oliter = _obList.begin(); _oliter != _obList.end()-1; ++_oliter)
+	for (_oliter = _obList.begin(); _oliter != _obList.end()-1; )
 	{
 		char temp[128];
 		char temp2[128];
 		strcpy_s(temp2, (*_oliter).c_str());
 		sprintf_s(temp, "Image/Obstacles/%s.bmp", temp2);
-		IMAGEMANAGER->addFrameImage(*_oliter, temp, 100, 50, 2, 1, true, RGB(255, 0, 255));
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter+1)), stoi(*(_oliter+2)), 2, 1, true, RGB(255, 0, 255));
 		button* btemp = new button;
 		btemp->init(temp2, 675, 45+ i*100, PointMake(1,0), PointMake(0, 0), &obButton);
 		_bList.push_back(btemp);
 		i++;
+		++_oliter;
+		++_oliter;
+		++_oliter;
 	}
 
 	//IMAGEMANAGER->addImage("object_box", "Image/Obstacles/object_box.bmp", 50, 50, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addImage("object_can", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addImage("object_greeen", "Image/Obstacles/object_greeen.bmp", 50, 50, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addImage("object_yellow", "Image/Obstacles/object_yellow.bmp", 50, 50, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("SAVE", "Image/button_save.bmp", 200, 30, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("CLEAR", "Image/button_clear.bmp", 200, 30, 2, 1, true, RGB(255, 0, 255));
+
+	_saveB = new button;
+	_saveB->init("SAVE", WINSIZEX+ 100, WINSIZEY -30, PointMake(1, 0), PointMake(0, 0), &saveButton);
+
+	_clearB = new button;
+	_clearB->init("CLEAR", WINSIZEX + 100, WINSIZEY - 70, PointMake(1, 0), PointMake(0, 0), &clearButton);
 
 	_mapArea = RectMake(0, 0, WINSIZEX, WINSIZEY);
 
@@ -150,6 +164,8 @@ void MapToolScene::update(void)
 			}
 		}
 
+		_saveB->update();
+		_clearB->update();
 
 		int i = 0;
 		for (_bliter = _bList.begin(); _bliter != _bList.end(); ++_bliter)
@@ -170,6 +186,18 @@ void MapToolScene::update(void)
 				temp->_xycoordinate.y = _ptMouse.y +_loopY;
 				_3tuplesList.push_back(temp);
 			}
+		}
+
+		if (_savefbool)
+		{
+			mapSave();
+			_savefbool = false;
+		}
+
+		if (_clearfbool)
+		{
+			_3tuplesList.clear();
+			_clearfbool = false;
 		}
 	}
 }
@@ -201,6 +229,9 @@ void MapToolScene::render(void)
 		sprintf_s(backgroundChoiceStr2, "배경 : %s", backgroundChoiceStr);
 
 		TextOut(_hdcMapTool, 250, 200, backgroundChoiceStr2, strlen(backgroundChoiceStr2));
+
+		char mapname[128] = "맵이름 입력";
+		TextOut(_hdcMapTool, 30, 440, mapname, strlen(mapname));
 
 		//char teststr[128] = "맵길이 :";
 		//sprintf_s(teststr, "맵길이 : %s", mstr);
@@ -254,6 +285,9 @@ void MapToolScene::render(void)
 			(*_3tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_3tupleiter)->_xycoordinate.x - ((*_3tupleiter)->_image->getFrameWidth() / 2), (*_3tupleiter)->_xycoordinate.y - ((*_3tupleiter)->_image->getFrameHeight() / 2) -_loopY, 0, 0);
 		}
 
+		_saveB->render(_backBufferMapTool->getMemDC());
+		_clearB->render(_backBufferMapTool->getMemDC());
+
 		//==============================================================================================================
 		_backBufferMapTool->render(_hdcMapTool, 0, 0);
 	}
@@ -281,3 +315,47 @@ void MapToolScene::obButton(int imageNumber)
 	_isCurrentOn = true;
 }
 
+void MapToolScene::saveButton(void)
+{
+	_savefbool = true;
+}
+
+void MapToolScene::clearButton(void)
+{
+	_clearfbool = true;
+}
+
+void MapToolScene::mapSave()
+{
+	//y좌표 크기순으로 정렬하는거 만들기
+	//임시
+	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+	{
+		newObjectData* temp = new newObjectData;
+		temp->_imageName = (*_3tupleiter)->_imageName;
+		temp->_image = (*_3tupleiter)->_image;
+		temp->_xycoordinate.x = (*_3tupleiter)->_xycoordinate.x;
+		temp->_xycoordinate.y = (*_3tupleiter)->_xycoordinate.y;
+		_rearrangedList.push_back(temp);
+	}
+
+	vector<string> toSave;
+
+	//배경
+	string bg = backgroundChoiceStr;
+	toSave.push_back(bg);
+	//맵길이
+	toSave.push_back(to_string(mint));
+
+	//오브젝트 저장
+	for (_3tupleiter = _rearrangedList.begin(); _3tupleiter != _rearrangedList.end(); ++_3tupleiter)
+	{
+		toSave.push_back((*_3tupleiter)->_imageName);
+		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.x));
+		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.y));
+	}
+
+	string nametemp = _mapname + ".txt";
+	
+	TXTDATA->txtSaveExt(nametemp.c_str(), toSave);
+}

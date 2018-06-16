@@ -20,7 +20,10 @@ private:
 	button* _jailB;
 
 	vector<button*> _objectBs;
-	int _totalObjectCount = 5;
+	//int _totalObjectCount = 5;
+
+	button* _saveB;
+	button* _clearB;
 
 	RECT _mapArea;
 
@@ -39,6 +42,11 @@ private:
 	vector<newObjectData*> _3tuplesList;
 	vector<newObjectData*>::iterator _3tupleiter;
 
+	vector<newObjectData*> _rearrangedList;
+	void mapSave();
+	static bool _savefbool;
+	static bool _clearfbool;
+
 public:
 	//HWND _hMapTool; //맵툴 윈도우 핸들 //CreateWindow는 gameNode의 MainProc에서 한다
 	static HWND _hMapTool; 
@@ -50,6 +58,10 @@ public:
 	char mstr[128] = "0";
 	int mint;
 
+	HWND _hInput2;
+	char mstr2[128] = "0";
+	string _mapname;
+	
 
 	char nstr[128] = "맵이름";
 
@@ -76,6 +88,9 @@ public:
 	static void jailButton(void); //void (MapToolScene::*) (void) 가 되어서 
 	//void cityButton(void);	  //button 클래스의 CALLBACK_FUNCTION의 타입 void (*) (void)와 달라지므로
 	//void jailButton(void);	  //button 클래스의 init에 넣을 수가 없다.
+
+	static void saveButton(void);
+	static void clearButton(void);
 
 	static void obButton(int imageNumer);
 

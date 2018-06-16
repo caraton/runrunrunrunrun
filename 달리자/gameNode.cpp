@@ -241,11 +241,27 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 				{
 					case EN_CHANGE: //EN_CHANGE 문자열이 변경되었고 화면에 출력되었다 EN_UPDATE 문자열이 변경되었고 화면에 출력되기 직전이다.
 					{
+						*(MAPTOOLSCENE->mstr) = '\0';
 						GetWindowText(MAPTOOLSCENE->_hInput, MAPTOOLSCENE->mstr, 128); //_hInput의 문자열을 받아 str에 저장, 마지막 인수는 str 맥스 크기
 						//MAPTOOLSCENE->mint = GetDlgItemInt(MAPTOOLSCENE->_hInput, ID_INPUT, NULL, FALSE);
 						//GetDlgItemInt(HWND, int(데이터를 받아올 컨트롤 이름), BOOL* 이 함수의 성공여부를 받을 불포인터, BOOL(참이면 텍스트 맨 앞에-부호가 있는지 확인하고, 거짓이면 확인안함))
 						break;
 					}
+				}
+				break;
+			}
+			case ID_INPUT2:
+			{
+				switch (HIWORD(wParam)) //HIWORD(wParam): ID_INPUT이 무슨 메시지를 보내주었는가?
+				{
+				case EN_CHANGE: //EN_CHANGE 문자열이 변경되었고 화면에 출력되었다 EN_UPDATE 문자열이 변경되었고 화면에 출력되기 직전이다.
+				{
+					*(MAPTOOLSCENE->mstr2) = '\0';
+					GetWindowText(MAPTOOLSCENE->_hInput2, MAPTOOLSCENE->mstr2, 128); //_hInput의 문자열을 받아 str에 저장, 마지막 인수는 str 맥스 크기
+																				   //MAPTOOLSCENE->mint = GetDlgItemInt(MAPTOOLSCENE->_hInput, ID_INPUT, NULL, FALSE);
+																				   //GetDlgItemInt(HWND, int(데이터를 받아올 컨트롤 이름), BOOL* 이 함수의 성공여부를 받을 불포인터, BOOL(참이면 텍스트 맨 앞에-부호가 있는지 확인하고, 거짓이면 확인안함))
+					break;
+				}
 				}
 				break;
 			}
@@ -311,6 +327,8 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 				toSave.push_back(to_string(MAPTOOLSCENE->_buttonCount));
 
+				toSave.push_back(MAPTOOLSCENE->mstr2);
+
 				TXTDATA->txtSave("맵툴 실험.txt", toSave);
 
 				MAPTOOLSCENE->_mapToolOn = 2;
@@ -321,11 +339,13 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 				DestroyWindow(MAPTOOLSCENE->_hInput);
 				MAPTOOLSCENE->_hInput = NULL;
+				DestroyWindow(MAPTOOLSCENE->_hInput2);
+				MAPTOOLSCENE->_hInput2 = NULL;
 				MAPTOOLSCENE->release();
 
 				if (MAPTOOLSCENE->_hMapTool == NULL)
 				{
-					MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX+200, WINSIZEY, NULL, (HMENU)NULL, _hInstance, NULL);
+					MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX+200, WINSIZEY +39, NULL, (HMENU)NULL, _hInstance, NULL);
 					//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
 				}
 
@@ -335,6 +355,8 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 				//%%여기에 위에서 저장한 값을 로드해서 scene2 에 적용하기
 				MAPTOOLSCENE->mint = stoi(toSave[0]);
+
+				MAPTOOLSCENE->_mapname = toSave[3];
 				//vector<string> toLoad;
 
 				//toLoad = TXTDATA->txtLoad(nteststr);
@@ -414,7 +436,9 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			//_test1 = CreateWindow(_lpszClass, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 200, 200, 25, _hMapTool, (HMENU)ID_COUNT, _hInstance, NULL);
 			CreateWindow(TEXT("button"), TEXT("Click"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 250, 200, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_BUTTON1, NULL, NULL);
 
-			CreateWindow(TEXT("button"), TEXT("Create"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 400, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_CREATE, NULL, NULL);
+			MAPTOOLSCENE->_hInput2 = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 470, 200, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_INPUT2, NULL, NULL);
+
+			CreateWindow(TEXT("button"), TEXT("Create"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 500, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_CREATE, NULL, NULL);
 			//참조:https://www.youtube.com/watch?v=NZkpp-a-tYA
 			break;
 		}
@@ -428,6 +452,8 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 			DestroyWindow(MAPTOOLSCENE->_hInput);
 			MAPTOOLSCENE->_hInput = NULL;
+			DestroyWindow(MAPTOOLSCENE->_hInput2);
+			MAPTOOLSCENE->_hInput2 = NULL;
 			//DestroyWindow(_test1);
 			//DestroyWindow(_test2);
 
