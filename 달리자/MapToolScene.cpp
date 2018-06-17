@@ -196,6 +196,10 @@ void MapToolScene::update(void)
 
 		if (_clearfbool)
 		{
+			for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+			{
+				delete (*_3tupleiter);
+			}
 			_3tuplesList.clear();
 			_clearfbool = false;
 		}
@@ -298,6 +302,10 @@ void MapToolScene::loadMap(vector<string> data)
 	strcpy_s(backgroundChoiceStr, data[0].c_str());
 	mint = stoi(data[1]);
 
+	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+	{
+		delete (*_3tupleiter);
+	}
 	_3tuplesList.clear();
 
 	for (int i = 2; i < data.size() - 1;)
@@ -350,6 +358,10 @@ void MapToolScene::mapSave()
 {
 	//y좌표 크기순으로 정렬하는거 만들기
 	//임시
+	for (_3tupleiter = _rearrangedList.begin(); _3tupleiter != _rearrangedList.end(); ++_3tupleiter)
+	{
+		delete (*_3tupleiter);
+	}
 	_rearrangedList.clear();
 	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
 	{

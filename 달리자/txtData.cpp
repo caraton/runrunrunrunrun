@@ -128,11 +128,11 @@ vector<string> txtData::txtLoadExt(const char * loadFileName, int size, OUT bool
 	char* str = new char[size];
 	DWORD read;
 
-	char filecheck[128];
+	//char filecheck[128];
 
-	sprintf_s(filecheck, "D:\\문서\\C++\\달리자\\달리자\\%s", loadFileName);
+	//sprintf_s(filecheck, "D:\\문서\\C++\\달리자\\달리자\\%s", loadFileName);
 
-	if (PathFileExists(TEXT(filecheck)))
+	if (PathFileExists(TEXT(loadFileName)))
 	{ 
 		file = CreateFile(loadFileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		//save때와는 다르게 READ가 주목적임을 알린다
