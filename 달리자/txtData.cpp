@@ -121,6 +121,59 @@ vector<string> txtData::charArraySeparation(char charArray[])
 	return vArray;
 }
 
+vector<string> txtData::txtLoadExt(const char * loadFileName, int size, OUT bool* check)
+{
+	HANDLE file;
+
+	char* str = new char[size];
+	DWORD read;
+
+	char filecheck[128];
+
+	sprintf_s(filecheck, "D:\\문서\\C++\\달리자\\달리자\\%s", loadFileName);
+
+	if (PathFileExists(TEXT(filecheck)))
+	{ 
+		file = CreateFile(loadFileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		//save때와는 다르게 READ가 주목적임을 알린다
+		ReadFile(file, str, size, &read, NULL);
+		*check = true;
+	}
+	else
+	{
+		*check = false;
+		return vector<string>(); //비어있는 vector<string> 내보내기
+	}
+
+
+	CloseHandle(file); //핸들 메모리 해제
+
+	return charArraySeparationExt(str, size);
+}
+
+vector<string> txtData::charArraySeparationExt(char charArray[], int size)
+{
+	vector<string> vArray; //문자열을 쪼개서 저장할 벡터
+
+	char* separator = ",";
+	char* token;
+
+	//%% strtok C4996 에러 => strtok_s로 변경
+	//%% strtok_s는 strtok의 두 인자에 더해 잘린부분을 저장할 컨테이너 주소를 인자로 받는다.
+	char* temp = NULL; //저장할곳
+
+	token = strtok_s(charArray, separator, &temp);	//strtok는 separator 나오기전까지 문자열을 내보내고 함수를 나옴
+	vArray.push_back(token);						//한번 실행되면 separator 뒤를 strtok 내부에? 저장 (=> 이미 읽은 부분은 잘라내준다)
+													//-> 한번 실행 후에는 strtok의 첫번째 인자에는 NULL만 넣어주면 된다
+
+	while (NULL != (token = strtok_s(NULL, separator, &temp))) //분할이 끝나면 strtok은 NULL을 반환
+	{
+		vArray.push_back(token);
+	}
+
+	return vArray;
+}
+
 txtData::txtData()
 {
 }

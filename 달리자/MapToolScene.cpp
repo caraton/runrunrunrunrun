@@ -293,6 +293,27 @@ void MapToolScene::render(void)
 	}
 }
 
+void MapToolScene::loadMap(vector<string> data)
+{
+	strcpy_s(backgroundChoiceStr, data[0].c_str());
+	mint = stoi(data[1]);
+
+	_3tuplesList.clear();
+
+	for (int i = 2; i < data.size() - 1;)
+	{
+		newObjectData* temp = new newObjectData;
+		temp->_imageName = data[i];
+		temp->_image = IMAGEMANAGER->findImage(temp->_imageName);
+		temp->_xycoordinate.x = stoi(data[i + 1]);
+		temp->_xycoordinate.y = stoi(data[i + 2]);
+
+		_3tuplesList.push_back(temp);
+
+		i = i + 3;
+	}
+}
+
 void MapToolScene::cityButton(void)
 {
 	RECT clearbox = RectMake(250, 200, 500, 100);
@@ -355,6 +376,8 @@ void MapToolScene::mapSave()
 		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.x));
 		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.y));
 	}
+
+	toSave.push_back("더미"); //txtLoad가 마지막칸 에러를 일으키므로 더미 데이터 하나 넣어주기
 
 	string nametemp = _mapname + ".txt";
 	

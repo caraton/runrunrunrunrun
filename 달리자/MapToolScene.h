@@ -84,6 +84,8 @@ public:
 	HDC getMemDCMapTool() { return _backBufferMapTool->getMemDC(); };
 	HDC getHDCMapTool() { return _hdcMapTool; };
 
+	void loadMap(vector<string> data);
+
 	static void cityButton(void); //static을 사용하지 않으면 이 함수를 가리키는 포인터의 타입은 
 	static void jailButton(void); //void (MapToolScene::*) (void) 가 되어서 
 	//void cityButton(void);	  //button 클래스의 CALLBACK_FUNCTION의 타입 void (*) (void)와 달라지므로

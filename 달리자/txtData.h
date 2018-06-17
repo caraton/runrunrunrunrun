@@ -2,6 +2,10 @@
 #include "singletonBase.h"
 #include <vector>
 #include <string>
+#include <Shlwapi.h>
+
+#pragma comment(lib, "Shlwapi.lib")
+
 
 class txtData : public singletonBase<txtData>
 {
@@ -19,6 +23,8 @@ public:
 	//·Îµå
 	vector<string> txtLoad(const char* loadFileName);
 	vector<string> charArraySeparation(char charArray[]);
+	vector<string> txtLoadExt(const char* loadFileName, int size, OUT bool* check);
+	vector<string> charArraySeparationExt(char charArray[], int size);
 
 	txtData();
 	~txtData();
