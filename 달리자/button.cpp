@@ -146,13 +146,16 @@ void button::update2()
 		{
 			_direction = BUTTONDIRECTION_UP;
 			vector<string> temp = TXTDATA->txtLoad("장애물 목록.txt");
-			for (int i = 0; i < temp.size()-1; ++i)
+			for (int i = 0; i < temp.size()-1;)
 			{
 				if (temp[i].compare(_imageName) == 0)
 				{
 					_callbackFunction2(i); //콜백함수는 버튼이 눌린 순간이 아니라 눌리고 나서 때어진 순간에 실행
 					break;
 				}
+				++i;
+				++i;
+				++i;
 			}	
 		}
 		else if (_direction != BUTTONDIRECTION_DOWN)

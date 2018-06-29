@@ -2,7 +2,7 @@
 #include "button.h"
 #include "image.h"
 
-static image* _backBufferMapTool = IMAGEMANAGER->addImage("backBufferMapTool", WINSIZEX + 200, WINSIZEY);
+static image* _backBufferMapTool = IMAGEMANAGER->addImage("backBufferMapTool", WINSIZEX + 400, WINSIZEY);
 
 struct newObjectData
 {
@@ -19,11 +19,10 @@ private:
 	button* _cityB;
 	button* _jailB;
 
-	vector<button*> _objectBs;
-	//int _totalObjectCount = 5;
-
 	button* _saveB;
+	button* _loadB;
 	button* _clearB;
+	button* _eraseB;
 
 	RECT _mapArea;
 
@@ -33,8 +32,8 @@ private:
 	vector<string> _obList;
 	vector<string>::iterator _oliter;
 
-	vector<button*> _bList;
-	vector<button*>::iterator _bliter;
+	vector<button> _bList;
+	vector<button>::iterator _bliter;
 
 	static string _currentImageName;
 	static image* _currentImage;
@@ -43,9 +42,17 @@ private:
 	vector<newObjectData*>::iterator _3tupleiter;
 
 	vector<newObjectData*> _rearrangedList;
+	
 	void mapSave();
 	static bool _savefbool;
+
+	void mtLoadMap(); //loadMap은 gameNode에서 실행하는 함수이고, mtLoadMap은 맵툴 내에서 로드 버튼이 눌렸을 떄 실행하는 함수
+	static bool _loadfbool;
+	vector<string> _mapData;
+
 	static bool _clearfbool;
+	static bool _erasefbool;
+	bool _isErasing;
 
 public:
 	//HWND _hMapTool; //맵툴 윈도우 핸들 //CreateWindow는 gameNode의 MainProc에서 한다
@@ -77,6 +84,7 @@ public:
 	HRESULT init(void);
 	HRESULT init2(void);
 	void release(void);
+	void release2(void);
 	void update(void);
 	void render(void);
 
@@ -92,7 +100,9 @@ public:
 	//void jailButton(void);	  //button 클래스의 init에 넣을 수가 없다.
 
 	static void saveButton(void);
+	static void loadButton(void);
 	static void clearButton(void);
+	static void eraseButton(void);
 
 	static void obButton(int imageNumer);
 
