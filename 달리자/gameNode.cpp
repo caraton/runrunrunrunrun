@@ -316,6 +316,76 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 				break;
 			}
+			case ID_LOAD2:
+			{
+				vector<string> toLoad;
+
+				char map[128];
+				sprintf_s(map, "%s.txt", MAPTOOLSCENE->mstr2);
+
+				bool check = false;
+
+				toLoad = TXTDATA->txtLoadExt(map, TXTSIZE, &check);
+
+				if (check)
+				{
+					//PostMessage(MAPTOOLSCENE->_hMapTool, WM_COMMAND, ID_CREATE, 0); 이 ID_LOAD2 케이스가
+					//끝난후 이 메시지가 보낸 ID_CREATE가 실행되므로 안된다.
+
+					vector<string> toSave;
+
+					toSave.push_back(MAPTOOLSCENE->mstr);
+
+					toSave.push_back(MAPTOOLSCENE->backgroundChoiceStr);
+
+					toSave.push_back(to_string(MAPTOOLSCENE->_buttonCount));
+
+					toSave.push_back(MAPTOOLSCENE->mstr2);
+
+					TXTDATA->txtSave("맵툴 실험.txt", toSave);
+
+					MAPTOOLSCENE->_mapToolOn = 2;
+
+					DestroyWindow(MAPTOOLSCENE->_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
+					//MAPTOOLSCENE->_hMapTool = NULL;
+					//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
+
+					DestroyWindow(MAPTOOLSCENE->_hInput);
+					//MAPTOOLSCENE->_hInput = NULL;
+					DestroyWindow(MAPTOOLSCENE->_hInput2);
+					//MAPTOOLSCENE->_hInput2 = NULL;
+					MAPTOOLSCENE->release2();
+
+					if (MAPTOOLSCENE->_hMapTool == NULL)
+					{
+						MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX + 400, WINSIZEY + 39, NULL, (HMENU)NULL, _hInstance, NULL);
+						//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
+					}
+
+					MAPTOOLSCENE->init2(); //창이 새로 열리면서 크기가 달라졌으므로 GetDC(_hMapTool)을 새로이 실행해서 수정
+
+					ShowWindow(MAPTOOLSCENE->_hMapTool, _cmdShow);
+
+					//%%여기에 위에서 저장한 값을 로드해서 scene2 에 적용하기
+					MAPTOOLSCENE->mint = stoi(toSave[0]);
+
+					MAPTOOLSCENE->_mapname = toSave[3];
+					//vector<string> toLoad;
+
+					//toLoad = TXTDATA->txtLoad(nteststr);
+
+					//MAPTOOLSCENE->의 퍼블릭 변수에도 저장?
+
+					MAPTOOLSCENE->loadMap(toLoad);
+				}
+				else
+				{
+					MessageBox(MAPTOOLSCENE->_hMapTool, "입력한 이름에 해당하는 맵이 없어", "파일이름 좀 잘 써라", MB_OK | MB_ICONINFORMATION);
+					break;
+				}
+
+				break;
+			}
 			case ID_CREATE:
 			{
 
@@ -334,18 +404,18 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 				MAPTOOLSCENE->_mapToolOn = 2;
 
 				DestroyWindow(MAPTOOLSCENE->_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
-				MAPTOOLSCENE->_hMapTool = NULL;
+				//MAPTOOLSCENE->_hMapTool = NULL;
 				//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
 
 				DestroyWindow(MAPTOOLSCENE->_hInput);
-				MAPTOOLSCENE->_hInput = NULL;
+				//MAPTOOLSCENE->_hInput = NULL;
 				DestroyWindow(MAPTOOLSCENE->_hInput2);
-				MAPTOOLSCENE->_hInput2 = NULL;
-				MAPTOOLSCENE->release();
+				//MAPTOOLSCENE->_hInput2 = NULL;
+				MAPTOOLSCENE->release2();
 
 				if (MAPTOOLSCENE->_hMapTool == NULL)
 				{
-					MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX+200, WINSIZEY +39, NULL, (HMENU)NULL, _hInstance, NULL);
+					MAPTOOLSCENE->_hMapTool = CreateWindow(_lpszClass, "맵툴", WS_OVERLAPPEDWINDOW, WINSTARTX + 100 + WINSIZEX, WINSTARTY, WINSIZEX+400, WINSIZEY +39, NULL, (HMENU)NULL, _hInstance, NULL);
 					//CreateWindow의 첫번째인수는 윈도우프로시저 이름을 담고 있는 WNDCLASS의 이름을 넣는다.
 				}
 
@@ -439,23 +509,37 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			MAPTOOLSCENE->_hInput2 = CreateWindow(TEXT("edit"), NULL, WS_TABSTOP | WS_CHILD | WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL, 30, 470, 200, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_INPUT2, NULL, NULL);
 
 			CreateWindow(TEXT("button"), TEXT("Create"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 30, 500, 50, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_CREATE, NULL, NULL);
+			CreateWindow(TEXT("button"), TEXT("Load Map"), WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 90, 500, 100, 25, MAPTOOLSCENE->_hMapTool, (HMENU)ID_LOAD2, NULL, NULL);
 			//참조:https://www.youtube.com/watch?v=NZkpp-a-tYA
 			break;
 		}
 		case VK_F9:
 		{
-			MAPTOOLSCENE->_mapToolOn = 0;
-			//ShowWindow(_hMapTool, SW_HIDE);
-			DestroyWindow(MAPTOOLSCENE->_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
-			MAPTOOLSCENE->_hMapTool = NULL;
-			//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
+			if (MAPTOOLSCENE->_mapToolOn == 1)
+			{
+				MAPTOOLSCENE->_mapToolOn = 0;
+				//ShowWindow(_hMapTool, SW_HIDE);
+				DestroyWindow(MAPTOOLSCENE->_hMapTool); //DestroyWindow는 HWND 인풋이 속한 윈도우 프로시저에 WM_DESTROY 메시지를 보낸다
+				//MAPTOOLSCENE->_hMapTool = NULL; MAPTOOLSCENE->release()에서 실행
+				//윈도우 프로시저에서 어느 HWND가 신호를 보내는지에 따라 전체 앱을 종료시킬지 아닐지를 설정해야함
 
-			DestroyWindow(MAPTOOLSCENE->_hInput);
-			MAPTOOLSCENE->_hInput = NULL;
-			DestroyWindow(MAPTOOLSCENE->_hInput2);
-			MAPTOOLSCENE->_hInput2 = NULL;
-			//DestroyWindow(_test1);
-			//DestroyWindow(_test2);
+				DestroyWindow(MAPTOOLSCENE->_hInput);
+				//MAPTOOLSCENE->_hInput = NULL; MAPTOOLSCENE->release()에서 실행
+				DestroyWindow(MAPTOOLSCENE->_hInput2);
+				//MAPTOOLSCENE->_hInput2 = NULL; MAPTOOLSCENE->release()에서 실행
+				//DestroyWindow(_test1);
+				//DestroyWindow(_test2);
+
+				MAPTOOLSCENE->release2();
+			}
+			else if (MAPTOOLSCENE->_mapToolOn == 2)
+			{
+				MAPTOOLSCENE->_mapToolOn = 0;
+				DestroyWindow(MAPTOOLSCENE->_hMapTool);
+				DestroyWindow(MAPTOOLSCENE->_hInput);
+				DestroyWindow(MAPTOOLSCENE->_hInput2);
+				MAPTOOLSCENE->release();
+			}
 
 			break;
 		}
