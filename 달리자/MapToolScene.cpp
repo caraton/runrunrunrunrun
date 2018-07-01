@@ -6,6 +6,7 @@ HWND MapToolScene::_hMapTool = NULL;
 string MapToolScene::_currentImageName;
 image* MapToolScene::_currentImage = NULL;
 bool MapToolScene::_isCurrentOn = false;
+bool MapToolScene::_isItemnow = false;
 bool MapToolScene::_savefbool = false;
 bool MapToolScene::_loadfbool = false;
 bool MapToolScene::_clearfbool = false;
@@ -88,6 +89,25 @@ HRESULT MapToolScene::init2(void)
 		++_oliter;
 	}
 
+	_itemList = TXTDATA->txtLoad("아이템 목록.txt");
+
+	int j = i;
+	for (_oliter = _itemList.begin(); _oliter != _itemList.end() - 1; )
+	{
+		char temp[128];
+		char temp2[128];
+		strcpy_s(temp2, (*_oliter).c_str());
+		sprintf_s(temp, "Image/Items/%s.bmp", temp2);
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 1)), stoi(*(_oliter + 2)), 2, 1, true, RGB(255, 0, 255));
+		button btemp;
+		btemp.init(temp2, 675, 45 + j * 100, PointMake(1, 0), PointMake(0, 0), &itemButton);
+		_itembList.push_back(btemp);
+		j++;
+		++_oliter;
+		++_oliter;
+		++_oliter;
+	}
+
 	//IMAGEMANAGER->addImage("object_box", "Image/Obstacles/object_box.bmp", 50, 50, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addImage("object_can", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addImage("object_greeen", "Image/Obstacles/object_greeen.bmp", 50, 50, true, RGB(255, 0, 255));
@@ -134,6 +154,9 @@ void MapToolScene::release(void)
 	_obList.clear();
 
 	_bList.clear();
+
+	_itembList.clear();
+	_itembList.clear();
 
 	_currentImage = NULL;
 
@@ -230,6 +253,14 @@ void MapToolScene::update(void)
 			i++;
 		}
 
+		int j = i;
+		for (_bliter = _itembList.begin(); _bliter != _itembList.end(); ++_bliter)
+		{
+			(*_bliter).changeRECTCoordinate(675, 45 + j * 100 + _scrollY * 10);
+			(*_bliter).update3();
+			j++;
+		}
+
 		if (_isCurrentOn && PtInRect(&_mapArea, _ptMouse))
 		{
 			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
@@ -239,6 +270,7 @@ void MapToolScene::update(void)
 				temp->_image = _currentImage;
 				temp->_xycoordinate.x = _ptMouse.x;
 				temp->_xycoordinate.y = _ptMouse.y +_loopY;
+				temp->_isItem = _isItemnow;
 				_3tuplesList.push_back(temp);
 			}
 		}
@@ -369,13 +401,26 @@ void MapToolScene::render(void)
 
 		for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
 		{
-			(*_3tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_3tupleiter)->_xycoordinate.x - ((*_3tupleiter)->_image->getFrameWidth() / 2), (*_3tupleiter)->_xycoordinate.y - ((*_3tupleiter)->_image->getFrameHeight() / 2) -_loopY, 0, 0);
+			if (!((*_3tupleiter)->_isItem))
+			{
+				(*_3tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_3tupleiter)->_xycoordinate.x - ((*_3tupleiter)->_image->getFrameWidth() / 2), (*_3tupleiter)->_xycoordinate.y - ((*_3tupleiter)->_image->getFrameHeight() / 2) - _loopY, 0, 0);
+			}
+			else
+			{
+				(*_3tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_3tupleiter)->_xycoordinate.x - ((*_3tupleiter)->_image->getFrameWidth() / 2), (*_3tupleiter)->_xycoordinate.y - ((*_3tupleiter)->_image->getFrameHeight() / 2) - _loopY, ((TIMEMANAGER->getFrameCount() % 10) < 5) ? 0 : 1, 0);
+			}
 		}
 
 		for (_bliter = _bList.begin(); _bliter != _bList.end(); ++_bliter)
 		{
 			(*_bliter).render(_backBufferMapTool->getMemDC());
 		}
+
+		for (_bliter = _itembList.begin(); _bliter != _itembList.end(); ++_bliter)
+		{
+			(*_bliter).render(_backBufferMapTool->getMemDC());
+		}
+
 
 		if (_isCurrentOn && _ptMouse.x <= WINSIZEX)
 		{
@@ -419,14 +464,23 @@ void MapToolScene::loadMap(vector<string> data)
 	for (int i = 2; i < data.size() - 1;)
 	{
 		newObjectData* temp = new newObjectData;
-		temp->_imageName = _obList[stoi(data[i]) * 3];
+		temp->_isItem = stoi(data[i + 1]);
+		if (temp->_isItem)
+		{
+			temp->_imageName = _itemList[stoi(data[i]) * 3];
+		}
+		else
+		{
+			temp->_imageName = _obList[stoi(data[i]) * 3];
+		}		
 		temp->_image = IMAGEMANAGER->findImage(temp->_imageName);
-		temp->_xycoordinate.x = stoi(data[i + 1]);
-		temp->_xycoordinate.y = stoi(data[i + 2]);
+		temp->_xycoordinate.x = stoi(data[i + 2]);
+		temp->_xycoordinate.y = stoi(data[i + 3]);
+		
 
 		_3tuplesList.push_back(temp);
 
-		i = i + 3;
+		i = i + 4;
 	}
 }
 
@@ -444,14 +498,27 @@ void MapToolScene::mtLoadMap()
 	for (int i = 2; i < _mapData.size() - 1;)
 	{
 		newObjectData* temp = new newObjectData;
-		temp->_imageName = _obList[stoi(_mapData[i]) * 3];
+
+		temp->_isItem = stoi(_mapData[i + 1]);
+
+		if (temp->_isItem)
+		{
+			temp->_imageName = _itemList[stoi(_mapData[i]) * 3];
+		}
+		else
+		{
+			temp->_imageName = _obList[stoi(_mapData[i]) * 3];
+		}
+		
 		temp->_image = IMAGEMANAGER->findImage(temp->_imageName);
-		temp->_xycoordinate.x = stoi(_mapData[i + 1]);
-		temp->_xycoordinate.y = stoi(_mapData[i + 2]);
+
+		temp->_xycoordinate.x = stoi(_mapData[i + 2]);
+		temp->_xycoordinate.y = stoi(_mapData[i + 3]);
+		
 
 		_3tuplesList.push_back(temp);
 
-		i = i + 3;
+		i = i + 4;
 	}
 }
 
@@ -474,7 +541,18 @@ void MapToolScene::obButton(int imageNumber)
 	vector<string> temp = TXTDATA->txtLoad("장애물 목록.txt");
 	_currentImageName = temp[imageNumber];
 	_currentImage = IMAGEMANAGER->findImage(_currentImageName);
-	_isCurrentOn = !_isCurrentOn;
+	_isCurrentOn = true;
+	_isItemnow = false;
+	_erasefbool = false;
+}
+
+void MapToolScene::itemButton(int imageNumber)
+{
+	vector<string> temp = TXTDATA->txtLoad("아이템 목록.txt");
+	_currentImageName = temp[imageNumber];
+	_currentImage = IMAGEMANAGER->findImage(_currentImageName);
+	_isCurrentOn = true;
+	_isItemnow = true;
 	_erasefbool = false;
 }
 
@@ -497,7 +575,7 @@ void MapToolScene::eraseButton(void)
 {
 	_currentImage = IMAGEMANAGER->findImage("지우개");
 	_isCurrentOn = false;
-	_erasefbool = !_erasefbool;
+	_erasefbool = true;
 }
 
 void MapToolScene::mapSave()
@@ -513,21 +591,41 @@ void MapToolScene::mapSave()
 	{
 		newObjectData* temp = new newObjectData;
 
-		for (int i = 0; i < _obList.size() - 1;)
+		temp->_isItem = (*_3tupleiter)->_isItem;
+
+		if (temp->_isItem)
 		{
-			if (_obList[i].compare((*_3tupleiter)->_imageName) == 0)
+			for (int i = 0; i < _itemList.size() - 1;)
 			{
-				temp->_imageName = to_string(i/3);
-				break;
+				if (_itemList[i].compare((*_3tupleiter)->_imageName) == 0)
+				{
+					temp->_imageName = to_string(i / 3);
+					break;
+				}
+				++i;
+				++i;
+				++i;
 			}
-			++i;
-			++i;
-			++i;
+		}
+		else
+		{
+			for (int i = 0; i < _obList.size() - 1;)
+			{
+				if (_obList[i].compare((*_3tupleiter)->_imageName) == 0)
+				{
+					temp->_imageName = to_string(i / 3);
+					break;
+				}
+				++i;
+				++i;
+				++i;
+			}
 		}
 
 		temp->_image = (*_3tupleiter)->_image;
 		temp->_xycoordinate.x = (*_3tupleiter)->_xycoordinate.x;
 		temp->_xycoordinate.y = (*_3tupleiter)->_xycoordinate.y;
+		
 		_rearrangedList.push_back(temp);
 	}
 
@@ -543,8 +641,9 @@ void MapToolScene::mapSave()
 	for (_3tupleiter = _rearrangedList.begin(); _3tupleiter != _rearrangedList.end(); ++_3tupleiter)
 	{
 		toSave.push_back((*_3tupleiter)->_imageName);
+		toSave.push_back(to_string(((*_3tupleiter)->_isItem) ? 1 : 0));
 		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.x));
-		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.y));
+		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.y));	
 	}
 
 	toSave.push_back("더미"); //txtLoad가 마지막칸 에러를 일으키므로 더미 데이터 하나 넣어주기

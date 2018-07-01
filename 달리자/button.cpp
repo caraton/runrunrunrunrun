@@ -169,6 +169,41 @@ void button::update2()
 	}
 }
 
+void button::update3()
+{
+	if (PtInRect(&_rc, _ptMouse)) //버튼 영역 안에 마우스가 들어왔는가?
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON)) //VK_LBUTTON 마우스 왼쪽키
+		{
+			_direction = BUTTONDIRECTION_DOWN;
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && _direction == BUTTONDIRECTION_DOWN)
+		{
+			_direction = BUTTONDIRECTION_UP;
+			vector<string> temp = TXTDATA->txtLoad("아이템 목록.txt");
+			for (int i = 0; i < temp.size() - 1;)
+			{
+				if (temp[i].compare(_imageName) == 0)
+				{
+					_callbackFunction2(i); //콜백함수는 버튼이 눌린 순간이 아니라 눌리고 나서 때어진 순간에 실행
+					break;
+				}
+				++i;
+				++i;
+				++i;
+			}
+		}
+		else if (_direction != BUTTONDIRECTION_DOWN)
+		{
+			_direction = BUTTONDIRECTION_MOUSEOVER;
+		}
+	}
+	else
+	{
+		_direction = BUTTONDIRECTION_NULL;
+	}
+}
+
 void button::render(HDC hdc)
 {
 	switch (_direction)

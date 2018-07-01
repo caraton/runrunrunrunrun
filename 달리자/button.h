@@ -54,6 +54,7 @@ public:
 	void release();
 	void update();
 	void update2();
+	void update3();
 	void render(HDC hdc); //맵툴에서도 이 버튼 클래스를 사용할 수 있도록 render함수 변경(HDC를 인수로 받도록)
 
 	void changeRECTCoordinate(int x, int y) { _rc = RectMakeCenter(x, y, _image->getFrameWidth(), _image->getFrameHeight()); };

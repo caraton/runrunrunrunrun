@@ -10,6 +10,7 @@ HRESULT SiwoongTest::init(void)
 
 	//%%이미지 추가하는부분들 로딩신으로 넘기기?
 	_obList = TXTDATA->txtLoad("장애물 목록.txt");
+	_itemList = TXTDATA->txtLoad("아이템 목록.txt");
 
 	for (_oliter = _obList.begin(); _oliter != _obList.end() - 1; )
 	{
@@ -17,6 +18,19 @@ HRESULT SiwoongTest::init(void)
 		char temp2[128];
 		strcpy_s(temp2, (*_oliter).c_str());
 		sprintf_s(temp, "Image/Obstacles/%s.bmp", temp2);
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 1)), stoi(*(_oliter + 2)), 2, 1, true, RGB(255, 0, 255));
+
+		++_oliter;
+		++_oliter;
+		++_oliter;
+	}
+
+	for (_oliter = _itemList.begin(); _oliter != _itemList.end() - 1; )
+	{
+		char temp[128];
+		char temp2[128];
+		strcpy_s(temp2, (*_oliter).c_str());
+		sprintf_s(temp, "Image/Items/%s.bmp", temp2);
 		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 1)), stoi(*(_oliter + 2)), 2, 1, true, RGB(255, 0, 255));
 
 		++_oliter;
@@ -193,6 +207,14 @@ void SiwoongTest::gameRender(void)
 		}
 	}
 
+	for (_obIRIter = _itemIRList.begin(); _obIRIter != _itemIRList.end(); ++_obIRIter)
+	{
+		if ((*_obIRIter)->_rc.top - _cameraY > 0 && (*_obIRIter)->_rc.top - _cameraY <= WINSIZEY)
+		{
+			(*_obIRIter)->_image->frameRender(getMemDC(), (*_obIRIter)->_rc.left, (*_obIRIter)->_rc.top - _cameraY, ((TIMEMANAGER->getFrameCount() % 10) < 5) ? 0 : 1, 0);
+		}
+	}
+
 	//_colManager->render();
 
 	_player->render(_colManager->GetGameover());
@@ -209,18 +231,41 @@ void SiwoongTest::loadMap(vector<string> data, CollisionCheckManager* _colM)
 
 	_obIRList.clear();
 
+	for (_obIRIter = _itemIRList.begin(); _obIRIter != _itemIRList.end(); ++_obIRIter)
+	{
+		SAFE_DELETE(*_obIRIter);
+	}
+
+	_itemIRList.clear();
+
 	for (int i = 2; i < data.size() - 1;)
 	{
 		IR* temp = new IR;
-		string tString = _obList[stoi(data[i]) * 3];
-		temp->_image = IMAGEMANAGER->findImage(tString);
-		temp->_rc = RectMakeCenter(stoi(data[i + 1]), stoi(data[i + 2]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
-		//temp->_type = (char*) tString.c_str(); 
-		temp->_type = (char *)tString.c_str(); //일단 충돌확인을 위해 can 대입
-		_obIRList.push_back(temp);
+		
+		string tString;
+
+		if (stoi(data[i+1]) == 1)
+		{
+			tString = _itemList[stoi(data[i]) * 3];
+			temp->_image = IMAGEMANAGER->findImage(tString);
+			temp->_rc = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
+			//temp->_type = (char*) tString.c_str(); 
+			temp->_type = (char *)tString.c_str();
+			_itemIRList.push_back(temp);
+		}
+		else if (stoi(data[i + 1]) == 0)
+		{
+			tString = _obList[stoi(data[i]) * 3];
+			temp->_image = IMAGEMANAGER->findImage(tString);
+			temp->_rc = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
+			//temp->_type = (char*) tString.c_str(); 
+			temp->_type = (char *)tString.c_str();
+			_obIRList.push_back(temp);
+		}
 
 		_colM->addIR(temp);
 
+		++i;
 		++i;
 		++i;
 		++i;

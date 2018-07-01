@@ -23,9 +23,11 @@ private:
 	float _cameraY;
 
 	vector<string> _obList;
+	vector<string> _itemList;
 	vector<string>::iterator _oliter;
 
 	vector<IR*> _obIRList; //맵데이터에서 읽어들인 장애물들의 IR* 담아놓음 렌더시 사용 + 메모리 해제시 사용가능?
+	vector<IR*> _itemIRList;
 	vector<IR*>::iterator _obIRIter;
 
 	void loadMap(vector<string> data, CollisionCheckManager* _colM);

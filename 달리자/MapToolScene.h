@@ -9,6 +9,7 @@ struct newObjectData
 	POINT _xycoordinate;
 	string _imageName;
 	image* _image;
+	bool _isItem;
 };
 
 class MapToolScene : public singletonBase<MapToolScene>
@@ -30,14 +31,17 @@ private:
 	float _maxY;
 
 	vector<string> _obList;
+	vector<string> _itemList;
 	vector<string>::iterator _oliter;
 
 	vector<button> _bList;
+	vector<button> _itembList;
 	vector<button>::iterator _bliter;
 
 	static string _currentImageName;
 	static image* _currentImage;
 	static bool _isCurrentOn;
+	static bool _isItemnow;
 	vector<newObjectData*> _3tuplesList;
 	vector<newObjectData*>::iterator _3tupleiter;
 
@@ -105,6 +109,7 @@ public:
 	static void eraseButton(void);
 
 	static void obButton(int imageNumer);
+	static void itemButton(int imageNumer);
 
 	MapToolScene();
 	~MapToolScene();
