@@ -138,6 +138,8 @@ HRESULT SiwoongTest::gameInit(void)
 
 	_cameraY = 0;
 
+	_frameCount = 0;
+
 	return S_OK;
 }
 
@@ -163,6 +165,8 @@ void SiwoongTest::gameUpdate(void)
 	}
 
 	//_cameraY -= 5;
+
+	++_frameCount;
 
 	_player->update();
 
@@ -211,7 +215,7 @@ void SiwoongTest::gameRender(void)
 	{
 		if ((*_obIRIter)->_rc.top - _cameraY > 0 && (*_obIRIter)->_rc.top - _cameraY <= WINSIZEY)
 		{
-			(*_obIRIter)->_image->frameRender(getMemDC(), (*_obIRIter)->_rc.left, (*_obIRIter)->_rc.top - _cameraY, ((TIMEMANAGER->getFrameCount() % 40) < 20) ? 0 : 1, 0);
+			(*_obIRIter)->_image->frameRender(getMemDC(), (*_obIRIter)->_rc.left, (*_obIRIter)->_rc.top - _cameraY, ((_frameCount % 40) < 20) ? 0 : 1, 0);
 		}
 	}
 

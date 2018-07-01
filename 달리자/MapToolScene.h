@@ -58,6 +58,8 @@ private:
 	static bool _erasefbool;
 	bool _isErasing;
 
+	int _frameCount; //모듈 연산으로 0~39 사이값 쓰기
+
 public:
 	//HWND _hMapTool; //맵툴 윈도우 핸들 //CreateWindow는 gameNode의 MainProc에서 한다
 	static HWND _hMapTool; 

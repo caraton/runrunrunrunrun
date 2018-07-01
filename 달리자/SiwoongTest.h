@@ -30,6 +30,8 @@ private:
 	vector<IR*> _itemIRList;
 	vector<IR*>::iterator _obIRIter;
 
+	int _frameCount; //모듈 연산으로 0~39 사이값 쓰기
+
 	void loadMap(vector<string> data, CollisionCheckManager* _colM);
 
 public:

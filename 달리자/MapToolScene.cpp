@@ -136,6 +136,8 @@ HRESULT MapToolScene::init2(void)
 	_loopY = 0;
 	_scrollY = 0;
 
+	_frameCount = 0;
+
 	return S_OK;
 }
 
@@ -176,6 +178,8 @@ void MapToolScene::release(void)
 								//memset(mstr, 0, sizeof(mstr)); 이방식도 가능
 	*mstr2 = '\0';
 	*nstr = '\0';
+
+	_frameCount = 0;
 }
 
 void MapToolScene::release2(void)
@@ -198,6 +202,7 @@ void MapToolScene::update(void)
 	}
 	else if (_mapToolOn == 2)
 	{
+		++_frameCount;
 		//데이터 로드는 계속 실행되는 업데이트가 아니라 _mapToolOn가 2가되는 순간 한번만 실행되도록 바꾸기
 		//vector<string> toLoad;
 
@@ -407,7 +412,7 @@ void MapToolScene::render(void)
 			}
 			else
 			{
-				(*_4tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_4tupleiter)->_xycoordinate.x - ((*_4tupleiter)->_image->getFrameWidth() / 2), (*_4tupleiter)->_xycoordinate.y - ((*_4tupleiter)->_image->getFrameHeight() / 2) - _loopY, ((TIMEMANAGER->getFrameCount() % 40) < 20) ? 0 : 1, 0);
+				(*_4tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_4tupleiter)->_xycoordinate.x - ((*_4tupleiter)->_image->getFrameWidth() / 2), (*_4tupleiter)->_xycoordinate.y - ((*_4tupleiter)->_image->getFrameHeight() / 2) - _loopY, ((_frameCount % 40) < 20) ? 0 : 1, 0);
 			}
 		}
 
