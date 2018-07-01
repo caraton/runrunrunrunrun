@@ -145,7 +145,8 @@ void button::update2()
 		else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && _direction == BUTTONDIRECTION_DOWN)
 		{
 			_direction = BUTTONDIRECTION_UP;
-			vector<string> temp = TXTDATA->txtLoad("장애물 목록.txt");
+			bool check;
+			vector<string> temp = TXTDATA->txtLoadExt("장애물 목록.txt",1024, &check);
 			for (int i = 0; i < temp.size()-1;)
 			{
 				if (temp[i].compare(_imageName) == 0)
@@ -180,7 +181,8 @@ void button::update3()
 		else if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON) && _direction == BUTTONDIRECTION_DOWN)
 		{
 			_direction = BUTTONDIRECTION_UP;
-			vector<string> temp = TXTDATA->txtLoad("아이템 목록.txt");
+			bool check;
+			vector<string> temp = TXTDATA->txtLoadExt("아이템 목록.txt",1024, &check);
 			for (int i = 0; i < temp.size() - 1;)
 			{
 				if (temp[i].compare(_imageName) == 0)

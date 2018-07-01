@@ -69,8 +69,8 @@ HRESULT MapToolScene::init2(void)
 	//button* btemp = new button;
 	//btemp->init("테스트장애물맵툴", 675, 45, PointMake(1, 0), PointMake(0, 0), &obButton);
 	//_bList.push_back(btemp);
-
-	_obList = TXTDATA->txtLoad("장애물 목록.txt");
+	bool check;
+	_obList = TXTDATA->txtLoadExt("장애물 목록.txt", 1024, &check);
 
 	int i = 0;
 	for (_oliter = _obList.begin(); _oliter != _obList.end()-1; )
@@ -89,7 +89,7 @@ HRESULT MapToolScene::init2(void)
 		++_oliter;
 	}
 
-	_itemList = TXTDATA->txtLoad("아이템 목록.txt");
+	_itemList = TXTDATA->txtLoadExt("아이템 목록.txt", 1024, &check);
 
 	int j = i;
 	for (_oliter = _itemList.begin(); _oliter != _itemList.end() - 1; )
@@ -543,7 +543,8 @@ void MapToolScene::jailButton(void)
 
 void MapToolScene::obButton(int imageNumber)
 {
-	vector<string> temp = TXTDATA->txtLoad("장애물 목록.txt");
+	bool check;
+	vector<string> temp = TXTDATA->txtLoadExt("장애물 목록.txt", 1024, &check);
 	_currentImageName = temp[imageNumber];
 	_currentImage = IMAGEMANAGER->findImage(_currentImageName);
 	_isCurrentOn = true;
@@ -553,7 +554,8 @@ void MapToolScene::obButton(int imageNumber)
 
 void MapToolScene::itemButton(int imageNumber)
 {
-	vector<string> temp = TXTDATA->txtLoad("아이템 목록.txt");
+	bool check;
+	vector<string> temp = TXTDATA->txtLoadExt("아이템 목록.txt", 1024, &check);
 	_currentImageName = temp[imageNumber];
 	_currentImage = IMAGEMANAGER->findImage(_currentImageName);
 	_isCurrentOn = true;

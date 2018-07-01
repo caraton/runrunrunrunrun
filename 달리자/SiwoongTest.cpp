@@ -9,8 +9,9 @@ HRESULT SiwoongTest::init(void)
 	_renderP = &SiwoongTest::selectRender;
 
 	//%%이미지 추가하는부분들 로딩신으로 넘기기?
-	_obList = TXTDATA->txtLoad("장애물 목록.txt");
-	_itemList = TXTDATA->txtLoad("아이템 목록.txt");
+	bool check;
+	_obList = TXTDATA->txtLoadExt("장애물 목록.txt",1024, &check);
+	_itemList = TXTDATA->txtLoadExt("아이템 목록.txt", 1024, &check);
 
 	for (_oliter = _obList.begin(); _oliter != _obList.end() - 1; )
 	{
