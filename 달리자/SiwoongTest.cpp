@@ -211,7 +211,7 @@ void SiwoongTest::gameRender(void)
 	{
 		if ((*_obIRIter)->_rc.top - _cameraY > 0 && (*_obIRIter)->_rc.top - _cameraY <= WINSIZEY)
 		{
-			(*_obIRIter)->_image->frameRender(getMemDC(), (*_obIRIter)->_rc.left, (*_obIRIter)->_rc.top - _cameraY, ((TIMEMANAGER->getFrameCount() % 10) < 5) ? 0 : 1, 0);
+			(*_obIRIter)->_image->frameRender(getMemDC(), (*_obIRIter)->_rc.left, (*_obIRIter)->_rc.top - _cameraY, ((TIMEMANAGER->getFrameCount() % 40) < 20) ? 0 : 1, 0);
 		}
 	}
 

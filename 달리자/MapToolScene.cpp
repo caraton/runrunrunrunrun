@@ -407,7 +407,7 @@ void MapToolScene::render(void)
 			}
 			else
 			{
-				(*_4tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_4tupleiter)->_xycoordinate.x - ((*_4tupleiter)->_image->getFrameWidth() / 2), (*_4tupleiter)->_xycoordinate.y - ((*_4tupleiter)->_image->getFrameHeight() / 2) - _loopY, ((TIMEMANAGER->getFrameCount() % 10) < 5) ? 0 : 1, 0);
+				(*_4tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_4tupleiter)->_xycoordinate.x - ((*_4tupleiter)->_image->getFrameWidth() / 2), (*_4tupleiter)->_xycoordinate.y - ((*_4tupleiter)->_image->getFrameHeight() / 2) - _loopY, ((TIMEMANAGER->getFrameCount() % 40) < 20) ? 0 : 1, 0);
 			}
 		}
 
