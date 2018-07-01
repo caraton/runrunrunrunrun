@@ -155,19 +155,19 @@ void MapToolScene::release(void)
 
 	_bList.clear();
 
-	_itembList.clear();
+	_itemList.clear();
 	_itembList.clear();
 
 	_currentImage = NULL;
 
-	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+	for (_4tupleiter = _4tuplesList.begin(); _4tupleiter != _4tuplesList.end(); ++_4tupleiter)
 	{
-		SAFE_DELETE(*_3tupleiter);
+		SAFE_DELETE(*_4tupleiter);
 	}
-	_3tuplesList.clear();
-	for (_3tupleiter = _rearrangedList.begin(); _3tupleiter != _rearrangedList.end(); ++_3tupleiter)
+	_4tuplesList.clear();
+	for (_4tupleiter = _rearrangedList.begin(); _4tupleiter != _rearrangedList.end(); ++_4tupleiter)
 	{
-		SAFE_DELETE(*_3tupleiter);
+		SAFE_DELETE(*_4tupleiter);
 	}
 	_rearrangedList.clear();
 
@@ -271,7 +271,7 @@ void MapToolScene::update(void)
 				temp->_xycoordinate.x = _ptMouse.x;
 				temp->_xycoordinate.y = _ptMouse.y +_loopY;
 				temp->_isItem = _isItemnow;
-				_3tuplesList.push_back(temp);
+				_4tuplesList.push_back(temp);
 			}
 		}
 
@@ -284,21 +284,21 @@ void MapToolScene::update(void)
 
 				RECT eraserR = RectMakeCenter(_ptMouse.x, _ptMouse.y + _loopY, 50, 50);
 				
-				for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end();)
+				for (_4tupleiter = _4tuplesList.begin(); _4tupleiter != _4tuplesList.end();)
 				{
-					if (PtInRect(&eraserR, (*_3tupleiter)->_xycoordinate))
+					if (PtInRect(&eraserR, (*_4tupleiter)->_xycoordinate))
 					{
-						newObjectData* toErase = (*_3tupleiter);
-						_3tupleiter = _3tuplesList.erase(_3tupleiter); 
-						//%% erase에 iterator(여기선 _3tupleiter)를 대입해 지우면 그 iterator 위치의 값도 지우지만
-						//%% _3tupleiter의 iterator 값도 의미가 없어진다. 
+						newObjectData* toErase = (*_4tupleiter);
+						_4tupleiter = _4tuplesList.erase(_4tupleiter); 
+						//%% erase에 iterator(여기선 _4tupleiter)를 대입해 지우면 그 iterator 위치의 값도 지우지만
+						//%% _4tupleiter의 iterator 값도 의미가 없어진다. 
 						//%%%% 그러나 erase가 그 다음 iterator 값을 리턴하므로 
-						//%%%% _3tupleiter에 그 리턴값을 대입해주면 된다.
+						//%%%% _4tupleiter에 그 리턴값을 대입해주면 된다.
 						SAFE_DELETE(toErase);
 					}
 					else
 					{
-						++_3tupleiter;
+						++_4tupleiter;
 					}
 				}
 			}
@@ -322,11 +322,11 @@ void MapToolScene::update(void)
 
 		if (_clearfbool)
 		{
-			for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+			for (_4tupleiter = _4tuplesList.begin(); _4tupleiter != _4tuplesList.end(); ++_4tupleiter)
 			{
-				SAFE_DELETE(*_3tupleiter);
+				SAFE_DELETE(*_4tupleiter);
 			}
-			_3tuplesList.clear();
+			_4tuplesList.clear();
 			_clearfbool = false;
 		}
 	}
@@ -399,15 +399,15 @@ void MapToolScene::render(void)
 		//IMAGEMANAGER->findImage("object_yellow")->render(_backBufferMapTool->getMemDC(), 650, 320 + _scrollY*10);
 		//IMAGEMANAGER->findImage("테스트장애물")->render(_backBufferMapTool->getMemDC(), 650, 20 + _scrollY * 10);
 
-		for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+		for (_4tupleiter = _4tuplesList.begin(); _4tupleiter != _4tuplesList.end(); ++_4tupleiter)
 		{
-			if (!((*_3tupleiter)->_isItem))
+			if (!((*_4tupleiter)->_isItem))
 			{
-				(*_3tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_3tupleiter)->_xycoordinate.x - ((*_3tupleiter)->_image->getFrameWidth() / 2), (*_3tupleiter)->_xycoordinate.y - ((*_3tupleiter)->_image->getFrameHeight() / 2) - _loopY, 0, 0);
+				(*_4tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_4tupleiter)->_xycoordinate.x - ((*_4tupleiter)->_image->getFrameWidth() / 2), (*_4tupleiter)->_xycoordinate.y - ((*_4tupleiter)->_image->getFrameHeight() / 2) - _loopY, 0, 0);
 			}
 			else
 			{
-				(*_3tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_3tupleiter)->_xycoordinate.x - ((*_3tupleiter)->_image->getFrameWidth() / 2), (*_3tupleiter)->_xycoordinate.y - ((*_3tupleiter)->_image->getFrameHeight() / 2) - _loopY, ((TIMEMANAGER->getFrameCount() % 10) < 5) ? 0 : 1, 0);
+				(*_4tupleiter)->_image->frameRender(_backBufferMapTool->getMemDC(), (*_4tupleiter)->_xycoordinate.x - ((*_4tupleiter)->_image->getFrameWidth() / 2), (*_4tupleiter)->_xycoordinate.y - ((*_4tupleiter)->_image->getFrameHeight() / 2) - _loopY, ((TIMEMANAGER->getFrameCount() % 10) < 5) ? 0 : 1, 0);
 			}
 		}
 
@@ -455,11 +455,11 @@ void MapToolScene::loadMap(vector<string> data)
 	strcpy_s(backgroundChoiceStr, data[0].c_str());
 	mint = stoi(data[1]);
 
-	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+	for (_4tupleiter = _4tuplesList.begin(); _4tupleiter != _4tuplesList.end(); ++_4tupleiter)
 	{
-		SAFE_DELETE(*_3tupleiter);
+		SAFE_DELETE(*_4tupleiter);
 	}
-	_3tuplesList.clear();
+	_4tuplesList.clear();
 
 	for (int i = 2; i < data.size() - 1;)
 	{
@@ -478,7 +478,7 @@ void MapToolScene::loadMap(vector<string> data)
 		temp->_xycoordinate.y = stoi(data[i + 3]);
 		
 
-		_3tuplesList.push_back(temp);
+		_4tuplesList.push_back(temp);
 
 		i = i + 4;
 	}
@@ -489,11 +489,11 @@ void MapToolScene::mtLoadMap()
 	strcpy_s(backgroundChoiceStr, _mapData[0].c_str());
 	mint = stoi(_mapData[1]);
 
-	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+	for (_4tupleiter = _4tuplesList.begin(); _4tupleiter != _4tuplesList.end(); ++_4tupleiter)
 	{
-		SAFE_DELETE(*_3tupleiter);
+		SAFE_DELETE(*_4tupleiter);
 	}
-	_3tuplesList.clear();
+	_4tuplesList.clear();
 
 	for (int i = 2; i < _mapData.size() - 1;)
 	{
@@ -516,7 +516,7 @@ void MapToolScene::mtLoadMap()
 		temp->_xycoordinate.y = stoi(_mapData[i + 3]);
 		
 
-		_3tuplesList.push_back(temp);
+		_4tuplesList.push_back(temp);
 
 		i = i + 4;
 	}
@@ -582,22 +582,22 @@ void MapToolScene::mapSave()
 {
 	//y좌표 크기순으로 정렬하는거 만들기
 	//임시
-	for (_3tupleiter = _rearrangedList.begin(); _3tupleiter != _rearrangedList.end(); ++_3tupleiter)
+	for (_4tupleiter = _rearrangedList.begin(); _4tupleiter != _rearrangedList.end(); ++_4tupleiter)
 	{
-		SAFE_DELETE(*_3tupleiter);
+		SAFE_DELETE(*_4tupleiter);
 	}
 	_rearrangedList.clear();
-	for (_3tupleiter = _3tuplesList.begin(); _3tupleiter != _3tuplesList.end(); ++_3tupleiter)
+	for (_4tupleiter = _4tuplesList.begin(); _4tupleiter != _4tuplesList.end(); ++_4tupleiter)
 	{
 		newObjectData* temp = new newObjectData;
 
-		temp->_isItem = (*_3tupleiter)->_isItem;
+		temp->_isItem = (*_4tupleiter)->_isItem;
 
 		if (temp->_isItem)
 		{
 			for (int i = 0; i < _itemList.size() - 1;)
 			{
-				if (_itemList[i].compare((*_3tupleiter)->_imageName) == 0)
+				if (_itemList[i].compare((*_4tupleiter)->_imageName) == 0)
 				{
 					temp->_imageName = to_string(i / 3);
 					break;
@@ -611,7 +611,7 @@ void MapToolScene::mapSave()
 		{
 			for (int i = 0; i < _obList.size() - 1;)
 			{
-				if (_obList[i].compare((*_3tupleiter)->_imageName) == 0)
+				if (_obList[i].compare((*_4tupleiter)->_imageName) == 0)
 				{
 					temp->_imageName = to_string(i / 3);
 					break;
@@ -622,9 +622,9 @@ void MapToolScene::mapSave()
 			}
 		}
 
-		temp->_image = (*_3tupleiter)->_image;
-		temp->_xycoordinate.x = (*_3tupleiter)->_xycoordinate.x;
-		temp->_xycoordinate.y = (*_3tupleiter)->_xycoordinate.y;
+		temp->_image = (*_4tupleiter)->_image;
+		temp->_xycoordinate.x = (*_4tupleiter)->_xycoordinate.x;
+		temp->_xycoordinate.y = (*_4tupleiter)->_xycoordinate.y;
 		
 		_rearrangedList.push_back(temp);
 	}
@@ -638,12 +638,12 @@ void MapToolScene::mapSave()
 	toSave.push_back(to_string(mint));
 
 	//오브젝트 저장
-	for (_3tupleiter = _rearrangedList.begin(); _3tupleiter != _rearrangedList.end(); ++_3tupleiter)
+	for (_4tupleiter = _rearrangedList.begin(); _4tupleiter != _rearrangedList.end(); ++_4tupleiter)
 	{
-		toSave.push_back((*_3tupleiter)->_imageName);
-		toSave.push_back(to_string(((*_3tupleiter)->_isItem) ? 1 : 0));
-		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.x));
-		toSave.push_back(to_string((*_3tupleiter)->_xycoordinate.y));	
+		toSave.push_back((*_4tupleiter)->_imageName);
+		toSave.push_back(to_string(((*_4tupleiter)->_isItem) ? 1 : 0));
+		toSave.push_back(to_string((*_4tupleiter)->_xycoordinate.x));
+		toSave.push_back(to_string((*_4tupleiter)->_xycoordinate.y));	
 	}
 
 	toSave.push_back("더미"); //txtLoad가 마지막칸 에러를 일으키므로 더미 데이터 하나 넣어주기

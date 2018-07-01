@@ -42,8 +42,8 @@ private:
 	static image* _currentImage;
 	static bool _isCurrentOn;
 	static bool _isItemnow;
-	vector<newObjectData*> _3tuplesList;
-	vector<newObjectData*>::iterator _3tupleiter;
+	vector<newObjectData*> _4tuplesList;
+	vector<newObjectData*>::iterator _4tupleiter;
 
 	vector<newObjectData*> _rearrangedList;
 	
