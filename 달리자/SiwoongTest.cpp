@@ -216,7 +216,7 @@ void SiwoongTest::loadMap(vector<string> data, CollisionCheckManager* _colM)
 		temp->_image = IMAGEMANAGER->findImage(tString);
 		temp->_rc = RectMakeCenter(stoi(data[i + 1]), stoi(data[i + 2]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
 		//temp->_type = (char*) tString.c_str(); 
-		temp->_type = "can"; //일단 충돌확인을 위해 can 대입
+		temp->_type = (char *)tString.c_str(); //일단 충돌확인을 위해 can 대입
 		_obIRList.push_back(temp);
 
 		_colM->addIR(temp);
