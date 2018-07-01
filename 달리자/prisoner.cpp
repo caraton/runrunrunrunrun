@@ -9,7 +9,7 @@ HRESULT prisoner::init(void)
 	m_pIR._rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
 	m_pSpeed = { 0,0 };
 
-	
+	m_pIR._type = "devil";
 	m_pIR._image = IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 
 	return S_OK;
@@ -82,11 +82,7 @@ void prisoner::render(float cameraY)
 	}
 }
 
-void prisoner::linkHead(void * Head, headType type)
-{
-	m_eHeadType = type;
-	m_pHead = Head;
-}
+
 
 prisoner::prisoner()
 {

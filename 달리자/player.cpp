@@ -130,23 +130,24 @@ void player::update(void)
 				}
 				break;
 			}
-			//else if (!strncmp((*_colIter)->_type, "prisoner", 10))
-			//{
-			//	if (_items.size() < 3)
-			//	{
-			//		_items.push_back((Items *)(*_colIter)->_node);
+			else if (!strncmp((*_colIter)->_type, "prisoner", 10))
+			{
 
-			//		//아이템 이동관련
-			//		if (_items.size() == 1)
-			//		{
-			//			(*_items.begin())->linkHead(this, t_player);
-			//		}
-			//		else
-			//		{
-			//			(*(_items.end()--))->linkHead((_items.end()--)--, t_item);
-			//		}
-			//	}
-			//}
+				if (_items.size() < 3)
+				{
+					_items.push_back((Items *)(*_colIter)->_node);
+
+					//아이템 이동관련
+					if (_items.size() == 1)
+					{
+						(*_items.begin())->linkHead(this, t_player);
+					}
+					//else
+					//{
+					//	(*(_items.end()--))->linkHead((_items, t_item);
+					//}
+				}
+			}
 		}
 	}
 

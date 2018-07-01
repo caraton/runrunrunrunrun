@@ -29,6 +29,12 @@ void Items::update(void)
 	m_pIR._rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
 }
 
+void Items::linkHead(void * Head, headType type)
+{
+	m_eHeadType = type;
+	m_pHead = Head;
+}
+
 void Items::render(float cameraY)
 {
 	if (m_pIR._image)

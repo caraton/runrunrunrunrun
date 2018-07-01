@@ -11,6 +11,9 @@ class Obstacles;
 class MinseokBack : public gameNode
 {
 private:
+	
+
+
 	int m_nCameraY;
 	image * m_pImage;
 	player* m_pPlayer;
@@ -32,15 +35,17 @@ class MinseokTest : public gameNode
 {
 private:
 
+	//Å×½ºÆ®
+	IR _testIR;
+	int _testIRy;
+	
 	MinseokBack * m_pBack;
 	player* m_pPlayer;
-	rectItem* m_pItem;
-	rectItem* m_pItem2;
 	std::vector<prisoner*> m_vecPrisoner;
 	CollisionCheckManager* m_pColManager;
 	RECT m_rcObstacle;
 	float m_fCameraY;
-	Obstacles* m_pBigRect;
+	Obstacles* m_pDeadLine;
 
 public:
 	HRESULT init(void);

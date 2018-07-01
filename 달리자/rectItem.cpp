@@ -32,7 +32,7 @@ void rectItem::update(void)
 	}
 	
 	//플레이어에게 종속되엇을때 속도를 계산해주는 함수
-	else if (m_pPlayer)
+	if (m_pPlayer)
 	{
 		float maxSpeed = 15.f;
 		if (!m_pItem)
@@ -177,7 +177,7 @@ void rectItem::update(void)
 
 void rectItem::render(float cameraY)
 {
-	Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - cameraY, m_rcObstacle.right, m_rcObstacle.bottom - cameraY);
+	//Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - cameraY, m_rcObstacle.right, m_rcObstacle.bottom - cameraY);
 
 
 
