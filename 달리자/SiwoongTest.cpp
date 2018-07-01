@@ -90,7 +90,7 @@ HRESULT SiwoongTest::gameInit(void)
 
 	bool check = false;
 
-	toLoad = TXTDATA->txtLoadExt(map, 4096, &check);
+	toLoad = TXTDATA->txtLoadExt(map, TXTSIZE, &check);
 
 	if (check)
 	{

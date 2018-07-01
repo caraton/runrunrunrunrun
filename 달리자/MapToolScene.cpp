@@ -652,5 +652,5 @@ void MapToolScene::mapSave()
 	
 	_mapData = toSave;
 
-	TXTDATA->txtSaveExt(nametemp.c_str(), toSave, 4096);
+	TXTDATA->txtSaveExt(nametemp.c_str(), toSave, TXTSIZE);
 }

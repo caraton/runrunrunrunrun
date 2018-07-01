@@ -325,7 +325,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 
 				bool check = false;
 
-				toLoad = TXTDATA->txtLoadExt(map, 4096, &check);
+				toLoad = TXTDATA->txtLoadExt(map, TXTSIZE, &check);
 
 				if (check)
 				{
