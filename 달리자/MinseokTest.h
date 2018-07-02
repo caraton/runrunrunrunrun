@@ -46,6 +46,10 @@ private:
 	float m_fCameraY;
 	std::vector<guards*> m_vecGaurd;
 
+
+	//
+	IR* testTemp;
+
 public:
 	HRESULT init(void);
 	void release(void);

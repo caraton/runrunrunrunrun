@@ -70,6 +70,14 @@ HRESULT MinseokTest::init(void)
 
 	int a = 1;
 
+
+	//Å×½ºÆ® Àå¾Ö¹°
+	testTemp = new IR;
+	testTemp->_image = IMAGEMANAGER->addFrameImage("can", "Image/Obstacles/object_can_icon.bmp", 100, 50, 2, 1, true, RGB(255, 0, 255));
+	testTemp->_rc = RectMakeCenter(WINSIZEX / 2 - 200, -500, 50, 50);
+	testTemp->_type = "can";
+	m_pColManager->addIR(testTemp);
+
 	return S_OK;
 }
 
@@ -152,6 +160,12 @@ void MinseokTest::render()
 	m_pBack->render();
 	m_pPlayer->render(m_fCameraY);
 	m_pPlayer->render(m_pColManager->GetGameover());
+
+	if (testTemp)
+	{
+		testTemp->_image->frameRender(getMemDC(), testTemp->_rc.left, testTemp->_rc.top - m_fCameraY);
+	}
+	
 	
 	//Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - m_fCameraY, m_rcObstacle.right, m_rcObstacle.bottom - m_fCameraY);
 	for (int i = 0; i < m_vecItems.size(); i++)
@@ -171,6 +185,7 @@ void MinseokTest::render()
 	wsprintf(str, "¹Î¼®ÀÌ¾À");
 	TextOut(getMemDC(), 0, 80, str, strlen(str));
 
+	
 }
 
 MinseokTest::MinseokTest()

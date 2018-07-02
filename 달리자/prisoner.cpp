@@ -44,7 +44,9 @@ void prisoner::update(void)
 			{
 				if (!strncmp((*_colIter)->_type, "can", 10))
 				{
-					SAFE_DELETE(*(_colIter));
+					IR* temp = *_colIter;
+					m_pColManager->deleteIR(*_colIter);
+					//SAFE_DELETE(temp);
 				}
 			}
 		}
