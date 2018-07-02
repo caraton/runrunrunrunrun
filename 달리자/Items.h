@@ -1,6 +1,7 @@
 #pragma once
 #include "gameNode.h"
 
+class CollisionCheckManager;
 
 typedef enum HEADTYPEinITEM
 {
@@ -13,6 +14,7 @@ typedef enum HEADTYPEinITEM
 class Items : public gameNode
 {
 protected:
+	SYNTHESIZE(bool, m_isFire, Fire);
 	SYNTHESIZE(IR*, m_pIR, IR);
 	SYNTHESIZE(fPoint, m_pPosition, Pos);
 	SYNTHESIZE(fPoint, m_pSpeed, Speed);
@@ -20,6 +22,8 @@ protected:
 
 	void* m_pHead;
 	headType m_eHeadType;
+	CollisionCheckManager* m_pColManager;
+	vector<IR*>::iterator _colIter;
 
 
 public:
@@ -29,6 +33,8 @@ public:
 	virtual void render(float cameraY);
 	
 	void linkHead(void * Head, headType type);
+	void linkColManager(CollisionCheckManager* col) { m_pColManager = col; }
+
 public:
 	Items();
 	virtual ~Items();

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "prisoner.h"
 #include "player.h"
-
+#include "CollisionCheckManager.h"
 
 HRESULT prisoner::init(void)
 {
@@ -14,6 +14,7 @@ HRESULT prisoner::init(void)
 	m_pIR->_type = "prisoner";
 	m_pIR->_node = this;
 	m_pIR->_image = IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	m_isFire = false;
 
 	return S_OK;
 	
@@ -28,15 +29,43 @@ void prisoner::update(void)
 	if (!m_isAlive) return;
 	fPoint goalPoint;
 	goalPoint = { 0.0f,0.0f };
+
+	//발사중이면 날라감
+	if (m_isFire)
+	{
+		m_pSpeed = { 0.f,-15.0f };
+
+
+		//발사중 오브젝트와 부딛힌다면?! - 오브젝트를 파괴함
+		vector<IR*>* temp = new vector<IR*>;
+		if (m_pColManager->checkCollision(m_pIR, temp))
+		{
+			for (_colIter = temp->begin(); _colIter != temp->end(); ++_colIter)
+			{
+				if (!strncmp((*_colIter)->_type, "can", 10))
+				{
+					SAFE_DELETE(*(_colIter));
+				}
+			}
+		}
+
+
+		//일정 거리를 날라가면 없어짐
+		if (m_pPosition.y - m_nCameraY < 0)
+		{
+			m_isFire = false;
+			m_isAlive = false;
+		}
+	}
 	
 	//해드가 없으면 멈춰있음
-	if (!m_pHead)
+	else if (!m_pHead)
 	{
 		m_pSpeed.y = 0;
 	}
 
 	//해드가 있으면 해드를 따라감
-	if (m_pHead)
+	else if (m_pHead)
 	{
 		float maxSpeed = 15.f;
 		//해드가 플레이어일 경우
@@ -78,6 +107,7 @@ void prisoner::update(void)
 
 void prisoner::render(float cameraY)
 {
+	m_nCameraY = cameraY;
 	if (!m_isAlive) return;
 	//상태에 따른랜더 변화
 	if (!m_pHead)

@@ -38,6 +38,7 @@ HRESULT MinseokTest::init(void)
 		{
 			tttemp = new prisoner;
 			tttemp->init();
+			tttemp->linkColManager(m_pColManager);
 		}
 		else
 		{

@@ -150,6 +150,9 @@
     <ClInclude Include="can.h">
       <Filter>MainGame\Obstacles</Filter>
     </ClInclude>
+    <ClInclude Include="guards.h">
+      <Filter>MainGame\Obstacles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -228,6 +231,9 @@
       <Filter>MainGame\Obstacles</Filter>
     </ClCompile>
     <ClCompile Include="can.cpp">
+      <Filter>MainGame\Obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="guards.cpp">
       <Filter>MainGame\Obstacles</Filter>
     </ClCompile>
   </ItemGroup>

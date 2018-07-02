@@ -307,7 +307,7 @@ void player::useItem()
 	{
 		if (!strncmp(_items[0]->GetIR()->_type, "prisoner", 10))
 		{
-			_items[0]->SetAlive(false);
+			_items[0]->SetFire(true);
 			//아이템 사용효과를 넣어줄것
 		}
 		else if (!strncmp(_items[0]->GetIR()->_type, "star", 10))
