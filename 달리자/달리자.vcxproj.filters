@@ -141,19 +141,13 @@
     <ClInclude Include="MapToolScene.h">
       <Filter>MainGame\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="guards.h">
-      <Filter>MainGame\Obstacles</Filter>
-    </ClInclude>
     <ClInclude Include="star.h">
       <Filter>MainGame\Items</Filter>
     </ClInclude>
-    <ClInclude Include="crack.h">
+    <ClInclude Include="box.h">
       <Filter>MainGame\Obstacles</Filter>
     </ClInclude>
     <ClInclude Include="can.h">
-      <Filter>MainGame\Obstacles</Filter>
-    </ClInclude>
-    <ClInclude Include="box.h">
       <Filter>MainGame\Obstacles</Filter>
     </ClInclude>
   </ItemGroup>
@@ -227,19 +221,13 @@
     <ClCompile Include="MapToolScene.cpp">
       <Filter>MainGame\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="guards.cpp">
-      <Filter>MainGame\Obstacles</Filter>
-    </ClCompile>
     <ClCompile Include="star.cpp">
       <Filter>MainGame\Items</Filter>
     </ClCompile>
-    <ClCompile Include="crack.cpp">
+    <ClCompile Include="box.cpp">
       <Filter>MainGame\Obstacles</Filter>
     </ClCompile>
     <ClCompile Include="can.cpp">
-      <Filter>MainGame\Obstacles</Filter>
-    </ClCompile>
-    <ClCompile Include="box.cpp">
       <Filter>MainGame\Obstacles</Filter>
     </ClCompile>
   </ItemGroup>
