@@ -2,6 +2,8 @@
 #include "player.h"
 #include "CollisionCheckManager.h"
 #include "Items.h"
+#include "prisoner.h"
+#include "star.h"
 
 //슝아 너말이 맞는듯
 
@@ -40,6 +42,9 @@ HRESULT player::init(void)
 	//IR 초기화
 	//_IR._image = _playerImage;
 	m_IR._rc = RectMake(m_fpPosition.x, m_fpPosition.y, 50, 50);
+
+	//무적 초기화
+	m_isStar = false;
 
 	return S_OK;
 }
@@ -90,9 +95,9 @@ void player::update(void)
 	//	m_IR._image = IMAGEMANAGER->findImage("player");
 	//}
 
-	if (KEYMANAGER->isOnceKeyDown('C')) //아이템 사용
+	if (KEYMANAGER->isOnceKeyDown('K')) //아이템 사용
 	{
-
+		useItem();
 	}
 
 	m_IR._image->setFrameX((TIMEMANAGER->getFrameCount()/10) % 6);
@@ -107,12 +112,14 @@ void player::update(void)
 		{
 			if (!strncmp((*_colIter)->_type, "devil", 10))
 			{
+				if (m_isStar) continue;
 				m_IR._image = IMAGEMANAGER->findImage("playerDeath");
 				m_pColManager->SetGameover(true);
 				break;
 			}
 			else if (!strncmp((*_colIter)->_type, "can", 10))
 			{
+
 				fPoint tempf;
 				tempf.x = ((*_colIter)->_rc.left + (*_colIter)->_rc.right) / 2;
 				tempf.y = ((*_colIter)->_rc.top + (*_colIter)->_rc.bottom) / 2;
@@ -135,18 +142,54 @@ void player::update(void)
 
 				if (_items.size() < 3)
 				{
-					_items.push_back((Items *)(*_colIter)->_node);
+					_items.push_back((prisoner *)(*_colIter)->_node);
+
+
 
 					//아이템 이동관련
 					if (_items.size() == 1)
 					{
 						(*_items.begin())->linkHead(this, t_player);
 					}
-					//else
-					//{
-					//	(*(_items.end()--))->linkHead((_items, t_item);
-					//}
+					else
+					{
+						_items[_items.size() - 1]->linkHead(_items[_items.size() - 2], t_item);
+						//(*(_items.end()--))->linkHead(*((_items.end()--)--), t_item);
+					}
 				}
+
+
+				m_pColManager->deleteIR((*_colIter));
+			}
+			else if (!strncmp((*_colIter)->_type, "star", 10))
+			{
+
+				if (_items.size() < 3)
+				{
+					_items.push_back((star*)(*_colIter)->_node);
+
+
+					//아이템 이동관련
+					if (_items.size() == 1)
+					{
+						(*_items.begin())->linkHead(this, t_player);
+					}
+					else
+					{
+						_items[_items.size() - 1]->linkHead(_items[_items.size() - 2], t_item);
+						//(*(_items.end()--))->linkHead(*((_items.end()--)--), t_item);
+					}
+				}
+
+
+				m_pColManager->deleteIR((*_colIter));
+			}
+			else if (!strncmp((*_colIter)->_type, "deadline", 10))
+			{
+				if (m_isStar) continue;
+				m_IR._image = IMAGEMANAGER->findImage("playerDeath");
+				m_pColManager->SetGameover(true);
+				break;
 			}
 		}
 	}
@@ -255,6 +298,55 @@ void player::move()
 	m_fpPosition.x += m_fpSpeed.x;
 	m_fpPosition.y += m_fpSpeed.y;
 	m_IR._rc = RectMake(m_fpPosition.x, m_fpPosition.y, 50, 50);
+}
+
+void player::useItem()
+{
+	if (_items.size() == 0) return;
+	else 
+	{
+		if (!strncmp(_items[0]->GetIR()->_type, "prisoner", 10))
+		{
+			_items[0]->SetAlive(false);
+			//아이템 사용효과를 넣어줄것
+		}
+		else if (!strncmp(_items[0]->GetIR()->_type, "star", 10))
+		{
+			m_isStar = true;
+			_items[0]->SetAlive(false);
+		}
+
+
+		//사용한 아이템을 없애줌
+		
+		vector<Items*> temp;
+		if (_items.size() == 1)
+		{
+			_items.clear();
+			return;
+		}
+		else
+		{
+			for (int i = 1; i < _items.size(); i++)
+			{
+				temp.push_back(_items[i]);
+				if (temp.size() == 1)
+				{
+					(*temp.begin())->linkHead(this, t_player);
+				}
+				else
+				{
+					_items[_items.size() - 1]->linkHead(_items[_items.size() - 2], t_item);
+					//(*(_items.end()--))->linkHead(*((_items.end()--)--), t_item);
+				}
+			}
+			_items.clear();
+			_items = temp;
+			
+		}
+
+	}
+
 }
 
 

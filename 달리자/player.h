@@ -9,12 +9,16 @@ class player : public gameNode
 private:
 	//업데이트에 들어가는 함수들
 	void move();
+
+private:
+	void useItem();
 private:
 	//ST_ImageAndRect _IR;
 
 	//POINT _player;
 
 	//float _cameraY;
+	bool m_isStar = false;
 
 	SYNTHESIZE(float, m_fCamaraY, CamY);
 	SYNTHESIZE(fPoint, m_fpPosition, Pos);

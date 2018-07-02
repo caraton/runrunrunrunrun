@@ -5,6 +5,8 @@
 #include "CollisionCheckManager.h"
 #include "prisoner.h"
 #include "Obstacles.h"
+#include "guards.h"
+#include "star.h"
 
 HRESULT MinseokTest::init(void)
 {
@@ -23,51 +25,47 @@ HRESULT MinseokTest::init(void)
 	m_pPlayer->linkColManager(m_pColManager);
 
 
-	m_pDeadLine = new Obstacles;
-	m_pDeadLine->init();
-	IR tempIR;
-	tempIR._rc = RectMake(0, 0, WINSIZEX, 100);
-	tempIR._image = IMAGEMANAGER->addImage("DeadRock", "Image/rock04.bmp", 600, 188, true, RGB(255, 0, 255));
-	m_pDeadLine->SetIR(tempIR);
-	m_pDeadLine->SetPos({0,WINSIZEY - 188});
-	m_pDeadLine->SetSpeed({ 0,-5.f });
-
 
 	m_fCameraY = 0.f;
 
 	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
 
-	//죄수들 초기화
+	//아이템들 초기화
 	for (int i = 0; i < 4; i++)
 	{
-		prisoner* tttemp;
-		tttemp = new prisoner;
-		tttemp->init();
-		//이닛함수
-		//m_pPosition = { WINSIZEX * 3 / 4, -400 };
-		//m_pIR._rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
-		//m_pSpeed = { 0,0 };
-		//
-		//m_pIR._type = "devil";
-		//m_pIR._image = IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+		Items* tttemp;
+		if (i != 2)
+		{
+			tttemp = new prisoner;
+			tttemp->init();
+		}
+		else
+		{
+			tttemp = new star;
+			tttemp->init();
+		}
 		float tempposy = -1 * 200 * i;
 		tttemp->SetPos(fPoint{ WINSIZEX / 2,  tempposy });
-		m_vecPrisoner.push_back(tttemp);
-		m_pColManager->addIR(&(tttemp->GetIR()));
+		m_vecItems.push_back(tttemp);
+		m_pColManager->addIR(tttemp->GetIR());
+
+	}
+
+	//가드들 초기화
+	for (int i = 0; i < (int)(WINSIZEX / 50); i++)
+	{
+		guards* gTemp;
+		gTemp = new guards;
+		gTemp->init();
+		gTemp->SetPos({ (float)i * 50 , (float)WINSIZEY - 50 });
+		m_vecGaurd.push_back(gTemp);
+		m_pColManager->addIR(gTemp->GetIR());
 
 	}
 	//for (int i = 0; i < 4; i++)
 	//{
 	//	m_pColManager->addIR(&(m_vecPrisoner[i]->GetIR()));
 	//}
-	
-
-	//테스트
-	_testIR._image = IMAGEMANAGER->addImage("테스트장애물", "Image/Obstacles/enemy.bmp", 40, 40, true, RGB(255, 0, 255));
-	_testIR._rc = RectMakeCenter(100, -40, 40, 40);
-	_testIR._type = "devil";
-	_testIRy = -40;
-	m_pColManager->addIR(&_testIR);
 
 	int a = 1;
 
@@ -76,11 +74,11 @@ HRESULT MinseokTest::init(void)
 
 void MinseokTest::release(void)
 {
-	for (int i = 0; i < m_vecPrisoner.size(); i++)
+	for (int i = 0; i < m_vecItems.size(); i++)
 	{
-		SAFE_DELETE(m_vecPrisoner[i]);
+		SAFE_DELETE(m_vecItems[i]);
 	}
-	m_vecPrisoner.clear();
+	m_vecItems.clear();
 	SAFE_DELETE(m_pColManager);
 }
 
@@ -100,17 +98,24 @@ void MinseokTest::update(void)
 		return;
 	}
 
+	if (m_pColManager->GetGameover())
+	{
+		return;
+	}
 	
 	
 	m_pPlayer->update();
 	m_pBack->update();
 	m_fCameraY = m_pPlayer->GetCamY();
-	m_pDeadLine->update();
-	for (int i = 0; i < m_vecPrisoner.size(); i++)
+	
+	for (int i = 0; i < m_vecItems.size(); i++)
 	{
-		m_vecPrisoner[i]->update();
+		m_vecItems[i]->update();
 	}
-	_testIR._rc = RectMakeCenter(100, _testIRy, 40, 40);
+	for (int i = 0; i < m_vecGaurd.size(); i++)
+	{
+		m_vecGaurd[i]->update();
+	}
 	
 	m_pColManager->update();
 
@@ -145,20 +150,19 @@ void MinseokTest::render()
 	
 	m_pBack->render();
 	m_pPlayer->render(m_fCameraY);
+	m_pPlayer->render(m_pColManager->GetGameover());
 	
 	//Rectangle(getMemDC(), m_rcObstacle.left, m_rcObstacle.top - m_fCameraY, m_rcObstacle.right, m_rcObstacle.bottom - m_fCameraY);
-	for (int i = 0; i < m_vecPrisoner.size(); i++)
+	for (int i = 0; i < m_vecItems.size(); i++)
 	{
-		Rectangle(getMemDC(),m_vecPrisoner[i]->GetIR()._rc.left, m_vecPrisoner[i]->GetIR()._rc.top - m_fCameraY, m_vecPrisoner[i]->GetIR()._rc.right, m_vecPrisoner[i]->GetIR()._rc.bottom - m_fCameraY);
-		m_vecPrisoner[i]->render(m_fCameraY);
+		//Rectangle(getMemDC(),m_vecPrisoner[i]->GetIR()->_rc.left, m_vecPrisoner[i]->GetIR()->_rc.top - m_fCameraY, m_vecPrisoner[i]->GetIR()->_rc.right, m_vecPrisoner[i]->GetIR()->_rc.bottom - m_fCameraY);
+		m_vecItems[i]->render(m_fCameraY);
 	}
-	m_pDeadLine->render(m_fCameraY);
-
-	//렌더할때 _cameraY값을 이용해 플레이어 기준 로컬 좌표로 변환
-	if (_testIR._rc.top - m_fCameraY > 0 && _testIR._rc.top - m_fCameraY <= WINSIZEY)
+	for (int i = 0; i < m_vecGaurd.size(); i++)
 	{
-		_testIR._image->render(getMemDC(), _testIR._rc.left, _testIR._rc.top - m_fCameraY);
+		m_vecGaurd[i]->render(m_fCameraY);
 	}
+	//m_pDeadLine->render(m_fCameraY);
 
 
 	//시웅씬과 안 햇갈리게 하기위한 글자
@@ -170,10 +174,9 @@ void MinseokTest::render()
 
 MinseokTest::MinseokTest()
 {
-	
+
 	m_pPlayer = NULL;
 	m_pBack = NULL;
-	m_pDeadLine = NULL;
 }
 
 
@@ -182,7 +185,6 @@ MinseokTest::~MinseokTest()
 	
 	SAFE_DELETE(m_pPlayer);
 	SAFE_DELETE(m_pBack);
-	SAFE_DELETE(m_pDeadLine);
 	SAFE_DELETE(m_pColManager);
 }
 

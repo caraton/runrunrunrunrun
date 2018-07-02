@@ -3,7 +3,9 @@
 class Obstacles : public gameNode
 {
 protected:
-	SYNTHESIZE(IR, m_pIR, IR);
+
+	int m_nImageFrameX = 0;
+	SYNTHESIZE(IR*, m_pIR, IR);
 	SYNTHESIZE(fPoint, m_pPosition, Pos);
 	SYNTHESIZE(fPoint, m_pSpeed, Speed);
 public:

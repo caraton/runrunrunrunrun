@@ -7,6 +7,9 @@ class player;
 class prisoner;
 class CollisionCheckManager;
 class Obstacles;
+class guards;
+class star;
+class Items;
 
 class MinseokBack : public gameNode
 {
@@ -34,18 +37,14 @@ public:
 class MinseokTest : public gameNode
 {
 private:
-
-	//Å×½ºÆ®
-	IR _testIR;
-	int _testIRy;
 	
 	MinseokBack * m_pBack;
 	player* m_pPlayer;
-	std::vector<prisoner*> m_vecPrisoner;
+	std::vector<Items*> m_vecItems;
 	CollisionCheckManager* m_pColManager;
 	RECT m_rcObstacle;
 	float m_fCameraY;
-	Obstacles* m_pDeadLine;
+	std::vector<guards*> m_vecGaurd;
 
 public:
 	HRESULT init(void);

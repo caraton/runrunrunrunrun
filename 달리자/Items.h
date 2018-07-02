@@ -13,9 +13,10 @@ typedef enum HEADTYPEinITEM
 class Items : public gameNode
 {
 protected:
-	SYNTHESIZE(IR, m_pIR, IR);
+	SYNTHESIZE(IR*, m_pIR, IR);
 	SYNTHESIZE(fPoint, m_pPosition, Pos);
 	SYNTHESIZE(fPoint, m_pSpeed, Speed);
+	SYNTHESIZE(bool, m_isAlive,Alive);
 
 	void* m_pHead;
 	headType m_eHeadType;
