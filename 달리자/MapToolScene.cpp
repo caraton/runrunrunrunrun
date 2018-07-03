@@ -70,7 +70,7 @@ HRESULT MapToolScene::init2(void)
 	//btemp->init("테스트장애물맵툴", 675, 45, PointMake(1, 0), PointMake(0, 0), &obButton);
 	//_bList.push_back(btemp);
 	bool check;
-	_obList = TXTDATA->txtLoadExt("장애물 목록.txt", 1024, &check);
+	_obList = TXTDATA->txtLoadExt("장애물 목록.txt", 2048, &check);
 
 	int i = 0;
 	for (_oliter = _obList.begin(); _oliter != _obList.end()-1; )
@@ -79,7 +79,7 @@ HRESULT MapToolScene::init2(void)
 		char temp2[128];
 		strcpy_s(temp2, (*_oliter).c_str());
 		sprintf_s(temp, "Image/Obstacles/%s.bmp", temp2);
-		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter+1)), stoi(*(_oliter+2)), 2, 1, true, RGB(255, 0, 255));
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter+2)), stoi(*(_oliter+3)), stoi(*(_oliter + 1)), 1, true, RGB(255, 0, 255));
 		button btemp;
 		btemp.init(temp2, 675, 45+ i*100, PointMake(1,0), PointMake(0, 0), &obButton);
 		_bList.push_back(btemp);
@@ -87,9 +87,10 @@ HRESULT MapToolScene::init2(void)
 		++_oliter;
 		++_oliter;
 		++_oliter;
+		++_oliter;
 	}
 
-	_itemList = TXTDATA->txtLoadExt("아이템 목록.txt", 1024, &check);
+	_itemList = TXTDATA->txtLoadExt("아이템 목록.txt", 2048, &check);
 
 	int j = i;
 	for (_oliter = _itemList.begin(); _oliter != _itemList.end() - 1; )
@@ -98,11 +99,14 @@ HRESULT MapToolScene::init2(void)
 		char temp2[128];
 		strcpy_s(temp2, (*_oliter).c_str());
 		sprintf_s(temp, "Image/Items/%s.bmp", temp2);
-		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 1)), stoi(*(_oliter + 2)), 2, 1, true, RGB(255, 0, 255));
+
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 2)), stoi(*(_oliter + 3)), stoi(*(_oliter + 1)), 1, true, RGB(255, 0, 255));
+
 		button btemp;
 		btemp.init(temp2, 675, 45 + j * 100, PointMake(1, 0), PointMake(0, 0), &itemButton);
 		_itembList.push_back(btemp);
 		j++;
+		++_oliter;
 		++_oliter;
 		++_oliter;
 		++_oliter;
@@ -472,11 +476,11 @@ void MapToolScene::loadMap(vector<string> data)
 		temp->_isItem = stoi(data[i + 1]);
 		if (temp->_isItem)
 		{
-			temp->_imageName = _itemList[stoi(data[i]) * 3];
+			temp->_imageName = _itemList[stoi(data[i]) * 4];
 		}
 		else
 		{
-			temp->_imageName = _obList[stoi(data[i]) * 3];
+			temp->_imageName = _obList[stoi(data[i]) * 4];
 		}		
 		temp->_image = IMAGEMANAGER->findImage(temp->_imageName);
 		temp->_xycoordinate.x = stoi(data[i + 2]);
@@ -508,11 +512,11 @@ void MapToolScene::mtLoadMap()
 
 		if (temp->_isItem)
 		{
-			temp->_imageName = _itemList[stoi(_mapData[i]) * 3];
+			temp->_imageName = _itemList[stoi(_mapData[i]) * 4];
 		}
 		else
 		{
-			temp->_imageName = _obList[stoi(_mapData[i]) * 3];
+			temp->_imageName = _obList[stoi(_mapData[i]) * 4];
 		}
 		
 		temp->_image = IMAGEMANAGER->findImage(temp->_imageName);
@@ -544,7 +548,7 @@ void MapToolScene::jailButton(void)
 void MapToolScene::obButton(int imageNumber)
 {
 	bool check;
-	vector<string> temp = TXTDATA->txtLoadExt("장애물 목록.txt", 1024, &check);
+	vector<string> temp = TXTDATA->txtLoadExt("장애물 목록.txt", 2048, &check);
 	_currentImageName = temp[imageNumber];
 	_currentImage = IMAGEMANAGER->findImage(_currentImageName);
 	_isCurrentOn = true;
@@ -555,7 +559,7 @@ void MapToolScene::obButton(int imageNumber)
 void MapToolScene::itemButton(int imageNumber)
 {
 	bool check;
-	vector<string> temp = TXTDATA->txtLoadExt("아이템 목록.txt", 1024, &check);
+	vector<string> temp = TXTDATA->txtLoadExt("아이템 목록.txt", 2048, &check);
 	_currentImageName = temp[imageNumber];
 	_currentImage = IMAGEMANAGER->findImage(_currentImageName);
 	_isCurrentOn = true;
@@ -606,9 +610,10 @@ void MapToolScene::mapSave()
 			{
 				if (_itemList[i].compare((*_4tupleiter)->_imageName) == 0)
 				{
-					temp->_imageName = to_string(i / 3);
+					temp->_imageName = to_string(i / 4);
 					break;
 				}
+				++i;
 				++i;
 				++i;
 				++i;
@@ -620,9 +625,10 @@ void MapToolScene::mapSave()
 			{
 				if (_obList[i].compare((*_4tupleiter)->_imageName) == 0)
 				{
-					temp->_imageName = to_string(i / 3);
+					temp->_imageName = to_string(i / 4);
 					break;
 				}
+				++i;
 				++i;
 				++i;
 				++i;

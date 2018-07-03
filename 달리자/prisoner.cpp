@@ -13,7 +13,7 @@ HRESULT prisoner::init(void)
 
 	m_pIR->_type = "prisoner";
 	m_pIR->_node = this;
-	m_pIR->_image = IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	m_pIR->_image = IMAGEMANAGER->addFrameImage("prisoner01", "Image/Items/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 	m_isFire = false;
 
 	return S_OK;

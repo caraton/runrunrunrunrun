@@ -3,6 +3,10 @@
 
 class player;
 class CollisionCheckManager;
+class Items;
+class prisoner;
+class star;
+class Obstacles;
 
 class SiwoongTest : public gameNode
 {
@@ -27,7 +31,12 @@ private:
 	vector<string>::iterator _oliter;
 
 	vector<IR*> _obIRList; //맵데이터에서 읽어들인 장애물들의 IR* 담아놓음 렌더시 사용 + 메모리 해제시 사용가능?
+	vector<Obstacles*> _obCList;
+	vector<Obstacles*>::iterator _obCIter;
+
 	vector<IR*> _itemIRList;
+	vector<Items*> _itemCList;
+	vector<Items*>::iterator _itemCIter;
 	vector<IR*>::iterator _obIRIter;
 
 	int _frameCount; //모듈 연산으로 0~39 사이값 쓰기
