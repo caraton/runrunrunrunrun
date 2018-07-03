@@ -5,7 +5,9 @@
 #include "Items.h"
 #include "prisoner.h"
 #include "star.h"
+#include "smokeBomb.h"
 #include "Obstacles.h"
+#include "guards.h"
 
 HRESULT SiwoongTest::init(void)
 {
@@ -58,6 +60,42 @@ void SiwoongTest::release(void)
 {
 	SAFE_DELETE(_player);
 	SAFE_DELETE(_colManager);
+
+
+	for (_obIRIter = _obIRList.begin(); _obIRIter != _obIRList.end(); ++_obIRIter)
+	{
+		SAFE_DELETE(*_obIRIter);
+	}
+
+	_obIRList.clear();
+
+	for (_obIRIter = _itemIRList.begin(); _obIRIter != _itemIRList.end(); ++_obIRIter)
+	{
+		SAFE_DELETE(*_obIRIter);
+	}
+
+	_itemIRList.clear();
+
+	for (_itemCIter = _itemCList.begin(); _itemCIter != _itemCList.end(); ++_itemCIter)
+	{
+		SAFE_DELETE(*_itemCIter);
+	}
+
+	_itemCList.clear();
+
+	for (_obCIter = _obCList.begin(); _obCIter != _obCList.end(); ++_obCIter)
+	{
+		SAFE_DELETE(*_obCIter);
+	}
+
+	_obCList.clear();
+
+	for (_guardIter = _guardList.begin(); _guardIter != _guardList.end(); ++_guardIter)
+	{
+		SAFE_DELETE(*_guardIter);
+	}
+
+	_guardList.clear();
 }
 
 void SiwoongTest::update(void)
@@ -122,30 +160,18 @@ HRESULT SiwoongTest::gameInit(void)
 	//여기에 loadMap 함수 넣기
 	loadMap(toLoad, _colManager);
 
-	//_testIR._image = IMAGEMANAGER->addImage("테스트장애물", "Image/Obstacles/enemy.bmp", 40, 40, true, RGB(255, 0, 255));
-	//_testIR._rc = RectMakeCenter(100, -40, 40, 40);
-	//_testIR._type = "devil";
-	//_testIRy = -40;
-
-	//for (int i = 0; i < _colManager->GetMapLength() / 100; ++i)
-	//{
-	//	IR temp;
-	//	temp._image = IMAGEMANAGER->addImage("테스트장애물2", "Image/Obstacles/object_can.bmp", 50, 50, true, RGB(255, 0, 255));
-	//	temp._rc = RectMakeCenter(WINSIZEX / 2 - 100, 25 + i * 100 - _colManager->GetMapLength() + WINSIZEY, 50, 50);
-	//	temp._type = "can";
-	//	_trashcans.push_back(temp);
-	//}
-
-	//_colManager->addIR(&_testIR); //충돌처리할 IR들을 colManager에 보내주기
-	//for (_tcIter = _trashcans.begin(); _tcIter != _trashcans.end(); ++_tcIter)
-	//{
-	//	_colManager->addIR(&*_tcIter);
-	//}
-	//_colManager->addIR(&_player->GetIR());
-
 	_cameraY = 0;
 
 	_frameCount = 0;
+
+	for (int i = 0; i < (int)(WINSIZEX / 50); i++)
+	{
+		guards* gTemp = new guards;
+		gTemp->init();
+		gTemp->SetPos({ (float)i * 50 , (float)WINSIZEY - 50 });
+		_guardList.push_back(gTemp);
+		_colManager->addIR(gTemp->GetIR());
+	}
 
 	return S_OK;
 }
@@ -176,37 +202,29 @@ void SiwoongTest::gameUpdate(void)
 	++_frameCount;
 
 	_player->update();
+	_cameraY = _player->GetCamY();
 
 	for (_itemCIter = _itemCList.begin(); _itemCIter != _itemCList.end(); ++_itemCIter)
 	{
 		(*_itemCIter)->update();
 	}
 
+	for (int i = 0; i < _guardList.size(); i++)
+	{
+		_guardList[i]->update();
+	}
+
 	_colManager->update();
 }
 
 void SiwoongTest::gameRender(void)
-{
-	_cameraY = _player->GetCamY();
-
+{	
 	//배경 종류 맵데이터에서 받아서 하는걸로 수정하기
 
 	IMAGEMANAGER->findImage("background_jail")->loopRender(getMemDC(), &RectMake(0, 0, WINSIZEX, WINSIZEY), 0, _cameraY);
 
 	//오브젝트들의 rc에는 글로벌 좌표를 저장하고
 	//렌더할때 _cameraY값을 이용해 플레이어 기준 로컬 좌표로 변환
-	//if (_testIR._rc.top - _cameraY > 0 && _testIR._rc.top - _cameraY <= WINSIZEY)
-	//{
-	//	_testIR._image->render(getMemDC(), _testIR._rc.left, _testIR._rc.top - _cameraY);
-	//}
-
-	//for (_tcIter = _trashcans.begin(); _tcIter != _trashcans.end(); ++_tcIter)
-	//{
-	//	if ((*_tcIter)._rc.top - _cameraY > 0 && (*_tcIter)._rc.top - _cameraY <= WINSIZEY)
-	//	{
-	//		(*_tcIter)._image->render(getMemDC(), (*_tcIter)._rc.left, (*_tcIter)._rc.top - _cameraY);
-	//	}
-	//}
 
 	for (_obIRIter = _obIRList.begin(); _obIRIter != _obIRList.end(); ++_obIRIter)
 	{
@@ -230,6 +248,11 @@ void SiwoongTest::gameRender(void)
 		{
 			(*_itemCIter)->render(_cameraY);
 		}
+	}
+
+	for (int i = 0; i < _guardList.size(); i++)
+	{
+		_guardList[i]->render(_cameraY);
 	}
 
 	//_colManager->render();
@@ -296,6 +319,17 @@ void SiwoongTest::loadMap(vector<string> data, CollisionCheckManager* _colM)
 				_itemCList.push_back(tPrisoner);
 				tPrisoner->linkColManager(_colManager);
 				_colM->addIR(tPrisoner->GetIR());
+			}
+			else if (tString.compare("bubble_smoke") == 0)
+			{
+				smokeBomb* tSmokeBomb = new smokeBomb;
+				tSmokeBomb->init();
+				RECT tR = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), tSmokeBomb->GetIR()->_image->getFrameWidth(), tSmokeBomb->GetIR()->_image->getFrameHeight());
+				tSmokeBomb->SetPos({ (float)tR.left, (float)tR.top });
+				_itemCList.push_back(tSmokeBomb);
+				tSmokeBomb->linkColManager(_colManager);
+				tSmokeBomb->linkGuards(_guardList);
+				_colM->addIR(tSmokeBomb->GetIR());
 			}
 			else
 			{

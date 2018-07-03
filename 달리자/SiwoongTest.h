@@ -6,7 +6,9 @@ class CollisionCheckManager;
 class Items;
 class prisoner;
 class star;
+class smokeBomb;
 class Obstacles;
+class guards;
 
 class SiwoongTest : public gameNode
 {
@@ -17,12 +19,6 @@ class SiwoongTest : public gameNode
 private:
 	player* _player;
 	CollisionCheckManager* _colManager;
-
-	IR _testIR;
-	int _testIRy;
-
-	vector<IR> _trashcans;
-	vector<IR>::iterator _tcIter;
 
 	float _cameraY;
 
@@ -38,6 +34,9 @@ private:
 	vector<Items*> _itemCList;
 	vector<Items*>::iterator _itemCIter;
 	vector<IR*>::iterator _obIRIter;
+
+	vector<guards*> _guardList;
+	vector<guards*>::iterator _guardIter;
 
 	int _frameCount; //모듈 연산으로 0~39 사이값 쓰기
 
