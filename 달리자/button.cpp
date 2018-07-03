@@ -146,7 +146,7 @@ void button::update2()
 		{
 			_direction = BUTTONDIRECTION_UP;
 			bool check;
-			vector<string> temp = TXTDATA->txtLoadExt("장애물 목록.txt",1024, &check);
+			vector<string> temp = TXTDATA->txtLoadExt("장애물 목록.txt",2048, &check);
 			for (int i = 0; i < temp.size()-1;)
 			{
 				if (temp[i].compare(_imageName) == 0)
@@ -154,6 +154,7 @@ void button::update2()
 					_callbackFunction2(i); //콜백함수는 버튼이 눌린 순간이 아니라 눌리고 나서 때어진 순간에 실행
 					break;
 				}
+				++i;
 				++i;
 				++i;
 				++i;
@@ -182,7 +183,7 @@ void button::update3()
 		{
 			_direction = BUTTONDIRECTION_UP;
 			bool check;
-			vector<string> temp = TXTDATA->txtLoadExt("아이템 목록.txt",1024, &check);
+			vector<string> temp = TXTDATA->txtLoadExt("아이템 목록.txt",2048, &check);
 			for (int i = 0; i < temp.size() - 1;)
 			{
 				if (temp[i].compare(_imageName) == 0)
@@ -190,6 +191,7 @@ void button::update3()
 					_callbackFunction2(i); //콜백함수는 버튼이 눌린 순간이 아니라 눌리고 나서 때어진 순간에 실행
 					break;
 				}
+				++i;
 				++i;
 				++i;
 				++i;

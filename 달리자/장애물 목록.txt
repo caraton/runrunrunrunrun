@@ -1,1 +1,1 @@
-enemy_icon,80,40,object_box_icon,100,50,object_can_icon,100,50,object_greeen_icon,100,50,object_yellow_icon,100,50,crack,200,50,
+enemy_icon,2,80,40,object_box_icon,2,100,50,object_can_icon,2,100,50,object_greeen_icon,2,100,50,object_yellow_icon,2,100,50,crack,2,200,50,

@@ -1,1 +1,1 @@
-star_color,100,50,star_rotate,100,50,star_size,100,50,star_bubble,100,50,
+star_color,2,100,50,star_rotate,2,100,50,star_size,2,100,50,star_bubble,2,100,50,prisoner01_walk,6,300,50,´õ¹Ì

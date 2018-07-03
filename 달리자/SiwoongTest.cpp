@@ -2,6 +2,10 @@
 #include "SiwoongTest.h"
 #include "player.h"
 #include "CollisionCheckManager.h"
+#include "Items.h"
+#include "prisoner.h"
+#include "star.h"
+#include "Obstacles.h"
 
 HRESULT SiwoongTest::init(void)
 {
@@ -10,8 +14,8 @@ HRESULT SiwoongTest::init(void)
 
 	//%%이미지 추가하는부분들 로딩신으로 넘기기?
 	bool check;
-	_obList = TXTDATA->txtLoadExt("장애물 목록.txt",1024, &check);
-	_itemList = TXTDATA->txtLoadExt("아이템 목록.txt", 1024, &check);
+	_obList = TXTDATA->txtLoadExt("장애물 목록.txt",2048, &check);
+	_itemList = TXTDATA->txtLoadExt("아이템 목록.txt", 2048, &check);
 
 	for (_oliter = _obList.begin(); _oliter != _obList.end() - 1; )
 	{
@@ -19,8 +23,9 @@ HRESULT SiwoongTest::init(void)
 		char temp2[128];
 		strcpy_s(temp2, (*_oliter).c_str());
 		sprintf_s(temp, "Image/Obstacles/%s.bmp", temp2);
-		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 1)), stoi(*(_oliter + 2)), 2, 1, true, RGB(255, 0, 255));
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 2)), stoi(*(_oliter + 3)), stoi(*(_oliter + 1)), 1, true, RGB(255, 0, 255));
 
+		++_oliter;
 		++_oliter;
 		++_oliter;
 		++_oliter;
@@ -32,8 +37,9 @@ HRESULT SiwoongTest::init(void)
 		char temp2[128];
 		strcpy_s(temp2, (*_oliter).c_str());
 		sprintf_s(temp, "Image/Items/%s.bmp", temp2);
-		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 1)), stoi(*(_oliter + 2)), 2, 1, true, RGB(255, 0, 255));
+		IMAGEMANAGER->addFrameImage(*_oliter, temp, stoi(*(_oliter + 2)), stoi(*(_oliter + 3)), stoi(*(_oliter + 1)), 1, true, RGB(255, 0, 255));
 
+		++_oliter;
 		++_oliter;
 		++_oliter;
 		++_oliter;
@@ -171,12 +177,10 @@ void SiwoongTest::gameUpdate(void)
 
 	_player->update();
 
-	//if (_testIRy > -2 * WINSIZEY + 1)
-	//{
-	//	_testIRy -= 1;
-	//}
-
-	//_testIR._rc = RectMakeCenter(100, _testIRy, 40, 40);
+	for (_itemCIter = _itemCList.begin(); _itemCIter != _itemCList.end(); ++_itemCIter)
+	{
+		(*_itemCIter)->update();
+	}
 
 	_colManager->update();
 }
@@ -220,6 +224,14 @@ void SiwoongTest::gameRender(void)
 		}
 	}
 
+	for (_itemCIter = _itemCList.begin(); _itemCIter != _itemCList.end(); ++_itemCIter)
+	{
+		if ((*_itemCIter)->GetIR()->_rc.top - _cameraY > 0 && (*_itemCIter)->GetIR()->_rc.top - _cameraY <= WINSIZEY)
+		{
+			(*_itemCIter)->render(_cameraY);
+		}
+	}
+
 	//_colManager->render();
 
 	_player->render(_colManager->GetGameover());
@@ -243,33 +255,84 @@ void SiwoongTest::loadMap(vector<string> data, CollisionCheckManager* _colM)
 
 	_itemIRList.clear();
 
+	for (_itemCIter = _itemCList.begin(); _itemCIter != _itemCList.end(); ++_itemCIter)
+	{
+		SAFE_DELETE(*_itemCIter);
+	}
+
+	_itemCList.clear();
+
+	for (_obCIter = _obCList.begin(); _obCIter != _obCList.end(); ++_obCIter)
+	{
+		SAFE_DELETE(*_obCIter);
+	}
+
+	_obCList.clear();
+
 	for (int i = 2; i < data.size() - 1;)
 	{
-		IR* temp = new IR;
-		
+	
 		string tString;
 
 		if (stoi(data[i+1]) == 1)
 		{
-			tString = _itemList[stoi(data[i]) * 3];
-			temp->_image = IMAGEMANAGER->findImage(tString);
-			temp->_rc = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
-			//temp->_type = (char*) tString.c_str(); 
-			temp->_type = (char *)tString.c_str();
-			_itemIRList.push_back(temp);
+			tString = _itemList[stoi(data[i]) * 4];
+
+			if (tString.substr(0, 4).compare("star") == 0)
+			{
+				star* tStar = new star;
+				tStar->init();
+				RECT tR = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), tStar->GetIR()->_image->getFrameWidth(), tStar->GetIR()->_image->getFrameHeight());
+				tStar->SetPos({ (float)tR.left, (float)tR.top });
+				_itemCList.push_back(tStar);
+				_colM->addIR(tStar->GetIR());
+			}
+			else if (tString.substr(0, 8).compare("prisoner") == 0)
+			{
+				prisoner* tPrisoner = new prisoner;
+				tPrisoner->init();
+				RECT tR = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), tPrisoner->GetIR()->_image->getFrameWidth(), tPrisoner->GetIR()->_image->getFrameHeight());
+				tPrisoner->SetPos({ (float)tR.left, (float)tR.top });
+				_itemCList.push_back(tPrisoner);
+				tPrisoner->linkColManager(_colManager);
+				_colM->addIR(tPrisoner->GetIR());
+			}
+			else
+			{
+				IR* temp = new IR;
+
+				temp->_image = IMAGEMANAGER->findImage(tString);
+				temp->_rc = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
+				//temp->_type = (char*) tString.c_str(); 
+				temp->_type = (char *)tString.c_str();
+
+				_itemIRList.push_back(temp);
+
+				_colM->addIR(temp);
+			}
 		}
 		else if (stoi(data[i + 1]) == 0)
 		{
-			tString = _obList[stoi(data[i]) * 3];
-			temp->_image = IMAGEMANAGER->findImage(tString);
-			temp->_rc = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
-			//temp->_type = (char*) tString.c_str(); 
-			temp->_type = (char *)tString.c_str();
-			_obIRList.push_back(temp);
+			tString = _obList[stoi(data[i]) * 4];
+
+			if (tString.substr(0, 4).compare("star") == 0)
+			{ }
+			else if (tString.substr(0, 4).compare("star") == 0)
+			{ }
+			else
+			{
+				IR* temp = new IR;
+				temp->_image = IMAGEMANAGER->findImage(tString);
+				temp->_rc = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
+				//temp->_type = (char*) tString.c_str(); 
+				temp->_type = (char *)tString.c_str();
+				_obIRList.push_back(temp);
+
+				_colM->addIR(temp);
+			}
 		}
 
-		_colM->addIR(temp);
-
+	
 		++i;
 		++i;
 		++i;
