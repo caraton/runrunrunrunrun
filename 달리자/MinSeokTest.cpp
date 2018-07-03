@@ -7,6 +7,7 @@
 #include "Obstacles.h"
 #include "guards.h"
 #include "star.h"
+#include "smokeBomb.h"
 
 HRESULT MinseokTest::init(void)
 {
@@ -30,27 +31,6 @@ HRESULT MinseokTest::init(void)
 
 	m_rcObstacle = RectMakeCenter(WINSIZEX / 2, WINSIZEY * 3 / 4, 200, 200);
 
-	//아이템들 초기화
-	for (int i = 0; i < 4; i++)
-	{
-		Items* tttemp;
-		if (i != 2)
-		{
-			tttemp = new prisoner;
-			tttemp->init();
-			tttemp->linkColManager(m_pColManager);
-		}
-		else
-		{
-			tttemp = new star;
-			tttemp->init();
-		}
-		float tempposy = -1 * 200 * i;
-		tttemp->SetPos(fPoint{ WINSIZEX / 2,  tempposy });
-		m_vecItems.push_back(tttemp);
-		m_pColManager->addIR(tttemp->GetIR());
-
-	}
 
 	//가드들 초기화
 	for (int i = 0; i < (int)(WINSIZEX / 50); i++)
@@ -63,6 +43,50 @@ HRESULT MinseokTest::init(void)
 		m_pColManager->addIR(gTemp->GetIR());
 
 	}
+	for (int i = 0; i < (int)(WINSIZEX / 50) + 1; i++)
+	{
+		guards* gTemp;
+		gTemp = new guards;
+		gTemp->init();
+		gTemp->SetPos({ (float)i * 50 - 25, (float)WINSIZEY - 70 });
+		m_vecGaurd.push_back(gTemp);
+		m_pColManager->addIR(gTemp->GetIR());
+
+	}
+
+
+
+	//아이템들 초기화
+	for (int i = 0; i < 4; i++)
+	{
+		Items* tttemp;
+		
+		if (i == 1)
+		{
+			tttemp = new smokeBomb;
+			tttemp->init();
+			tttemp->linkColManager(m_pColManager);
+			tttemp->linkGuards(m_vecGaurd);
+		}
+		else if (i == 2)
+		{
+			tttemp = new star;
+			tttemp->init();
+		}
+		else 
+		{
+			tttemp = new prisoner;
+			tttemp->init();
+			tttemp->linkColManager(m_pColManager);
+		}
+		float tempposy = -1 * 200 * i;
+		tttemp->SetPos(fPoint{ WINSIZEX / 2,  tempposy });
+		m_vecItems.push_back(tttemp);
+		m_pColManager->addIR(tttemp->GetIR());
+
+	}
+
+	
 	//for (int i = 0; i < 4; i++)
 	//{
 	//	m_pColManager->addIR(&(m_vecPrisoner[i]->GetIR()));

@@ -153,6 +153,9 @@
     <ClInclude Include="guards.h">
       <Filter>MainGame\Obstacles</Filter>
     </ClInclude>
+    <ClInclude Include="smokeBomb.h">
+      <Filter>MainGame\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -235,6 +238,9 @@
     </ClCompile>
     <ClCompile Include="guards.cpp">
       <Filter>MainGame\Obstacles</Filter>
+    </ClCompile>
+    <ClCompile Include="smokeBomb.cpp">
+      <Filter>MainGame\Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

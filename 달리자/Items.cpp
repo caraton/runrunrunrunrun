@@ -2,12 +2,18 @@
 #include "Items.h"
 
 
+
 Items::Items()
 {
 }
 
 
 Items::~Items()
+{
+}
+
+
+void Items::linkGuards(vector<guards*> vecGuards)
 {
 }
 

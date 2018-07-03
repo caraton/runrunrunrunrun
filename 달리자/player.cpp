@@ -4,6 +4,7 @@
 #include "Items.h"
 #include "prisoner.h"
 #include "star.h"
+#include "guards.h"
 
 //슝아 너말이 맞는듯
 
@@ -184,9 +185,54 @@ void player::update(void)
 
 				m_pColManager->deleteIR((*_colIter));
 			}
+			else if (!strncmp((*_colIter)->_type, "smokeBomb", 10))
+			{
+
+				if (_items.size() < 3)
+				{
+					_items.push_back((star*)(*_colIter)->_node);
+
+
+					//아이템 이동관련
+					if (_items.size() == 1)
+					{
+						(*_items.begin())->linkHead(this, t_player);
+					}
+					else
+					{
+						_items[_items.size() - 1]->linkHead(_items[_items.size() - 2], t_item);
+						//(*(_items.end()--))->linkHead(*((_items.end()--)--), t_item);
+					}
+				}
+
+
+				m_pColManager->deleteIR((*_colIter));
+			}
 			else if (!strncmp((*_colIter)->_type, "deadline", 10))
 			{
-				if (m_isStar) continue;
+				if (m_isStar)
+				{
+					guards* guardTemp;
+					guardTemp = (guards*)(*_colIter)->_node;
+					m_fpSpeed = guardTemp->GetSpeed();
+					//fPoint tempf;
+					//tempf.x = ((*_colIter)->_rc.left + (*_colIter)->_rc.right) / 2;
+					//tempf.y = ((*_colIter)->_rc.top + (*_colIter)->_rc.bottom) / 2;
+					//fPoint tempm;
+					//tempm.x = 25;
+					//tempm.y = 25;
+					//
+					//float t = 1.00;
+
+					while (pixelCol(&m_IR, *_colIter))
+					{
+						//m_fBasicSpeedY += 0.2f;
+						m_fpPosition.y -= 2.0f;
+						m_IR._rc = RectMake(m_fpPosition.x, m_fpPosition.y, 50, 50);
+					}
+					break;
+					continue;
+				}
 				m_IR._image = IMAGEMANAGER->findImage("playerDeath");
 				m_pColManager->SetGameover(true);
 				break;
@@ -314,6 +360,11 @@ void player::useItem()
 		{
 			m_isStar = true;
 			_items[0]->SetAlive(false);
+		}
+		else if (!strncmp(_items[0]->GetIR()->_type, "smokeBomb", 10))
+		{
+
+			_items[0]->SetFire(true);
 		}
 
 

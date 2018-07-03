@@ -1,7 +1,9 @@
 #pragma once
 #include "gameNode.h"
+#include "guards.h"
 
 class CollisionCheckManager;
+
 
 typedef enum HEADTYPEinITEM
 {
@@ -25,6 +27,8 @@ protected:
 	CollisionCheckManager* m_pColManager;
 	vector<IR*>::iterator _colIter;
 
+	virtual void linkGuards(vector<guards*> vecGuards);
+
 
 public:
 	virtual HRESULT init(void);
@@ -34,6 +38,7 @@ public:
 	
 	void linkHead(void * Head, headType type);
 	void linkColManager(CollisionCheckManager* col) { m_pColManager = col; }
+	
 
 public:
 	Items();
