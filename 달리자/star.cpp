@@ -11,9 +11,12 @@ HRESULT star::init(void)
 	m_pIR->_rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
 	m_pSpeed = { 0,0 };
 
+	m_pHead = NULL;
 	m_pIR->_type = "star";
 	m_pIR->_node = this;
-	m_pIR->_image = IMAGEMANAGER->addFrameImage("star", "Image/Items/star_size.bmp", 100, 50, 2, 1, true, RGB(255, 0, 255));
+	m_pImageStarSize = IMAGEMANAGER->addFrameImage("star_size", "Image/Items/star_size.bmp", 100, 50, 2, 1, true, RGB(255, 0, 255));
+	m_pImageStarRotate = IMAGEMANAGER->addFrameImage("star_rotate", "Image/Items/star_rotate.bmp", 100, 50, 2, 1, true, RGB(255, 0, 255));
+	m_pIR->_image = m_pImageStarSize;
 	return S_OK;
 }
 
@@ -68,10 +71,9 @@ void star::update(void)
 	m_pIR->_rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
 
 
-	if (m_pHead)
-	{
-		m_nImageFrameX = TIMEMANAGER->getFrameCount() / 10 % 2;
-	}
+	
+	m_nImageFrameX = TIMEMANAGER->getFrameCount() / 10 % 2;
+	
 }
 
 void star::render(float cameraY)
@@ -80,12 +82,12 @@ void star::render(float cameraY)
 	if (!m_isAlive) return;
 	if (!m_pHead)
 	{
-		m_pIR->_image->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY, 0, 0);
+		m_pImageStarSize->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY, m_nImageFrameX, 0);
 	}
 	else if (m_pHead)
 	{
 
-		m_pIR->_image->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY, m_nImageFrameX, 0);
+		m_pImageStarRotate->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY, m_nImageFrameX, 0);
 	}
 }
 

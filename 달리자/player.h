@@ -20,6 +20,8 @@ private:
 	//float _cameraY;
 	bool m_isStar = false;
 
+	int m_nStarStartTime = 0;
+
 	SYNTHESIZE(float, m_fCamaraY, CamY);
 	SYNTHESIZE(fPoint, m_fpPosition, Pos);
 	SYNTHESIZE(ST_ImageAndRect, m_IR, IR);

@@ -6,6 +6,9 @@ class star : public Items
 private:
 	int m_nImageFrameX = 0;
 
+	image* m_pImageStarSize;
+	image* m_pImageStarRotate;
+
 public:
 	HRESULT init(void);
 	void release(void);

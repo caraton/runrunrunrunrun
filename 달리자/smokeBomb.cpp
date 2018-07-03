@@ -16,7 +16,7 @@ HRESULT smokeBomb::init(void)
 
 	m_pIR->_type = "smokeBomb";
 	m_pIR->_node = this;
-	m_pBombImage = IMAGEMANAGER->addFrameImage("bomb", "Image/Items/bubble_smoke.bmp", 100, 50, 2, 1, true, RGB(255, 0, 255));
+	m_pBombImage = IMAGEMANAGER->addFrameImage("bubble_smoke", "Image/Items/bubble_smoke.bmp", 100, 50, 2, 1, true, RGB(255, 0, 255));
 	m_pSmokeImage = IMAGEMANAGER->addFrameImage("smoke", "Image/Items/smoke.bmp", 200, 50, 2, 1, true, RGB(255, 0, 255));
 	m_pIR->_image = m_pBombImage;
 	m_isFire = false;
@@ -51,12 +51,23 @@ void smokeBomb::update(void)
 					for (int i = 0 ; i < m_vecGuards.size(); i++)
 					{
 						m_vecGuards[i]->SetSpeed({ 0.0f,0.0f });
+						
 					}
 				}
 			}
 		}
 
+		if (TIMEMANAGER->getWorldTime() - m_nStartTime >= 4.0f)
+		{
+			for (int i = 0; i < m_vecGuards.size(); i++)
+			{
+				m_vecGuards[i]->SetSpeed({ 0,-5.0f });
 
+			}
+
+			m_isAlive = false;
+			return;
+		}
 
 	}
 

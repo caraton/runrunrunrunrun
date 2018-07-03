@@ -2,6 +2,8 @@
 #include "prisoner.h"
 #include "player.h"
 #include "CollisionCheckManager.h"
+#include "Obstacles.h"
+#include "can.h"
 
 HRESULT prisoner::init(void)
 {
@@ -13,7 +15,7 @@ HRESULT prisoner::init(void)
 
 	m_pIR->_type = "prisoner";
 	m_pIR->_node = this;
-	m_pIR->_image = IMAGEMANAGER->addFrameImage("prisoner01", "Image/Items/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	m_pIR->_image = IMAGEMANAGER->addFrameImage("prisoner01_walk", "Image/Items/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 	m_isFire = false;
 
 	return S_OK;
@@ -45,8 +47,12 @@ void prisoner::update(void)
 				if (!strncmp((*_colIter)->_type, "can", 10))
 				{
 					IR* temp = *_colIter;
+					
+					Obstacles* obTemp;
+					obTemp = (Obstacles*)(*_colIter)->_node;
+					//obTemp->SetAlive(false);
 					m_pColManager->deleteIR(*_colIter);
-					//SAFE_DELETE(temp);
+					
 				}
 			}
 		}

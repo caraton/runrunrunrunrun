@@ -8,6 +8,7 @@ protected:
 	SYNTHESIZE(IR*, m_pIR, IR);
 	SYNTHESIZE(fPoint, m_pPosition, Pos);
 	SYNTHESIZE(fPoint, m_pSpeed, Speed);
+	SYNTHESIZE(bool, m_isAlive, Alive);
 public:
 	virtual HRESULT init(void);
 	virtual void release(void);

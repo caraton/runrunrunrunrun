@@ -24,11 +24,11 @@ HRESULT player::init(void)
 {
 	//이미지 관련 초기화 모음
 	//m_pPlayerImage 라는 변수를 삭제해도 될듯
-	m_IR._image = IMAGEMANAGER->addFrameImage("player", "Image/player_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
-	_playerDeath = IMAGEMANAGER->addImage("playerDeath", "Image/player_down_50.bmp", 50, 50, true, RGB(255, 0, 255));
+	m_IR._image = IMAGEMANAGER->addFrameImage("player_walk", "Image/player_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	_playerDeath = IMAGEMANAGER->addImage("player_down_50", "Image/player_down_50.bmp", 50, 50, true, RGB(255, 0, 255));
 	m_pPlayerImage = m_IR._image;
-	IMAGEMANAGER->addFrameImage("prisoner01", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("guard", "Image/guard_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("prisoner01_walk", "Image/prisoner01_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("guard_walk", "Image/guard_walk.bmp", 300, 50, 6, 1, true, RGB(255, 0, 255));
 	//플레이어 좌표 초기화(화면중앙)
 	m_fpPosition.x = WINSIZEX / 2;
 	m_fpPosition.y = WINSIZEY / 2;
@@ -61,6 +61,12 @@ void player::update(void)
 	if ((m_pColManager) && m_fCamaraY >= -(m_pColManager->GetMapLength() - WINSIZEY))
 	{
 		m_fCamaraY += m_fBasicSpeedY;
+	}
+
+	//무적 지속시간
+	if (TIMEMANAGER->getWorldTime() - m_nStarStartTime >= 6.0f)
+	{
+		m_isStar = false;
 	}
 
 	//z,x,c,space bar
@@ -233,7 +239,7 @@ void player::update(void)
 					break;
 					continue;
 				}
-				m_IR._image = IMAGEMANAGER->findImage("playerDeath");
+				m_IR._image = IMAGEMANAGER->findImage("player_down_50");
 				m_pColManager->SetGameover(true);
 				break;
 			}
@@ -358,6 +364,7 @@ void player::useItem()
 		}
 		else if (!strncmp(_items[0]->GetIR()->_type, "star", 10))
 		{
+			m_nStarStartTime = TIMEMANAGER->getWorldTime();
 			m_isStar = true;
 			_items[0]->SetAlive(false);
 		}
@@ -365,6 +372,7 @@ void player::useItem()
 		{
 
 			_items[0]->SetFire(true);
+			_items[0]->SetStartTime(TIMEMANAGER->getWorldTime());
 		}
 
 

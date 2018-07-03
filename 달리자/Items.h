@@ -21,6 +21,7 @@ protected:
 	SYNTHESIZE(fPoint, m_pPosition, Pos);
 	SYNTHESIZE(fPoint, m_pSpeed, Speed);
 	SYNTHESIZE(bool, m_isAlive,Alive);
+	SYNTHESIZE(int, m_nStartTime, StartTime);
 
 	void* m_pHead;
 	headType m_eHeadType;

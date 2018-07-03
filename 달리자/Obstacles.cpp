@@ -17,6 +17,7 @@ HRESULT Obstacles::init(void)
 	m_pSpeed = { 0,0 };
 	//랙트를 만들어주지 않을경우 랙트 초기화
 	m_pIR->_rc = RectMake(m_pPosition.x, m_pPosition.y, 50, 50);
+	m_isAlive = true;
 	return S_OK;
 }
 
@@ -26,6 +27,7 @@ void Obstacles::release(void)
 
 void Obstacles::update(void)
 {
+	if (!m_isAlive) return;
 	m_pPosition = m_pPosition + m_pSpeed;
 
 	
@@ -34,6 +36,7 @@ void Obstacles::update(void)
 
 void Obstacles::render(float cameraY)
 {
+	if (!m_isAlive) return;
 	if (m_pIR->_image)
 		m_pIR->_image->render(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY);
 	else
