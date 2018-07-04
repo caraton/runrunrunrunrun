@@ -28,7 +28,8 @@ void can::update(void)
 
 void can::render(float cameraY)
 {
-	m_pIR->_image->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY, m_nImageFrameX, 0);
+	if (!m_isAlive) return;
+	m_pIR->_image->frameRender(getMemDC(), m_pPosition.x, m_pPosition.y - cameraY, 0, 0);
 }
 
 can::can()

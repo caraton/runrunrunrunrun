@@ -8,6 +8,8 @@ class prisoner;
 class star;
 class smokeBomb;
 class Obstacles;
+class box;
+class can;
 class guards;
 
 class SiwoongTest : public gameNode

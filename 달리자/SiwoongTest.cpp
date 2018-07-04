@@ -7,6 +7,8 @@
 #include "star.h"
 #include "smokeBomb.h"
 #include "Obstacles.h"
+#include "box.h"
+#include "can.h"
 #include "guards.h"
 
 HRESULT SiwoongTest::init(void)
@@ -157,13 +159,6 @@ HRESULT SiwoongTest::gameInit(void)
 	_colManager->linkPlayer(_player);
 	_player->linkColManager(_colManager);
 
-	//여기에 loadMap 함수 넣기
-	loadMap(toLoad, _colManager);
-
-	_cameraY = 0;
-
-	_frameCount = 0;
-
 	for (int i = 0; i < (int)(WINSIZEX / 50); i++)
 	{
 		guards* gTemp = new guards;
@@ -172,6 +167,22 @@ HRESULT SiwoongTest::gameInit(void)
 		_guardList.push_back(gTemp);
 		_colManager->addIR(gTemp->GetIR());
 	}
+
+	for (int i = 0; i < (int)(WINSIZEX / 50) + 1; i++)
+	{
+		guards* gTemp = new guards;
+		gTemp->init();
+		gTemp->SetPos({ (float)i * 50 - 25 , (float)WINSIZEY - 70 });
+		_guardList.push_back(gTemp);
+		_colManager->addIR(gTemp->GetIR());
+	}
+
+	//여기에 loadMap 함수 넣기
+	loadMap(toLoad, _colManager);
+
+	_cameraY = 0;
+
+	_frameCount = 0;
 
 	return S_OK;
 }
@@ -207,6 +218,11 @@ void SiwoongTest::gameUpdate(void)
 	for (_itemCIter = _itemCList.begin(); _itemCIter != _itemCList.end(); ++_itemCIter)
 	{
 		(*_itemCIter)->update();
+	}
+
+	for (_obCIter = _obCList.begin(); _obCIter != _obCList.end(); ++_obCIter)
+	{
+		(*_obCIter)->update();
 	}
 
 	for (int i = 0; i < _guardList.size(); i++)
@@ -247,6 +263,14 @@ void SiwoongTest::gameRender(void)
 		if ((*_itemCIter)->GetIR()->_rc.top - _cameraY > 0 && (*_itemCIter)->GetIR()->_rc.top - _cameraY <= WINSIZEY)
 		{
 			(*_itemCIter)->render(_cameraY);
+		}
+	}
+
+	for (_obCIter = _obCList.begin(); _obCIter != _obCList.end(); ++_obCIter)
+	{
+		if ((*_obCIter)->GetIR()->_rc.top - _cameraY > 0 && (*_obCIter)->GetIR()->_rc.top - _cameraY <= WINSIZEY)
+		{
+			(*_obCIter)->render(_cameraY);
 		}
 	}
 
@@ -349,17 +373,32 @@ void SiwoongTest::loadMap(vector<string> data, CollisionCheckManager* _colM)
 		{
 			tString = _obList[stoi(data[i]) * 4];
 
-			if (tString.substr(0, 4).compare("star") == 0)
-			{ }
-			else if (tString.substr(0, 4).compare("star") == 0)
-			{ }
+			if (tString.substr(0, 10).compare("object_box") == 0)
+			{ 
+				box* tbox = new box;
+				tbox->init();
+				RECT tR = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), tbox->GetIR()->_image->getFrameWidth(), tbox->GetIR()->_image->getFrameHeight());
+				tbox->SetPos({ (float)tR.left, (float)tR.top });
+				_obCList.push_back(tbox);
+				_colM->addIR(tbox->GetIR());
+			}
+			else if (tString.substr(0, 10).compare("object_can") == 0)
+			{ 
+				can* tcan = new can;
+				tcan->init();
+				RECT tR = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), tcan->GetIR()->_image->getFrameWidth(), tcan->GetIR()->_image->getFrameHeight());
+				tcan->SetPos({ (float)tR.left, (float)tR.top });
+				_obCList.push_back(tcan);
+				_colM->addIR(tcan->GetIR());
+			}
 			else
 			{
 				IR* temp = new IR;
 				temp->_image = IMAGEMANAGER->findImage(tString);
 				temp->_rc = RectMakeCenter(stoi(data[i + 2]), stoi(data[i + 3]), temp->_image->getFrameWidth(), temp->_image->getFrameHeight());
 				//temp->_type = (char*) tString.c_str(); 
-				temp->_type = (char *)tString.c_str();
+				//temp->_type = (char *)tString.c_str();
+				temp->_type = "can";
 				_obIRList.push_back(temp);
 
 				_colM->addIR(temp);

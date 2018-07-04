@@ -50,7 +50,7 @@ void prisoner::update(void)
 					
 					Obstacles* obTemp;
 					obTemp = (Obstacles*)(*_colIter)->_node;
-					//obTemp->SetAlive(false);
+					obTemp->SetAlive(false);
 					m_pColManager->deleteIR(*_colIter);
 					
 				}
